@@ -7,11 +7,10 @@ import styles from "./scss/styles.module.scss";
 function App() {
   const [count, setCount] = useState(0);
 
-  console.log(styles.main);
-  asd;
+  console.debug(styles.main);
 
   return (
-    <>
+    <React.Fragment>
       <div>
         <a href="https://vite.dev" target="_blank" rel="noreferrer">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -28,7 +27,7 @@ function App() {
         </p>
       </div>
       <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-    </>
+    </React.Fragment>
   );
 }
 
