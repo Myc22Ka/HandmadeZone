@@ -2,5 +2,11 @@
   "endOfLine": "lf",
   "printWidth": 120,
   "tabWidth": 2,
-  "trailingComma": "es5"
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "semi": true,
+  "arrowParens": "avoid",
+  "bracketSpacing": true,
+  "quoteProps": "as-needed",
+  "htmlWhitespaceSensitivity": "ignore"
 }

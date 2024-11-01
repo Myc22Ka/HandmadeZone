@@ -15,16 +15,26 @@ export default [
   {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
     rules: {
-      "no-unused-vars": "error",
-      "no-undef": "error",
+      "eqeqeq": "warn",
+      "curly": "error",
       "no-console": "warn",
+      "no-unused-vars": "warn",
+      "no-undef": "error",
+      "prefer-const": "error",
+      "semi": ["error", "always"],
+      "indent": ["error", 2],
+      "no-trailing-spaces": "error",
+      "object-curly-spacing": ["error", "always"],
+      "array-bracket-spacing": ["error", "never"],
+      "jsx-quotes": ["error", "prefer-single"],
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "no-magic-numbers": ["warn", { "ignore": [0, 1] }],
     },
-    ignores: [".config/*"]
-  },
-  {
+    ignores: ["*.config*"],
     languageOptions: {
-      globals: globals.browser
-    }
+      globals: globals.browser,
+    },
   },
 
   ...tseslint.configs.recommended,

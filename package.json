@@ -11,6 +11,7 @@
     "check-format": "prettier --check .",
     "check-lint": "npx eslint .",
     "format": "prettier --write .",
+    "test": "vitest",
     "prepare": "husky"
   },
   "dependencies": {
@@ -23,17 +24,21 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
+    "@vitest/browser": "^2.1.4",
     "eslint": "^9.13.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
     "husky": "^9.1.6",
+    "playwright": "^1.48.2",
     "prettier": "^3.3.3",
     "sass": "^1.80.5",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.12.2",
-    "vite": "^5.4.10"
+    "vite": "^5.4.10",
+    "vitest": "^2.1.4",
+    "vitest-browser-react": "^0.0.3"
   },
   "main": "index.js",
   "license": "MIT"
