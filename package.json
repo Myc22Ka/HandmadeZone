@@ -10,7 +10,7 @@
     "check-types": "tsc --pretty --noEmit",
     "check-format": "prettier --check .",
     "check-lint": "npx eslint .",
-    "format": "prettier --write .",
+    "format": "prettier --write --log-level silent .",
     "test": "vitest",
     "prepare": "husky"
   },
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@eslint/compat": "^1.2.2",
     "@eslint/js": "^9.13.0",
+    "@testing-library/react": "^16.0.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
@@ -33,6 +34,8 @@
     "husky": "^9.1.6",
     "playwright": "^1.48.2",
     "prettier": "^3.3.3",
+    "react-router": "^6.28.0",
+    "react-router-dom": "^6.28.0",
     "sass": "^1.80.5",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.12.2",
