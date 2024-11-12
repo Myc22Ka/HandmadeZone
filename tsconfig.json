@@ -6,6 +6,12 @@
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+
+    /* base URL */
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["./src/*"]
+    },
     
     /* Bundler mode */
     "moduleResolution": "Bundler",

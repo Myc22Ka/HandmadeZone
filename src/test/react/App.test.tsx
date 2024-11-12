@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, expect, test } from 'vitest';
 import { render } from 'vitest-browser-react';
-import App from '../App';
+import App from '../../App';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { screen } from '@testing-library/react';
 
