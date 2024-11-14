@@ -13,7 +13,12 @@ const Users: React.FC = () => {
         <div>
             <h1>User Page</h1>
             <p>ID: {id}</p>
-            <Link to="/">Go Back</Link>
+            <div>
+                <Link to="/">Go Back</Link>
+            </div>
+            <div>
+                <Link to="/users">Check user 1</Link>
+            </div>
         </div>
     );
 };

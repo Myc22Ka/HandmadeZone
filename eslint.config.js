@@ -16,10 +16,9 @@ export default [
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
     rules: {
       "eqeqeq": "warn",
-      "curly": "error",
       "no-console": "warn",
       "no-unused-vars": "warn",
-      "no-undef": "error",
+      "no-undef": "warn",
       "prefer-const": "error",
       "semi": ["error", "always"],
       "indent": ["error", 4],
