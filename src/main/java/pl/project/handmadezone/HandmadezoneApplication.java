@@ -8,10 +8,6 @@ public class HandmadezoneApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HandmadezoneApplication.class, args);
-
-		var sum = new Sum();
-
-		System.out.println(sum.add(3, 5));
 	}
 
 }
