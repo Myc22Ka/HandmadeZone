@@ -25,11 +25,11 @@ public class UserService {
         userList.addAll(Arrays.asList(user1, user2, user3, user4, user5));
     }
 
-    public Optional<User> getUser(Integer id){
+    public Optional<User> getUser(Long id){
         Optional optional = Optional.empty();
 
         for (User user : userList){
-            if(id == user.getId()){
+            if(id.equals(user.getId())){
                 optional = Optional.of(user);
                 return optional;
             }
