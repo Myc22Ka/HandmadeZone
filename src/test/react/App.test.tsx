@@ -1,17 +1,20 @@
-// import React from 'react';
-import { describe, test } from 'vitest';
-
-// type TestCase = {
-//     path: string;
-//     expectedText: RegExp | string;
-// };
-
-// const testCases: TestCase[] = [
-//     { path: '/', expectedText: /home/i },
-//     { path: '/user/1', expectedText: /ID:\s*1/i },
-//     { path: '/user/2', expectedText: /ID:\s*2/i },
-// ];
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { RouterProvider } from 'react-router';
+import { describe, expect, test } from 'vitest';
+import { routes } from 'src/routes';
+import { createMemoryRouter } from 'react-router-dom';
+import { routerConfig } from '../../routes';
 
 describe('App Routing', () => {
-    test('App test', () => {});
+    test('Renders the Home Page by default', () => {
+        const router = createMemoryRouter(routes, {
+            ...routerConfig,
+            initialEntries: ['/'],
+        });
+
+        render(<RouterProvider router={router} />);
+
+        expect(screen.getByText(/Home Page/i)).toBeInTheDocument();
+    });
 });
