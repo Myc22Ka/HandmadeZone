@@ -19,11 +19,8 @@ public class UserController {
 
     @GetMapping("/api/user")
     public User getUser(@RequestParam Long id) {
-        Optional user = userService.getUser(id);
-        if (user.isPresent()) {
-            return (User) user.get();
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
+        Optional<User> user = userService.getUser(id);
+        return user
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 }
