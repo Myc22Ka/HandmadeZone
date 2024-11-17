@@ -17,23 +17,23 @@ public class UserController {
 
     @GetMapping("/handmadezone/api")
     public List<User> find(){
-        return service.find();
+        return service.findUser();
     }
 
     @PostMapping("/handmadezone/api")
     @ResponseStatus(HttpStatus.CREATED)
     public User create(@RequestBody User users){
-        return service.create(users);
+        return service.createUser(users);
     }
 
     @PutMapping("/handmadezone/api/{id}")
     public User update(@PathVariable Long id, @RequestBody Map<String, Object> payload){
-        return service.update(id, (String) payload.get("name"));
+        return service.updateUser(id, (String) payload.get("name"));
     }
 
     @DeleteMapping("/handmadezone/api/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable Long id){
-        service.delete(id);
+        service.deleteUser(id);
     }
 }

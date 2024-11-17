@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IUsersService {
 
-    List<User> find();
-    User create(User users);
-    User update(Long id, String name);
-    void delete(Long id);
+    List<User> findUser();
+    User createUser(User users);
+    User updateUser(Long id, String name);
+    void deleteUser(Long id);
 }

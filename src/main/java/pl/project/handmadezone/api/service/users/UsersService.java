@@ -14,17 +14,17 @@ public class UsersService implements IUsersService{
     private UsersRepository repository;
 
     @Override
-    public List<User> find() {
+    public List<User> findUser() {
         return repository.findAllByOrderByIdAsc();
     }
 
     @Override
-    public User create(User users) {
+    public User createUser(User users) {
         return repository.save(users);
     }
 
     @Override
-    public User update(Long id, String name) {
+    public User updateUser(Long id, String name) {
         return repository.findById(id)
                 .map(user -> {
                     user.setName(name);
@@ -34,7 +34,7 @@ public class UsersService implements IUsersService{
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteUser(Long id) {
         repository.deleteById(id);
     }
 }
