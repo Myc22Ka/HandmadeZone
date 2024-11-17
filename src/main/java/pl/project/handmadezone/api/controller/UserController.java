@@ -12,8 +12,11 @@ import java.util.Map;
 @RestController
 public class UserController {
 
-    @Autowired
-    private UsersService service;
+    private final UsersService service;
+
+    public UserController(UsersService service) {
+        this.service = service;
+    }
 
     @GetMapping("/handmadezone/api")
     public List<User> find(){

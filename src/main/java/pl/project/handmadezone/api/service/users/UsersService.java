@@ -10,8 +10,11 @@ import java.util.List;
 @Service
 public class UsersService implements IUsersService{
 
-    @Autowired
-    private UsersRepository repository;
+    private final UsersRepository repository;
+
+    public UsersService(UsersRepository repository){
+        this.repository = repository;
+    }
 
     @Override
     public List<User> findUser() {
