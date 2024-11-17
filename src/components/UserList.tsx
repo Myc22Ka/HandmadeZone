@@ -1,13 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import useUser from 'src/hooks/useUser';
-
-interface User {
-    id: number;
-    name: string;
-    age: number;
-    email: string;
-}
+import { User } from 'src/interfaces/UserInterface';
 
 const UserList: React.FC = () => {
     const { data, loading, error } = useUser<User[]>();
@@ -17,7 +11,7 @@ const UserList: React.FC = () => {
 
     return (
         <div>
-            <h1>User</h1>
+            <h1>Users</h1>
             {data?.map(user => {
                 return (
                     <div key={user.id}>
