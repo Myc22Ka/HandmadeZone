@@ -5,7 +5,12 @@ const Home: React.FC = () => {
     return (
         <div>
             <h1>Home Page</h1>
-            <Link to="/user/42">Go to User 42 Page</Link>
+            <div>
+                <Link to="/user/42">Go to User 42 Page</Link>
+            </div>
+            <div>
+                <Link to="/xd">Go to Error Page</Link>
+            </div>
         </div>
     );
 };

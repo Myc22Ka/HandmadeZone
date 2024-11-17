@@ -1,16 +1,19 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
 import './scss/App.scss';
-import Home from './pages/Home';
-import User from './pages/User';
-import UserList from './components/UserList';
+import { routes } from './routes';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-const App: React.FC = () => (
-    <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="user/:id" element={<User />} />
-        <Route path="users" element={<UserList />} />
-    </Routes>
-);
+const router = createBrowserRouter(routes, {
+    future: {
+        // v7_startTransition: true,
+        v7_relativeSplatPath: true,
+        v7_fetcherPersist: true,
+        v7_normalizeFormMethod: true,
+        v7_partialHydration: true,
+        v7_skipActionErrorRevalidation: true,
+    },
+});
+
+const App: React.FC = () => <RouterProvider router={router} />;
 
 export default App;

@@ -1,26 +1,39 @@
 package pl.project.handmadezone.api.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import pl.project.handmadezone.api.model.User;
-import pl.project.handmadezone.service.UserService;
+import pl.project.handmadezone.api.service.users.UsersService;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
 
-    private UserService userService;
+    @Autowired
+    private UsersService service;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @GetMapping("/handmadezone/api")
+    public List<User> find(){
+        return service.find();
     }
 
-    @GetMapping("/api/user")
-    public User getUser(@RequestParam Long id) {
-        Optional<User> user = userService.getUser(id);
-        return user
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+    @PostMapping("/handmadezone/api")
+    @ResponseStatus(HttpStatus.CREATED)
+    public User create(@RequestBody User users){
+        return service.create(users);
+    }
+
+    @PutMapping("/handmadezone/api/{id}")
+    public User update(@PathVariable Long id, @RequestBody Map<String, Object> payload){
+        return service.update(id, (String) payload.get("name"));
+    }
+
+    @DeleteMapping("/handmadezone/api/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable Long id){
+        service.delete(id);
     }
 }
