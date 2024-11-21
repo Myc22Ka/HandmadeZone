@@ -50,7 +50,6 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-secrets.properties
 
 ### NetBeans ###
 /nbproject/private/
