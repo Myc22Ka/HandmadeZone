@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+    postgresql_database:
+        image: postgres:latest
+        container_name: postgres
+        env_file:
+            - .env.local
+        ports:
+            - '6000:5432'
+        restart: always
+        volumes:
+            - database-data:/var/lib/postgresql/data/
+            - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    pgadmin:
+        image: dpage/pgadmin4
+        env_file:
+            - .env.local
+        ports:
+            - '5050:80'
+        restart: always
+        volumes:
+            - pgadmin:/root/.pgadmin
+            - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+    database-data:
+    pgadmin:
