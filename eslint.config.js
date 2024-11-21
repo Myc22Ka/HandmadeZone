@@ -30,7 +30,7 @@ export default [
       "react/prop-types": "off",
       "no-magic-numbers": ["warn", { "ignore": [0, 1] }],
     },
-    ignores: ["*.config*"],
+    ignores: ["*.config*", "src/components/ui/**"],
     languageOptions: {
       globals: globals.browser,
     },
