@@ -1,6 +1,5 @@
 package pl.project.handmadezone.api.service.users;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.project.handmadezone.api.model.User;
 import pl.project.handmadezone.api.repository.UsersRepository;
