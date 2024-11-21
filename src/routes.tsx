@@ -4,6 +4,7 @@ import User from './views/User';
 import UserList from './components/UserList';
 import ErrorPage from './views/ErrorPage/ErrorPage';
 import { RouteObject } from 'react-router';
+import Login from './components/auth/Login';
 
 export const routerConfig = {
     future: {
@@ -27,6 +28,10 @@ export const routes: RouteObject[] = [
     {
         path: 'users',
         element: <UserList />,
+    },
+    {
+        path: 'login',
+        element: <Login />,
     },
     {
         path: '*',

@@ -9,6 +9,9 @@ const Home: React.FC = () => {
                 <Link to="/user/42">Go to User 42 Page</Link>
             </div>
             <div>
+                <Link to="/login">Go to Login Page</Link>
+            </div>
+            <div>
                 <Link to="/xd">Go to Error Page</Link>
             </div>
         </div>

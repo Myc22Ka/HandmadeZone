@@ -2,9 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { RouterProvider } from 'react-router';
 import { describe, expect, test } from 'vitest';
-import { routes } from 'src/routes';
+import { routes, routerConfig } from '@/routes';
 import { createMemoryRouter } from 'react-router-dom';
-import { routerConfig } from '../../routes';
 
 describe('App Routing', () => {
     test('Renders the Home Page by default', () => {
