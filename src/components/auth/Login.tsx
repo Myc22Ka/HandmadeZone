@@ -5,6 +5,7 @@ import InputWithLabel from '../utilities/InputWithLabel/InputWithLabel';
 import SeparatorWithText from '../utilities/SeparatorWithText/SeparatorWithText';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/ButtonWithIcon';
+import { toast } from 'sonner';
 
 export const buttons: IButtonWithIcon[] = [
     {
@@ -18,6 +19,10 @@ export const buttons: IButtonWithIcon[] = [
 ];
 
 const Login: React.FC = () => {
+    const login = () => {
+        toast('Successfully logged in!');
+    };
+
     return (
         <div className="flex justify-center items-center h-screen">
             <Card>
@@ -35,7 +40,9 @@ const Login: React.FC = () => {
                     <InputWithLabel name="password" type="password" />
                 </CardContent>
                 <CardFooter className="flex justify-center items-center">
-                    <Button className="flex justify-center items-center w-full">Login</Button>
+                    <Button className="flex justify-center items-center w-full" onClick={login}>
+                        Login
+                    </Button>
                 </CardFooter>
             </Card>
         </div>
