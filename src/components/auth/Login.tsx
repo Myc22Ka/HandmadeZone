@@ -6,7 +6,7 @@ import SeparatorWithText from '../utilities/SeparatorWithText/SeparatorWithText'
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/ButtonWithIcon';
 
-const buttons: IButtonWithIcon[] = [
+export const buttons: IButtonWithIcon[] = [
     {
         value: 'GitHub',
         Icon: FaGithub,
@@ -17,12 +17,12 @@ const buttons: IButtonWithIcon[] = [
     },
 ];
 
-const Login = () => {
+const Login: React.FC = () => {
     return (
         <div className="flex justify-center items-center h-screen">
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-2xl">Login</CardTitle>
+                    <CardTitle className="text-2xl text-center">Login</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="flex space-x-4">
@@ -31,8 +31,8 @@ const Login = () => {
                         ))}
                     </div>
                     <SeparatorWithText text="or continue with" className="py-2" />
-                    <InputWithLabel name="username" />
-                    <InputWithLabel name="password" />
+                    <InputWithLabel name="username" type="text" />
+                    <InputWithLabel name="password" type="password" />
                 </CardContent>
                 <CardFooter className="flex justify-center items-center">
                     <Button className="flex justify-center items-center w-full">Login</Button>
