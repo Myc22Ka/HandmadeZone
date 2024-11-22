@@ -7,10 +7,15 @@ import { FaGithub, FaGoogle } from 'react-icons/fa';
 import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/ButtonWithIcon';
 import { toast } from 'sonner';
 
+function OAuth2(service: string) {
+    window.location.href = `http://localhost:8080/oauth2/authorization/${service}`;
+}
+
 export const buttons: IButtonWithIcon[] = [
     {
         value: 'GitHub',
         Icon: FaGithub,
+        onClick: OAuth2,
     },
     {
         value: 'Google',
