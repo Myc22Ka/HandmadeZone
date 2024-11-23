@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import useUser from '@/hooks/useUser';
+import useUser from '@/hooks/api/useUser';
 import { User } from '@/interfaces/UserInterface';
 
 const UserList: React.FC = () => {

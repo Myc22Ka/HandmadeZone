@@ -16,7 +16,7 @@ function useUser<T>(): FetchState<T> {
             setLoading(true);
             setError(null);
             try {
-                const response = await fetch('http://localhost:8080/handmadezone/api', {
+                const response = await fetch('http://localhost:8080/api/users', {
                     headers: {
                         Accept: 'application/json',
                     },

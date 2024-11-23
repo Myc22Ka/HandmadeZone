@@ -10,28 +10,29 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UsersService service;
 
-    @GetMapping("/handmadezone/api")
+    @GetMapping
     public List<User> find(){
         return service.findUser();
     }
 
-    @PostMapping("/handmadezone/api")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public User create(@RequestBody User users){
         return service.createUser(users);
     }
 
-    @PutMapping("/handmadezone/api/{id}")
+    @PutMapping("/{id}")
     public User update(@PathVariable Long id, @RequestBody Map<String, Object> payload){
         return service.updateUser(id, (String) payload.get("name"));
     }
 
-    @DeleteMapping("/handmadezone/api/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable Long id){
         service.deleteUser(id);

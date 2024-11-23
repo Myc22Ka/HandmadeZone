@@ -24,12 +24,11 @@ public class OAuth2RedirectController {
 
         System.out.println(service);
 
-        // Check if the OAuth2 provider exists
         if (clientRegistrationRepository.findByRegistrationId(service.toLowerCase()) == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid OAuth2 provider: " + service);
             return;
         }
 
-        response.sendRedirect(redirectUrl); // Redirect to the provider
+        response.sendRedirect(redirectUrl);
     }
 }

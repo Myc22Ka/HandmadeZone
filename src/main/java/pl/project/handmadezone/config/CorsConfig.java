@@ -19,10 +19,11 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 WebMvcConfigurer.super.addCorsMappings(registry);
 
-                registry.addMapping("/handmadezone/api/**")
+                registry.addMapping("/api/**")
                         .allowedOrigins(allowedOrigin)
-                        .allowedMethods("*")
-                        .allowedHeaders("*");
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }

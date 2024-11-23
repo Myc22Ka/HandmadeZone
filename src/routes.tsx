@@ -5,6 +5,7 @@ import UserList from './components/UserList';
 import ErrorPage from './views/ErrorPage/ErrorPage';
 import { RouteObject } from 'react-router';
 import Login from './components/auth/Login';
+import SingUp from './components/auth/SignUp';
 
 export const routerConfig = {
     future: {
@@ -32,6 +33,10 @@ export const routes: RouteObject[] = [
     {
         path: 'login',
         element: <Login />,
+    },
+    {
+        path: 'signup',
+        element: <SingUp />,
     },
     {
         path: '*',

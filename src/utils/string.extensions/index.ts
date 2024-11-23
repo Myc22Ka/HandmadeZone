@@ -2,6 +2,7 @@ declare global {
     interface String {
         toTitleCase(): string;
         toRandomString(length: number): string;
+        toCamelCase(): string;
     }
 }
 
@@ -21,4 +22,10 @@ String.prototype.toRandomString = function (length: number) {
     }
 
     return result;
+};
+
+String.prototype.toCamelCase = function (): string {
+    return this.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
+        index === 0 ? match.toLowerCase() : match.toUpperCase()
+    ).replace(/\s+/g, '');
 };

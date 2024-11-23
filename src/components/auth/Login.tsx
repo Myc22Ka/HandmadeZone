@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import InputWithLabel from '../utilities/InputWithLabel/InputWithLabel';
+import InputWithLabel from '../utilities/Inputs/InputWithLabel/InputWithLabel';
 import SeparatorWithText from '../utilities/SeparatorWithText/SeparatorWithText';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/ButtonWithIcon';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
+import InputPassword from '../utilities/Inputs/InputPassword/InputPassword';
 
 function OAuth2(service: string) {
-    window.location.href = `http://localhost:8080/oauth2/authorization/${service.toLowerCase()}`;
+    window.location.href = `http://localhost:8080/oauth2/authorization/${service}`;
 }
 
 export const buttons: IButtonWithIcon[] = [
@@ -23,8 +25,18 @@ export const buttons: IButtonWithIcon[] = [
 ];
 
 const Login: React.FC = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        password: '',
+    });
+
     const login = () => {
-        toast('Successfully logged in!');
+        toast('Not implemented yet...');
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     return (
@@ -40,13 +52,19 @@ const Login: React.FC = () => {
                         ))}
                     </div>
                     <SeparatorWithText text="or continue with" className="py-2" />
-                    <InputWithLabel name="username" type="text" />
-                    <InputWithLabel name="password" type="password" />
+                    <InputWithLabel name="name" type="text" onChange={handleChange} value={formData.name} />
+                    <InputPassword name="password" onChange={handleChange} value={formData.password} />
                 </CardContent>
-                <CardFooter className="flex justify-center items-center">
+                <CardFooter className="flex flex-col justify-center items-center gap-2">
                     <Button className="flex justify-center items-center w-full" onClick={login}>
                         Login
                     </Button>
+                    <div className="text-xs py-2 w-full">
+                        <div>Need a HandMadeZone account?</div>
+                        <Link to="/signup" className="underline text-primary">
+                            Create an account
+                        </Link>
+                    </div>
                 </CardFooter>
             </Card>
         </div>
