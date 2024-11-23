@@ -8,14 +8,13 @@ import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/But
 import { toast } from 'sonner';
 
 function OAuth2(service: string) {
-    window.location.href = `http://localhost:8080/oauth2/authorization/${service}`;
+    window.location.href = `http://localhost:8080/oauth2/authorization/${service.toLowerCase()}`;
 }
 
 export const buttons: IButtonWithIcon[] = [
     {
         value: 'GitHub',
         Icon: FaGithub,
-        onClick: OAuth2,
     },
     {
         value: 'Google',
@@ -37,7 +36,7 @@ const Login: React.FC = () => {
                 <CardContent>
                     <div className="flex space-x-4">
                         {buttons.map((props, key) => (
-                            <ButtonWithIcon key={key} {...props} />
+                            <ButtonWithIcon key={key} {...props} onClick={OAuth2} />
                         ))}
                     </div>
                     <SeparatorWithText text="or continue with" className="py-2" />
