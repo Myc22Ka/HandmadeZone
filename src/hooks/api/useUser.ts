@@ -16,11 +16,14 @@ function useUser<T>(): FetchState<T> {
             setLoading(true);
             setError(null);
             try {
-                const response = await fetch('http://localhost:8080/api/users', {
-                    headers: {
-                        Accept: 'application/json',
-                    },
-                });
+                const response = await fetch(
+                    `${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/api/users`,
+                    {
+                        headers: {
+                            Accept: 'application/json',
+                        },
+                    }
+                );
 
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status} ${response.statusText}`);

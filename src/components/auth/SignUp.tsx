@@ -9,7 +9,7 @@ import InputWithLabel from '../utilities/Inputs/InputWithLabel/InputWithLabel';
 import { Link } from 'react-router-dom';
 
 function OAuth2(service: string) {
-    window.location.href = `http://localhost:8080/oauth2/authorization/${service.toLowerCase()}`;
+    window.location.href = `${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service.toLowerCase()}`;
 }
 
 export const buttons: IButtonWithIcon[] = [
@@ -45,13 +45,16 @@ const SingUp: React.FC = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/api/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', // Important
-                },
-                body: JSON.stringify({ name, email, password }), // Correct payload
-            });
+            const response = await fetch(
+                `${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/api/users`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', // Important
+                    },
+                    body: JSON.stringify({ name, email, password }), // Correct payload
+                }
+            );
 
             // Parse response
             const result = await response.json();

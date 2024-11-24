@@ -1,7 +1,5 @@
 package pl.project.handmadezone.api.service.users;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.project.handmadezone.api.model.User;
 import pl.project.handmadezone.api.repository.UsersRepository;
@@ -9,13 +7,13 @@ import pl.project.handmadezone.api.repository.UsersRepository;
 import java.util.List;
 
 @Service
-public class UsersService implements IUsersService{
+public class UsersService implements IUsersService {
 
-    @Autowired
-    private UsersRepository repository;
+    private final UsersRepository repository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UsersService(UsersRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public List<User> findUser() {

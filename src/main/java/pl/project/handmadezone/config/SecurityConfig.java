@@ -1,5 +1,6 @@
 package pl.project.handmadezone.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -14,6 +15,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${platform.url}:${frontend.port}")
+    private String defaultSuccessRoute;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -23,7 +27,7 @@ public class SecurityConfig {
                         .requestMatchers("/oauth2/authorization/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("http://localhost:5173", true) // Redirect to React app after login
+                        .defaultSuccessUrl(defaultSuccessRoute, true) // Redirect to React app after login
                 )
                 .formLogin(Customizer.withDefaults())
                 .build();
