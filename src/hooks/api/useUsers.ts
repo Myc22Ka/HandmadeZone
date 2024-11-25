@@ -6,7 +6,7 @@ interface FetchState<T> {
     error: string | null;
 }
 
-function useUser<T>(): FetchState<T> {
+function useUsers<T>(): FetchState<T> {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -47,4 +47,4 @@ function useUser<T>(): FetchState<T> {
     return { data, loading, error };
 }
 
-export default useUser;
+export default useUsers;

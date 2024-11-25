@@ -15,8 +15,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("http://${platform.url}:${frontend.port}")
+    @Value("/")
     private String defaultSuccessRoute;
+
+    @Value("/signup")
+    private String defaultFailureRoute;
+
+    @Value("http://${platform.url}:${frontend.port}")
+    private String defaultRoute;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -27,7 +33,8 @@ public class SecurityConfig {
                         .requestMatchers("/oauth2/authorization/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl(defaultSuccessRoute, true) // Redirect to React app after login
+                        .defaultSuccessUrl(defaultRoute + defaultSuccessRoute, true)
+//                        .failureUrl("http://localhost:5173/")
                 )
                 .formLogin(Customizer.withDefaults())
                 .build();

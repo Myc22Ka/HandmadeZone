@@ -7,9 +7,10 @@ import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/But
 import { toast } from 'sonner';
 import InputWithLabel from '../utilities/Inputs/InputWithLabel/InputWithLabel';
 import { Link } from 'react-router-dom';
+import { postUser } from '@/service/userService';
 
 function OAuth2(service: string) {
-    window.location.href = `${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service.toLowerCase()}`;
+    window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service.toLowerCase()}`;
 }
 
 export const buttons: IButtonWithIcon[] = [
@@ -43,30 +44,19 @@ const SingUp: React.FC = () => {
             toast.error('Passwords do not match!');
             return;
         }
+        toast.loading('Registering...');
 
-        try {
-            const response = await fetch(
-                `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/api/users`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json', // Important
-                    },
-                    body: JSON.stringify({ name, email, password }), // Correct payload
-                }
-            );
+        const { data, loading, error } = await postUser({ name, email, password });
 
-            // Parse response
-            const result = await response.json();
+        if (loading) {
+            return;
+        }
 
-            if (response.ok) {
-                toast.success('Successfully registered!');
-                setFormData({ name: '', email: '', password: '', confirmPassword: '' });
-            } else {
-                toast.error(`Registration failed: ${result.message || 'Unknown error'}`);
-            }
-        } catch {
-            toast.error('An unexpected error occurred. Please try again later.');
+        if (error) {
+            toast.error(`Registration failed: ${error}`);
+        } else if (data) {
+            toast.success('Successfully registered!');
+            setFormData({ name: '', email: '', password: '', confirmPassword: '' });
         }
     };
 

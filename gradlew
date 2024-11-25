@@ -66,11 +66,6 @@
 
 # Attempt to set APP_HOME
 
-# Load environment variables from .env file if it exists
-if [ -f .env ]; then
-  export $(cat .env | sed 's/#.*//g' | xargs)
-fi
-
 # Resolve links: $0 may be a link
 app_path=$0
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import useUser from '@/hooks/api/useUser';
+import useUsers from '@/hooks/api/useUsers';
 import { User } from '@/interfaces/UserInterface';
 
 const UserList: React.FC = () => {
-    const { data, loading, error } = useUser<User[]>();
+    const { data, loading, error } = useUsers<User[]>();
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
