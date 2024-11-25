@@ -46,7 +46,7 @@ const SingUp: React.FC = () => {
 
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/api/users`,
+                `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/api/users`,
                 {
                     method: 'POST',
                     headers: {

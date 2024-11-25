@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import InputPassword from '../utilities/Inputs/InputPassword/InputPassword';
 
 function OAuth2(service: string) {
-    window.location.href = `${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service}`;
+    window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service}`;
 }
 
 export const buttons: IButtonWithIcon[] = [

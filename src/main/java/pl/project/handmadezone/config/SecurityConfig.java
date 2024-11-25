@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${platform.url}:${frontend.port}")
+    @Value("http://${platform.url}:${frontend.port}")
     private String defaultSuccessRoute;
 
     @Bean
