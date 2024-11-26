@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import React from 'react';
-import { IconType } from 'react-icons/lib';
+import { IconType } from '@react-icons/all-files/lib';
 
 export interface IButtonWithIcon {
     value: string;

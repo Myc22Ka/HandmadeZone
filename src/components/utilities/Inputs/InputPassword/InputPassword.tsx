@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { BiSolidHide, BiSolidShow } from 'react-icons/bi';
-import { IconType } from 'react-icons/lib';
+import { FaEye } from '@react-icons/all-files/fa/FaEye';
+import { FaEyeSlash } from '@react-icons/all-files/fa/FaEyeSlash';
+import { IconType } from '@react-icons/all-files/lib';
 
 interface IInputPassword extends React.InputHTMLAttributes<HTMLInputElement> {
     name: string;
@@ -10,11 +11,11 @@ interface IInputPassword extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const options: { Icon: IconType; text: string }[] = [
     {
-        Icon: BiSolidHide,
+        Icon: FaEyeSlash,
         text: 'Hide',
     },
     {
-        Icon: BiSolidShow,
+        Icon: FaEye,
         text: 'Show',
     },
 ];

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import SeparatorWithText from '../utilities/SeparatorWithText/SeparatorWithText';
-import { FaGithub, FaGoogle } from 'react-icons/fa';
+import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
+import { FaGoogle } from '@react-icons/all-files/fa/FaGoogle';
 import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/ButtonWithIcon';
 import { toast } from 'sonner';
 import InputWithLabel from '../utilities/Inputs/InputWithLabel/InputWithLabel';
 import { Link } from 'react-router-dom';
 import { postUser } from '@/service/userService';
+import InputPassword from '../utilities/Inputs/InputPassword/InputPassword';
 
 function OAuth2(service: string) {
     window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service.toLowerCase()}`;
@@ -39,6 +41,8 @@ const SingUp: React.FC = () => {
 
     const register = async () => {
         const { name, email, password, confirmPassword } = formData;
+
+        if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) return;
 
         if (password !== confirmPassword) {
             toast.error('Passwords do not match!');
@@ -74,22 +78,18 @@ const SingUp: React.FC = () => {
                     </div>
                     <SeparatorWithText text="or continue with" className="py-2" />
 
-                    <InputWithLabel type="text" name="name" onChange={handleChange} value={formData.name} />
-                    <InputWithLabel type="email" name="email" onChange={handleChange} value={formData.email} />
-                    <InputWithLabel type="password" name="password" onChange={handleChange} value={formData.password} />
-                    <InputWithLabel
-                        type="password"
+                    <InputWithLabel type="text" name="name" onChange={handleChange} value={formData.name} required />
+                    <InputWithLabel type="email" name="email" onChange={handleChange} value={formData.email} required />
+                    <InputPassword name="password" onChange={handleChange} value={formData.password} required />
+                    <InputPassword
                         name="confirm Password"
                         onChange={handleChange}
                         value={formData.confirmPassword}
+                        required
                     />
                 </CardContent>
                 <CardFooter className="flex flex-col justify-center items-center gap-2">
-                    <Button
-                        className="flex justify-center items-center w-full"
-                        onClick={register}
-                        disabled={!formData.name || !formData.email || !formData.password || !formData.confirmPassword}
-                    >
+                    <Button className="flex justify-center items-center w-full" onClick={register}>
                         Sign up
                     </Button>
                     <div className="text-xs py-2 w-full">

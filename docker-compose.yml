@@ -5,7 +5,7 @@ services:
         image: postgres:latest
         container_name: postgres
         env_file:
-            - .env.local
+            - .env
         ports:
             - '6000:5432'
         restart: always
@@ -16,7 +16,7 @@ services:
     pgadmin:
         image: dpage/pgadmin4
         env_file:
-            - .env.local
+            - .env
         ports:
             - '5050:80'
         restart: always
