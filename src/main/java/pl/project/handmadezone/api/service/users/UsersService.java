@@ -1,5 +1,5 @@
 package pl.project.handmadezone.api.service.users;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.project.handmadezone.api.model.User;
 import pl.project.handmadezone.api.repository.UsersRepository;
@@ -9,11 +9,8 @@ import java.util.List;
 @Service
 public class UsersService implements IUsersService{
 
-    private final UsersRepository repository;
-
-    public UsersService(UsersRepository repository){
-        this.repository = repository;
-    }
+    @Autowired
+    private UsersRepository repository;
 
     @Override
     public List<User> findUser() {
