@@ -22,10 +22,7 @@ public class UsersService implements IUsersService {
 
     @Override
     public User createUser(User user) {
-        System.out.println("Saving user: " + user); // Debug log
-        User savedUser = repository.save(user);
-        System.out.println("Saved user: " + savedUser); // Debug log
-        return savedUser;
+        return  repository.save(user);
     }
 
     @Override

@@ -1,5 +1,4 @@
 import React from 'react';
-import './scss/App.scss';
 import { routerConfig, routes } from './routes';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeProvider';
