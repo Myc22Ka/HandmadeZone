@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.awt.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,7 +19,7 @@ public class Product {
     private String name;
     private String cathegory;
     private String author;
-    private Image Image;
+    private String Image;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime addedAt;
