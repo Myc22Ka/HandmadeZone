@@ -6,6 +6,7 @@ import ErrorPage from './views/ErrorPage/ErrorPage';
 import { RouteObject } from 'react-router';
 import Login from './components/auth/Login';
 import SingUp from './components/auth/SignUp';
+import Dashboard from './components/auth/Dashboard';
 
 export const routerConfig = {
     future: {
@@ -37,6 +38,10 @@ export const routes: RouteObject[] = [
     {
         path: 'signup',
         element: <SingUp />,
+    },
+    {
+        path: 'dashboard',
+        element: <Dashboard />,
     },
     {
         path: '*',
