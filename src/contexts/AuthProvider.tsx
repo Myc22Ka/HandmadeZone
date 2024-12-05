@@ -1,16 +1,18 @@
 import React from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { User } from '@/interfaces/UserInterface';
 
 type AuthProviderProps = {
     children: React.ReactNode;
-    defaultUser?: User;
-    storageKey?: string;
 };
 
 type AuthProviderState = {
-    user: User;
+    user: User | null;
+    token: string | null;
+    setToken: (token: string) => void;
     setUser: (user: User) => void;
+    isAuthenticated: boolean;
+    logout: () => void;
 };
 
 const initUser: User = {
@@ -20,17 +22,25 @@ const initUser: User = {
     email: 'testing@testing.com',
 };
 
-export const initialState: AuthProviderState = {
-    user: initUser,
-    setUser: () => null,
-};
+const AuthProviderContext = createContext<AuthProviderState | undefined>(undefined);
 
-const AuthProviderContext = createContext<AuthProviderState>(initialState);
+export function AuthProvider({ children }: AuthProviderProps) {
+    const [user, setUser] = useState<User | null>(initUser); // initUser is only for testing purposes
+    const [token, setToken] = useState<string | null>(localStorage.getItem('auth_token'));
 
-export function AuthProvider({ children, defaultUser = initUser }: AuthProviderProps) {
-    const [user, setUser] = useState<User>(defaultUser);
+    const logout = () => {
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem('auth_token');
+    };
 
-    return <AuthProviderContext.Provider value={{ user, setUser }}>{children}</AuthProviderContext.Provider>;
+    const isAuthenticated = Boolean(user) && JSON.stringify(user) !== JSON.stringify(initUser);
+
+    return (
+        <AuthProviderContext.Provider value={{ user, setUser, token, setToken, logout, isAuthenticated }}>
+            {children}
+        </AuthProviderContext.Provider>
+    );
 }
 
 export const useAuth = () => {

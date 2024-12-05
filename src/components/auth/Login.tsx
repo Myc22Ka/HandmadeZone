@@ -7,9 +7,10 @@ import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
 import { FaGoogle } from '@react-icons/all-files/fa/FaGoogle';
 import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/ButtonWithIcon';
 import { toast } from 'sonner';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import InputPassword from '../utilities/Inputs/InputPassword/InputPassword';
 import { request, setAuthHeader } from '@/lib/axiosHelper';
+import { useAuth } from '@/contexts/AuthProvider';
 
 function OAuth2(service: string) {
     window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service}`;
@@ -33,16 +34,24 @@ const initFormData = {
 
 const Login: React.FC = () => {
     const [formData, setFormData] = useState(initFormData);
+    const { setUser, setToken } = useAuth();
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = (location.state as { from?: Location })?.from?.pathname || '/';
 
     const login = () => {
         request('POST', '/sign-in', formData)
             .then(response => {
                 setAuthHeader(response.data.token);
-                toast.success('Successfully registered!');
-                navigate('/dashboard');
+                setUser(response.data);
+                setToken(response.data.token);
+                localStorage.setItem('auth_token', response.data.token);
+
+                navigate(from);
                 setFormData(initFormData);
+
+                toast.success('Successfully registered!');
             })
             .catch(error => {
                 setAuthHeader(null);

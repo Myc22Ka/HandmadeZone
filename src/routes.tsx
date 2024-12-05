@@ -1,12 +1,12 @@
 import React from 'react';
 import Home from './views/Home';
 import User from './views/User';
-import UserList from './components/UserList';
 import ErrorPage from './views/ErrorPage/ErrorPage';
 import { RouteObject } from 'react-router';
 import Login from './components/auth/Login';
 import SingUp from './components/auth/SignUp';
 import Dashboard from './components/auth/Dashboard';
+import ProtectedRoute from './views/ProtectedRoute/ProtectedRoute';
 
 export const routerConfig = {
     future: {
@@ -19,6 +19,7 @@ export const routerConfig = {
 };
 
 export const routes: RouteObject[] = [
+    // Add more unprotected routes here
     {
         path: '/',
         element: <Home />,
@@ -26,10 +27,6 @@ export const routes: RouteObject[] = [
     {
         path: 'user/:id',
         element: <User />,
-    },
-    {
-        path: 'users',
-        element: <UserList />,
     },
     {
         path: 'login',
@@ -40,8 +37,12 @@ export const routes: RouteObject[] = [
         element: <SingUp />,
     },
     {
-        path: 'dashboard',
-        element: <Dashboard />,
+        path: '/auth',
+        element: <ProtectedRoute />,
+        children: [
+            { path: 'dashboard', element: <Dashboard /> },
+            // Add more protected routes here
+        ],
     },
     {
         path: '*',

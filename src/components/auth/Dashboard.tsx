@@ -7,10 +7,10 @@ const Dashboard: React.FC = () => {
     return (
         <div>
             <div>Dashboard</div>
-            <div>{user.id}</div>
-            <div>{user.email}</div>
-            <div>{user.age}</div>
-            <div>{user.name}</div>
+            <div>{user?.id}</div>
+            <div>{user?.email}</div>
+            <div>{user?.age}</div>
+            <div>{user?.name}</div>
         </div>
     );
 };
