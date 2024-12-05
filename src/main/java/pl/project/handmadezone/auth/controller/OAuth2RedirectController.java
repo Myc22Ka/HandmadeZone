@@ -22,8 +22,6 @@ public class OAuth2RedirectController {
     public void redirectToProvider(@RequestParam("service") String service, HttpServletResponse response) throws IOException {
         String redirectUrl = "/oauth2/authorization/" + service.toLowerCase();
 
-        System.out.println(service);
-
         if (clientRegistrationRepository.findByRegistrationId(service.toLowerCase()) == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid OAuth2 provider: " + service);
             return;

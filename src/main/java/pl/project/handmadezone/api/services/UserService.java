@@ -13,7 +13,6 @@ import pl.project.handmadezone.api.model.User;
 import pl.project.handmadezone.api.repository.UserRepository;
 
 import java.nio.CharBuffer;
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor

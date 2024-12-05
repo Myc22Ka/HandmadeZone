@@ -8,8 +8,8 @@ import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/But
 import { toast } from 'sonner';
 import InputWithLabel from '../utilities/Inputs/InputWithLabel/InputWithLabel';
 import { Link } from 'react-router-dom';
-import { postUser } from '@/service/userService';
 import InputPassword from '../utilities/Inputs/InputPassword/InputPassword';
+import { request, setAuthHeader } from '@/lib/axiosHelper';
 
 function OAuth2(service: string) {
     window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service.toLowerCase()}`;
@@ -26,9 +26,11 @@ export const buttons: IButtonWithIcon[] = [
     },
 ];
 
-const SingUp: React.FC = () => {
+const SignUp: React.FC = () => {
     const [formData, setFormData] = useState({
-        name: '',
+        firstName: '',
+        lastName: '',
+        login: '',
         email: '',
         password: '',
         confirmPassword: '',
@@ -39,29 +41,39 @@ const SingUp: React.FC = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const register = async () => {
-        const { name, email, password, confirmPassword } = formData;
+    const register = (event: React.FormEvent) => {
+        event.preventDefault();
 
-        if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) return;
+        const { firstName, lastName, login, email, password, confirmPassword } = formData;
+
+        if (!firstName || !lastName || !login || !email || !password || !confirmPassword) {
+            toast.error('All fields are required!');
+            return;
+        }
 
         if (password !== confirmPassword) {
             toast.error('Passwords do not match!');
             return;
         }
-        toast.loading('Registering...');
 
-        const { data, loading, error } = await postUser({ name, email, password });
+        // toast.loading('Registering...');
 
-        if (loading) {
-            return;
-        }
-
-        if (error) {
-            toast.error(`Registration failed: ${error}`);
-        } else if (data) {
-            toast.success('Successfully registered!');
-            setFormData({ name: '', email: '', password: '', confirmPassword: '' });
-        }
+        request('POST', '/register', {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            login: login,
+            password: password,
+        })
+            .then(response => {
+                setAuthHeader(response.data.token);
+                toast.success('Successfully registered!');
+                setFormData({ firstName: '', lastName: '', login: '', email: '', password: '', confirmPassword: '' });
+            })
+            .catch(error => {
+                setAuthHeader(null);
+                toast.error(`Registration failed: ${error.response?.data?.message || error.message}`);
+            });
     };
 
     return (
@@ -78,11 +90,26 @@ const SingUp: React.FC = () => {
                     </div>
                     <SeparatorWithText text="or continue with" className="py-2" />
 
-                    <InputWithLabel type="text" name="name" onChange={handleChange} value={formData.name} required />
+                    {/* Form Inputs */}
+                    <InputWithLabel
+                        type="text"
+                        name="firstName"
+                        onChange={handleChange}
+                        value={formData.firstName}
+                        required
+                    />
+                    <InputWithLabel
+                        type="text"
+                        name="lastName"
+                        onChange={handleChange}
+                        value={formData.lastName}
+                        required
+                    />
+                    <InputWithLabel type="text" name="login" onChange={handleChange} value={formData.login} required />
                     <InputWithLabel type="email" name="email" onChange={handleChange} value={formData.email} required />
                     <InputPassword name="password" onChange={handleChange} value={formData.password} required />
                     <InputPassword
-                        name="confirm Password"
+                        name="confirmPassword"
                         onChange={handleChange}
                         value={formData.confirmPassword}
                         required
@@ -104,4 +131,4 @@ const SingUp: React.FC = () => {
     );
 };
 
-export default SingUp;
+export default SignUp;

@@ -1,5 +1,6 @@
 package pl.project.handmadezone.api.dtos;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,13 +10,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class SignUpDto {
 
-    private Long id;
+    @NotEmpty
     private String firstName;
+
+    @NotEmpty
     private String lastName;
+
+    @NotEmpty
     private String email;
+
+    @NotEmpty
     private String login;
-    private String token;
+
+    @NotEmpty
+    private String password;
 
 }

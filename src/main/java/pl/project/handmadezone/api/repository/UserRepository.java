@@ -1,13 +1,11 @@
 package pl.project.handmadezone.api.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import pl.project.handmadezone.api.model.User;
 
-import java.util.List;
+import java.util.Optional;
 
-@Repository
-public interface UsersRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> findAllByOrderByIdAsc();
+    Optional<User> findByLogin(String login);
 }

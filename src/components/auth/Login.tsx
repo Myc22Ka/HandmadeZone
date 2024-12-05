@@ -7,8 +7,9 @@ import { FaGithub } from '@react-icons/all-files/fa/FaGithub';
 import { FaGoogle } from '@react-icons/all-files/fa/FaGoogle';
 import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/ButtonWithIcon';
 import { toast } from 'sonner';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import InputPassword from '../utilities/Inputs/InputPassword/InputPassword';
+import { request, setAuthHeader } from '@/lib/axiosHelper';
 
 function OAuth2(service: string) {
     window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service}`;
@@ -25,14 +26,28 @@ export const buttons: IButtonWithIcon[] = [
     },
 ];
 
+const initFormData = {
+    login: '',
+    password: '',
+};
+
 const Login: React.FC = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        password: '',
-    });
+    const [formData, setFormData] = useState(initFormData);
+
+    const navigate = useNavigate();
 
     const login = () => {
-        toast('Not implemented yet...');
+        request('POST', '/sign-in', formData)
+            .then(response => {
+                setAuthHeader(response.data.token);
+                toast.success('Successfully registered!');
+                navigate('/dashboard');
+                setFormData(initFormData);
+            })
+            .catch(error => {
+                setAuthHeader(null);
+                toast.error(`Registration failed: ${error.response?.data?.message || error.message}`);
+            });
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +68,7 @@ const Login: React.FC = () => {
                         ))}
                     </div>
                     <SeparatorWithText text="or continue with" className="py-2" />
-                    <InputWithLabel name="name" type="text" onChange={handleChange} value={formData.name} />
+                    <InputWithLabel name="login" type="text" onChange={handleChange} value={formData.login} />
                     <InputPassword name="password" onChange={handleChange} value={formData.password} />
                 </CardContent>
                 <CardFooter className="flex flex-col justify-center items-center gap-2">

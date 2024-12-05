@@ -9,13 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class CredentialsDto {
 
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
     private String login;
-    private String token;
+    private char[] password;
 
 }
