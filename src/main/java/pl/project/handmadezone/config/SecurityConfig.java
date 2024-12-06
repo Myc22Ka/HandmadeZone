@@ -1,8 +1,10 @@
 package pl.project.handmadezone.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,12 +13,16 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     @Value("/")
@@ -28,26 +34,32 @@ public class SecurityConfig {
     @Value("http://${platform.url}:${frontend.port}")
     private String defaultRoute;
 
+    private final UserAuthenticationProvider userAuthenticationProvider;
+    private final PasswordEncoder passwordEncoder;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
+        http
+                .addFilterBefore(new JwtAuthFilter(userAuthenticationProvider), BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**").permitAll()
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers(HttpMethod.POST, "/sign-in", "/register").permitAll()
                         .requestMatchers("/oauth2/authorization/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .defaultSuccessUrl(defaultRoute + defaultSuccessRoute, true)
 //                        .failureUrl("http://localhost:5173/")
                 )
-                .formLogin(Customizer.withDefaults())
-                .build();
+                .formLogin(Customizer.withDefaults());
+
+        return http.build();
     }
+
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
                 .username("staticUser")
-                .password("{noop}password")
+                .password(passwordEncoder.encode("password"))
                 .roles("USER")
                 .build();
 

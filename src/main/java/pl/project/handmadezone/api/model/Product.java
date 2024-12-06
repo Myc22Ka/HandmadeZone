@@ -17,7 +17,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ig;
     private String name;
-    private String cathegory;
+    private String category;
     private String author;
     private String Image;
 
