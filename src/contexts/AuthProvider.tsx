@@ -34,6 +34,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         localStorage.removeItem('auth_token');
     };
 
+    console.log(user);
+
     const isAuthenticated = Boolean(user) && JSON.stringify(user) !== JSON.stringify(initUser);
 
     return (

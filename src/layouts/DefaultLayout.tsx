@@ -1,13 +1,16 @@
 import React from 'react';
 import Footer from './Footer';
-import Main from './Main';
 import Navbar from './Navbar';
 
-const DefaultLayout: React.FC = () => {
+interface IDefaultLayout {
+    children: React.ReactNode;
+}
+
+const DefaultLayout: React.FC<IDefaultLayout> = ({ children }) => {
     return (
         <div className="flex flex-col min-h-screen">
             <Navbar />
-            <Main />
+            <div className="flex flex-grow">{children}</div>
             <Footer />
         </div>
     );
