@@ -10,14 +10,11 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    // Mapowanie z User do UserDto
     @Mapping(target = "token", ignore = true)
     UserDto toUserDto(User user);
 
-    @Mappings({
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "createdAt", ignore = true),
-            @Mapping(target = "password", ignore = true)
-    })
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "password", ignore = true)
     User signUpToUser(SignUpDto signUpDto);
 }
