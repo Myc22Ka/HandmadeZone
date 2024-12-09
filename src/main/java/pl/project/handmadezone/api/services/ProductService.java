@@ -14,7 +14,7 @@ public class ProductService {
     private static final int pageSize = 10;
     private final ProductRepository productRepository;
 
-    public List<Product> getProducts(int pageNumber){
-        return productRepository.findAllProducts(PageRequest.of(pageNumber, pageSize));
+    public List<Product> getProducts(int pageNumber) {
+        return productRepository.findAll(PageRequest.of(pageNumber, pageSize)).getContent();
     }
 }

@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(HttpMethod.POST, "/sign-in", "/register").permitAll()
                         .requestMatchers("/oauth2/authorization/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products", "/swagger-ui/**").permitAll() // Publiczne endpointy
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .defaultSuccessUrl(defaultRoute + defaultSuccessRoute, true)

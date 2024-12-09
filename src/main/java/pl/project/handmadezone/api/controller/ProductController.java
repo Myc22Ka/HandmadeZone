@@ -15,9 +15,8 @@ public class ProductController {
     private final ProductService postService;
 
     @GetMapping("/products")
-    public List<Product> getProducts(@RequestParam(required = false)Integer page){
+    public List<Product> getProducts(@RequestParam(required = false) Integer page) {
         int pageNumber = page != null && page > 0 ? page : 1;
         return postService.getProducts(pageNumber - 1);
-
     }
 }
