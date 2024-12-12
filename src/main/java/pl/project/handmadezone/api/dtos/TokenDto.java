@@ -1,5 +1,6 @@
 package pl.project.handmadezone.api.dtos;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,9 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CredentialsDto {
-
-    private String login;
-    private String password;
-
+public class TokenDto {
+    @NotEmpty
+    private String token;
 }

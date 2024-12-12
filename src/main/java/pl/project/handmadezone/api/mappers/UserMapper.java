@@ -4,17 +4,11 @@ import pl.project.handmadezone.api.dtos.SignUpDto;
 import pl.project.handmadezone.api.dtos.UserDto;
 import pl.project.handmadezone.api.model.User;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(target = "token", ignore = true)
     UserDto toUserDto(User user);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "password", ignore = true)
     User signUpToUser(SignUpDto signUpDto);
 }

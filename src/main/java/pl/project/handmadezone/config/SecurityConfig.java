@@ -19,6 +19,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import java.util.Objects;
+
 @Configuration
 @EnableMethodSecurity
 @EnableWebSecurity
@@ -45,11 +47,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(HttpMethod.POST, "/sign-in", "/register").permitAll()
                         .requestMatchers("/oauth2/authorization/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/products").permitAll() // Publiczne endpointy
+                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
+                        .loginPage(defaultRoute + "/login")  // Specify frontend login page
                         .defaultSuccessUrl(defaultRoute + defaultSuccessRoute, true)
-//                        .failureUrl("http://localhost:5173/")
+                        .failureUrl(defaultRoute)
+                        .authorizationEndpoint(authorization ->
+                                authorization.baseUri("/oauth2/authorization")
+                        )
                 )
                 .formLogin(Customizer.withDefaults());
 

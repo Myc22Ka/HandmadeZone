@@ -11,7 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import pl.project.handmadezone.api.dtos.UserDto;
-import pl.project.handmadezone.api.services.UserService;
+import pl.project.handmadezone.api.model.User;
+import pl.project.handmadezone.api.repository.UserRepository;
 
 import java.util.Base64;
 import java.util.Collections;
@@ -24,7 +25,7 @@ public class UserAuthenticationProvider {
     @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostConstruct
     protected void init() {
@@ -52,8 +53,22 @@ public class UserAuthenticationProvider {
 
         DecodedJWT decoded = verifier.verify(token);
 
-        UserDto user = userService.findByLogin(decoded.getSubject());
+        User user = userRepository.findByLogin(decoded.getSubject())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+        String newToken = createToken(user.getLogin());
+
+        UserDto userDto = UserDto.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .login(user.getLogin())
+                .token(newToken)
+                .build();
+
+        return new UsernamePasswordAuthenticationToken(userDto, null, Collections.emptyList());
     }
+
+
 }

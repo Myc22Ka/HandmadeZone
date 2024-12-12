@@ -30,11 +30,11 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
-//	Mapper
+	//	Mapper
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
-//	JWT Token
+	//	JWT Token
 	implementation 'com.auth0:java-jwt:4.4.0'
 
 	compileOnly 'org.projectlombok:lombok'
