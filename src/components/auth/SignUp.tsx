@@ -9,13 +9,9 @@ import { toast } from 'sonner';
 import InputWithLabel from '../utilities/Inputs/InputWithLabel/InputWithLabel';
 import { Link } from 'react-router-dom';
 import InputPassword from '../utilities/Inputs/InputPassword/InputPassword';
-import { request, setAuthHeader } from '@/lib/axiosHelper';
+import { OAuth2, request, setAuthHeader } from '@/lib/axiosHelper';
 import loginPicture from '@/assets/imgs/login-illustration.jpg';
 import CheckBoxWithLabel from '../utilities/CheckBoxWithLabel/CheckBoxWithLabel';
-
-function OAuth2(service: string) {
-    window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service.toLowerCase()}`;
-}
 
 export const buttons: IButtonWithIcon[] = [
     {
@@ -58,7 +54,7 @@ const SignUp: React.FC = () => {
             return;
         }
 
-        toast.loading('Registering...');
+        // toast.loading('Registering...');
 
         request('POST', '/register', {
             firstName: firstName,
@@ -96,63 +92,77 @@ const SignUp: React.FC = () => {
                             ))}
                         </div>
                         <SeparatorWithText text="or continue with" className="py-2" />
-
-                        <InputWithLabel
-                            type="text"
-                            name="firstName"
-                            onChange={handleChange}
-                            value={formData.firstName}
-                            required
-                        />
-                        <InputWithLabel
-                            type="text"
-                            name="lastName"
-                            onChange={handleChange}
-                            value={formData.lastName}
-                            required
-                        />
-                        <InputWithLabel
-                            type="text"
-                            name="login"
-                            onChange={handleChange}
-                            value={formData.login}
-                            required
-                        />
-                        <InputWithLabel
-                            type="email"
-                            name="email"
-                            onChange={handleChange}
-                            value={formData.email}
-                            required
-                        />
-                        <InputPassword name="password" onChange={handleChange} value={formData.password} required />
-                        <InputPassword
-                            name="confirmPassword"
-                            onChange={handleChange}
-                            value={formData.confirmPassword}
-                            required
-                        />
-                        <CheckBoxWithLabel required>
-                            Yes, I agree to the{' '}
-                            {
-                                <Link to="/terms" className="underline text-primary">
-                                    Terms of Service
-                                </Link>
-                            }
-                            .
-                        </CheckBoxWithLabel>
+                        <form onSubmit={register} className="flex flex-col gap-2 h-full">
+                            <div className="flex-grow">
+                                <InputWithLabel
+                                    type="text"
+                                    name="firstName"
+                                    onChange={handleChange}
+                                    value={formData.firstName}
+                                    required
+                                />
+                                <InputWithLabel
+                                    type="text"
+                                    name="lastName"
+                                    onChange={handleChange}
+                                    value={formData.lastName}
+                                    required
+                                />
+                                <InputWithLabel
+                                    type="text"
+                                    name="login"
+                                    onChange={handleChange}
+                                    value={formData.login}
+                                    required
+                                />
+                                <InputWithLabel
+                                    type="email"
+                                    name="email"
+                                    onChange={handleChange}
+                                    value={formData.email}
+                                    required
+                                />
+                                <InputPassword
+                                    name="password"
+                                    onChange={handleChange}
+                                    value={formData.password}
+                                    required
+                                />
+                                <InputPassword
+                                    name="confirmPassword"
+                                    onChange={handleChange}
+                                    value={formData.confirmPassword}
+                                    required
+                                />
+                                <CheckBoxWithLabel required>
+                                    Yes, I agree to the{' '}
+                                    {
+                                        <Link to="/terms" className="underline text-primary">
+                                            Terms of Service
+                                        </Link>
+                                    }
+                                    .
+                                </CheckBoxWithLabel>
+                            </div>
+                            <div>
+                                <CardFooter className="py-0 flex flex-col justify-center items-center">
+                                    <Button
+                                        className="flex justify-center items-center w-full"
+                                        onClick={register}
+                                        type="submit"
+                                    >
+                                        Sign up
+                                    </Button>
+                                    <div className="text-xs w-full text-center">
+                                        <div>Already have an account?</div>
+                                        <Link to="/login" className="underline text-primary">
+                                            Log in
+                                        </Link>
+                                    </div>
+                                </CardFooter>
+                            </div>
+                        </form>
                     </CardContent>
-                    <CardFooter className="flex flex-col justify-center items-center gap-2">
-                        <Button className="flex justify-center items-center w-full" onClick={register}>
-                            Sign up
-                        </Button>
-                        <div className="text-xs py-2 w-full text-center">
-                            <div>Already have an account?</div>
-                            <Link to="/login" className="underline text-primary">
-                                Log in
-                            </Link>
-                        </div>
-                    </CardFooter>
                 </div>
             </Card>
         </div>

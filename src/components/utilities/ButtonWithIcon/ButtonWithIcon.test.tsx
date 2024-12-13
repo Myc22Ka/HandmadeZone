@@ -1,13 +1,20 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ButtonWithIcon, { IButtonWithIcon } from './ButtonWithIcon';
-import { buttons } from '@/components/auth/Login';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import '@/utils';
+
+vi.mock('@/components/auth/Login', () => ({
+    buttons: {
+        getRandom: () => ({ value: 'Test Button', Icon: () => <svg data-testid="icon" /> }),
+    },
+}));
+
+import { buttons } from '@/components/auth/Login';
 
 describe('ButtonWithIcon', () => {
     it('should render the button with the correct text and icon', () => {
-        const props = buttons.getRandom(buttons[0]);
+        const props = buttons.getRandom({ value: 'Mock Button', Icon: () => <svg data-testid="icon" /> });
 
         render(<ButtonWithIcon {...props} />);
 

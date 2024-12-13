@@ -18,7 +18,11 @@ export const routerConfig = {
     },
 };
 
-export const routes: RouteObject[] = [
+type Routes = RouteObject & {
+    unauthenticated?: boolean;
+};
+
+export const routes: Routes[] = [
     // Add more unprotected routes here
     {
         path: '/',
@@ -31,10 +35,12 @@ export const routes: RouteObject[] = [
     {
         path: 'login',
         element: <Login />,
+        unauthenticated: true,
     },
     {
         path: 'signup',
         element: <SingUp />,
+        unauthenticated: true,
     },
     {
         path: '/auth',

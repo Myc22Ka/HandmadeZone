@@ -1,3 +1,4 @@
+import { routes } from '@/routes';
 import axios from 'axios';
 
 type methodType = 'POST' | 'GET' | 'PUT' | 'DELETE';
@@ -16,11 +17,16 @@ export const setAuthHeader = (token: string | null) => {
 
 axios.defaults.baseURL = `http://localhost:8080`;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.maxRedirects = 0;
+
+const getUnauthenticatedRoutes = () => routes.filter(route => route.unauthenticated).map(route => route.path);
+
+export const OAuth2 = (service: string) => {
+    window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service.toLowerCase()}`;
+};
 
 export const request = (method: methodType, url: string, data: unknown) => {
     let headers = {};
-    if (url !== '/sign-in' && getAuthToken() !== null && getAuthToken() !== 'null') {
+    if (!getUnauthenticatedRoutes().includes(url) && getAuthToken() !== null && getAuthToken() !== 'null') {
         headers = { Authorization: `Bearer ${getAuthToken()}` };
     }
 
