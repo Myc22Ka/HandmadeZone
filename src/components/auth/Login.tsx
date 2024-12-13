@@ -9,13 +9,9 @@ import ButtonWithIcon, { IButtonWithIcon } from '../utilities/ButtonWithIcon/But
 import { toast } from 'sonner';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import InputPassword from '../utilities/Inputs/InputPassword/InputPassword';
-import { request, setAuthHeader } from '@/lib/axiosHelper';
+import { OAuth2, request, setAuthHeader } from '@/lib/axiosHelper';
 import { useAuth } from '@/contexts/AuthProvider';
 import loginPicture from '@/assets/imgs/login-illustration.jpg';
-
-function OAuth2(service: string) {
-    window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service}`;
-}
 
 export const buttons: IButtonWithIcon[] = [
     {

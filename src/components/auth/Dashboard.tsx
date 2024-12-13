@@ -4,6 +4,8 @@ import React from 'react';
 const Dashboard: React.FC = () => {
     const { user } = useAuth();
 
+    console.log(user);
+
     return (
         <div>
             <div>Dashboard</div>
