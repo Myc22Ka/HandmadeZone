@@ -1,6 +1,7 @@
 import React from 'react';
 import Footer from './Footer';
 import Navbar from './Navbar';
+//import Carousel from './Carousel';
 
 interface IDefaultLayout {
     children: React.ReactNode;

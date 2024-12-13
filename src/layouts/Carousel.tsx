@@ -10,14 +10,6 @@ import {
     type CarouselApi,
 } from '@/components/ui/carousel';
 
-const imageUrls = [
-    'https://via.placeholder.com/150/0000FF', // Replace with your image URLs
-    'https://via.placeholder.com/150/FF0000',
-    'https://via.placeholder.com/150/00FF00',
-    'https://via.placeholder.com/150/FFFF00',
-    'https://via.placeholder.com/150/FF00FF',
-];
-
 export function CarouselDApiDemo() {
     const [api, setApi] = React.useState<CarouselApi>();
     const [current, setCurrent] = React.useState(0);
@@ -40,11 +32,11 @@ export function CarouselDApiDemo() {
         <div className="mx-auto max-w-xs">
             <Carousel setApi={setApi} className="w-full max-w-xs">
                 <CarouselContent>
-                    {imageUrls.map((url, index) => (
+                    {Array.from({ length: 5 }).map((_, index) => (
                         <CarouselItem key={index}>
                             <Card>
                                 <CardContent className="flex aspect-square items-center justify-center p-6">
-                                    <img src={url} alt={`Slide ${index + 1}`} className="h-full w-full object-cover" />
+                                    <span className="text-4xl font-semibold">{index + 1}</span>
                                 </CardContent>
                             </Card>
                         </CarouselItem>
