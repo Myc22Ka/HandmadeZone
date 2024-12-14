@@ -1,6 +1,7 @@
 import DefaultLayout from '@/layouts/DefaultLayout';
 import React from 'react';
 import { CarouselDApiDemo } from '@/layouts/Carousel';
+//import Footer from '@/layouts/Footer';
 
 const Home: React.FC = () => {
     return (
@@ -15,13 +16,13 @@ const Home: React.FC = () => {
                 }}
             >
                 <div></div>
-                <div></div>
-                <div></div>
-
-                <div></div>
                 <div>
                     <CarouselDApiDemo />
                 </div>
+                <div></div>
+
+                <div></div>
+                <div></div>
                 <div></div>
 
                 <div></div>

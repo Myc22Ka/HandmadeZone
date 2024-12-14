@@ -21,6 +21,22 @@ const Navbar: React.FC = () => {
                         <NavigationMenuContent>bye</NavigationMenuContent>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
+                        <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                            <ul>
+                                <li>
+                                    <a href="/painting">Painting</a>
+                                </li>
+                                <li>
+                                    <a href="/crochet-products">Crochet</a>
+                                </li>
+                                <li>
+                                    <a href="/pottery">Pottery</a>
+                                </li>
+                            </ul>
+                        </NavigationMenuContent>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
                         <NavigationMenuTrigger>Components</NavigationMenuTrigger>
                         <NavigationMenuContent>hi</NavigationMenuContent>
                     </NavigationMenuItem>
