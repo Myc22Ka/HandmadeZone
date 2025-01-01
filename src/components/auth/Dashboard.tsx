@@ -11,8 +11,6 @@ const Dashboard: React.FC = () => {
         setSelectedSection(section);
     };
 
-    console.log(user);
-
     return (
         <div>
             <SideNav onSelectSection={handleSelectSection} />
