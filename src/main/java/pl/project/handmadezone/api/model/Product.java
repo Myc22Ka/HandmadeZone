@@ -1,7 +1,6 @@
 package pl.project.handmadezone.api.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +32,12 @@ public class Product {
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime addedAt;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    private InstantOffert instantOffert;
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    private Auction auction;
 
     @PrePersist
     public void prePersist() {
