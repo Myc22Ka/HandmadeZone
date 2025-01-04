@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "products")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,12 +33,6 @@ public class Product {
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime addedAt;
-
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
-    private InstantOffert instantOffert;
-
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
-    private Auction auction;
 
     @PrePersist
     public void prePersist() {
