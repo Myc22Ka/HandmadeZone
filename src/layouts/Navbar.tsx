@@ -1,23 +1,24 @@
 import * as React from 'react';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from '@/components/ui/navigation-menu';
 import { Link } from 'react-router-dom';
-import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
-import { ModeToggle } from '@/components/ModeToggle/ModeToggle';
-import { IoCart } from '@react-icons/all-files/io5/IoCart';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthProvider';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import VerticalSeparator from '@/components/utilities/VerticalSeparator';
 
 const Navbar: React.FC = () => {
     const { isAuthenticated } = useAuth();
 
     return (
         <NavigationMenu className="max-w-full flex-none justify-normal p-2 w-full">
-            <NavigationMenuList className="justify-between w-full">
-                <div className="flex items-center gap-4">
+            <NavigationMenuList className="justify-between w-full h-full">
+                <div className="flex items-center gap-4 h-full">
                     {/* Logo */}
                     <Link to="/" className="font-bold text-lg">
                         HandMadeZone
                     </Link>
+
+                    <VerticalSeparator />
 
                     {/* Products */}
                     <NavigationMenuItem>
@@ -27,21 +28,7 @@ const Navbar: React.FC = () => {
                     </NavigationMenuItem>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    {/* Shopping Cart */}
-                    <NavigationMenuItem>
-                        <Button variant="outline" size="icon">
-                            <Link to="/cart" className="hover:underline">
-                                <IoCart />
-                            </Link>
-                        </Button>
-                    </NavigationMenuItem>
-
-                    {/* Theme mode */}
-                    <NavigationMenuItem>
-                        <ModeToggle />
-                    </NavigationMenuItem>
-
+                <div className="flex items-center gap-4 h-full">
                     {/* Login/Logut */}
                     {!isAuthenticated ? (
                         <>
@@ -58,19 +45,7 @@ const Navbar: React.FC = () => {
                         </>
                     ) : null}
 
-                    {/* Avatar */}
-                    {isAuthenticated && (
-                        <NavigationMenuItem>
-                            <Avatar>
-                                <AvatarImage
-                                    src="https://github.com/shadcn.png"
-                                    alt="@shadcn"
-                                    className="w-8 h-8 rounded-full"
-                                />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                        </NavigationMenuItem>
-                    )}
+                    <SidebarTrigger />
                 </div>
             </NavigationMenuList>
         </NavigationMenu>

@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthProvider';
 import avatar from '@/assets/imgs/Basic_Ui_(186).jpg';
 
+const excludedKeys = ['login', 'token', 'id'];
+
 const UserPanel: React.FC = () => {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
-    if (!user) {
-        return <div className="text-center mt-10">Loading...</div>;
-    }
+
+    if (loading) return <div className="text-center mt-10">Loading...</div>;
 
     useEffect(() => {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         setTheme(prefersDark ? 'dark' : 'light');
     }, []);
+
     return (
         <div
             className={`w-3/4 mx-auto mt-10 p-4 rounded-lg ${
@@ -39,17 +41,16 @@ const UserPanel: React.FC = () => {
                 {/*Wyświetlanie danych użytkownika */}
                 <div className="text-left ml-5">
                     <p className="text-lg text-gray-200 mb-2">
-                        <span className="font-semibold">Nazwa:</span> {user?.name}
+                        {/* <span className="font-semibold">:</span> {user?.name} */}
                     </p>
-                    <p className="text-lg text-gray-200 mb-2">
-                        <span className="font-semibold">Wiek:</span> {user?.age}
-                    </p>
-                    <p className="text-lg text-gray-200 mb-2">
-                        <span className="font-semibold">Numer telefonu:</span> {/*user?.phone*/}
-                    </p>
-                    <p className="text-lg text-gray-200">
-                        <span className="font-semibold">Email:</span> {user?.email}
-                    </p>
+                    {user &&
+                        Object.entries(user)
+                            .filter(([key]) => !excludedKeys.includes(key)) // Filter out login and token
+                            .map(([key, value]) => (
+                                <p className="text-lg text-gray-200 mb-2" key={key}>
+                                    <span className="font-semibold">{key}:</span> {value}
+                                </p>
+                            ))}
                 </div>
             </div>
         </div>

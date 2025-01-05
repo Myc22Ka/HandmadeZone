@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { createContext, useContext, useState } from 'react';
 import { User } from '@/interfaces/UserInterface';
 import { request } from '@/lib/axiosHelper';
+import { toast } from 'sonner';
 
 type AuthProviderProps = {
     children: React.ReactNode;
@@ -28,6 +29,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser(null);
         setToken(null);
         localStorage.removeItem('auth_token');
+
+        toast.info('You have successfully logged out.');
     };
 
     const isAuthenticated = Boolean(user);

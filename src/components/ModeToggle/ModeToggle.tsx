@@ -1,7 +1,6 @@
 import React from 'react';
 import { FaMoon } from '@react-icons/all-files/fa/FaMoon';
 import { FaSun } from '@react-icons/all-files/fa/FaSun';
-import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -15,12 +14,12 @@ export function ModeToggle() {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                    <FaSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <FaMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                    <span className="sr-only">Toggle theme</span>
-                </Button>
+            <DropdownMenuTrigger asChild className="flex gap-2">
+                <div className="flex items-center cursor-pointer text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md p-2">
+                    <FaSun className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                    <FaMoon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                    <span className="text-sm font-medium">Theme</span>
+                </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
