@@ -20,11 +20,11 @@ public class InstantOffertController {
     public InstantOffert addInstantOffert(@RequestBody InstantOffert instantOffert, @RequestParam Long productId) {
         return instantOffertService.addInstantOffert(instantOffert, productId);
     }
-    @GetMapping("/category/{category}")
+    @GetMapping("/instantOfferts/category/{category}")
     public List<InstantOffert> getInstantOffertsByCategory(@PathVariable String category) {
         return instantOffertService.getInstantOffertsByCategory(category);
     }
-    @GetMapping("/author/{author}")
+    @GetMapping("/instantOfferts/author/{author}")
     public List<InstantOffert> getInstantOffertsByAuthor(@PathVariable String author) {
         return instantOffertService.getInstantOffertsByAuthor(author);
     }
