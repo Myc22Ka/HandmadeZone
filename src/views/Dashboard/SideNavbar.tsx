@@ -10,27 +10,27 @@ const SideNav: React.FC<SideNavProps> = ({ onSelectSection }) => {
             <ul className="hidden md:flex justify-center w-full ">
                 <li
                     className="p-2 m-1 border-b-2  border-gray-400 rounded-lg hover:bg-gray-600 transition duration-100 ease-in-out"
-                    onClick={() => onSelectSection('Ogłoszenia')}
+                    onClick={() => onSelectSection('Products')}
                 >
-                    Ogłoszenia
+                    Products
                 </li>
                 <li
                     className="p-2 m-1 border-b-2  border-gray-400 rounded-lg hover:bg-gray-600 transition duration-100 ease-in-out"
-                    onClick={() => onSelectSection('Historia')}
+                    onClick={() => onSelectSection('History')}
                 >
-                    Historia
+                    History
                 </li>
                 <li
                     className="p-2 m-1 border-b-2 border-gray-400 rounded-lg hover:bg-gray-600 transition duration-100 ease-in-out"
-                    onClick={() => onSelectSection('Profil')}
+                    onClick={() => onSelectSection('Profile')}
                 >
-                    Profil
+                    Profile
                 </li>
                 <li
                     className="p-2 m-1 border-b-2  border-gray-400 rounded-lg hover:bg-gray-600 transition duration-100 ease-in-out"
-                    onClick={() => onSelectSection('Ustawienia')}
+                    onClick={() => onSelectSection('Settings')}
                 >
-                    Ustawienia
+                    Settings
                 </li>
             </ul>
         </div>

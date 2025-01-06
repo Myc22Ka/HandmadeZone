@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import SideNav from '@/layouts/Dashboard/SideNavbar';
-import UserPanel from '@/layouts/Dashboard/ProfileSection';
-import OptionSection from '@/layouts/Dashboard/OptionSection';
-import NoticeSection from '@/layouts/Dashboard/NoticeSection';
-import HistorySection from '@/layouts/Dashboard/HistorySection';
+import SideNav from '@/views/Dashboard/SideNavbar';
+import UserPanel from '@/views/Dashboard/ProfileSection';
+import OptionSection from '@/views/Dashboard/OptionSection';
+import ProductSection from '@/views/Dashboard/ProductsSection';
+import HistorySection from '@/views/Dashboard/HistorySection';
+import DefaultLayout from '@/layouts/DefaultLayout';
 const Dashboard: React.FC = () => {
     const [selectedSection, setSelectedSection] = useState<string>('');
 
@@ -12,16 +13,16 @@ const Dashboard: React.FC = () => {
     };
 
     return (
-        <div>
+        <DefaultLayout>
             <SideNav onSelectSection={handleSelectSection} />
 
             <div className="mt-10 p-4">
-                {selectedSection === 'Ogłoszenia' && <NoticeSection />}
-                {selectedSection === 'Historia' && <HistorySection />}
-                {selectedSection === 'Profil' && <UserPanel />}
-                {selectedSection === 'Ustawienia' && <OptionSection />}
+                {selectedSection === 'Products' && <ProductSection />}
+                {selectedSection === 'History' && <HistorySection />}
+                {selectedSection === 'Profile' && <UserPanel />}
+                {selectedSection === 'Settings' && <OptionSection />}
             </div>
-        </div>
+        </DefaultLayout>
     );
 };
 
