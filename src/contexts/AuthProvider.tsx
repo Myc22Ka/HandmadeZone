@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { createContext, useContext, useState } from 'react';
 import { User } from '@/interfaces/UserInterface';
-import { request } from '@/lib/axiosHelper';
 import { toast } from 'sonner';
 
 type AuthProviderProps = {
@@ -37,18 +36,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     const autoLogin = () => {
         if (token) {
-            request('POST', '/validate-token', token)
+            fetch('http://localhost:8080/validate-token', {
+                method: 'POST',
+                headers: {
+                    Accept: '*/*',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: token }),
+            })
                 .then(response => {
-                    setUser(response.data);
-                    setLoading(false);
+                    if (!response.ok) {
+                        throw new Error('Nieprawidłowy token lub wygasł');
+                    }
+                    return response.json(); // Oczekujemy, że odpowiedź będzie w formacie JSON
                 })
-                .catch(() => {
-                    logout();
-                    setLoading(false);
-                });
+                .then(data => setUser(data))
+                .catch(() => logout())
+                .finally(() => setLoading(false));
             return;
         }
-
         setLoading(false);
     };
 

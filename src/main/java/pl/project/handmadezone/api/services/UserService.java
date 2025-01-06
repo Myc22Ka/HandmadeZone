@@ -60,9 +60,11 @@ public class UserService {
     }
 
     public UserDto validateToken(String token) {
-        Authentication authentication = userAuthenticationProvider.validateToken(token);
-
-        return (UserDto) authentication.getPrincipal();
+        try {
+            Authentication authentication = userAuthenticationProvider.validateToken(token);
+            return (UserDto) authentication.getPrincipal();
+        } catch (Exception e) {
+            throw new AppException("Token validation failed", HttpStatus.UNAUTHORIZED);
+        }
     }
-
 }

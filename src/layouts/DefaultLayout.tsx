@@ -15,7 +15,7 @@ const DefaultLayout: React.FC<IDefaultLayout> = ({ children }) => {
             <main className="flex flex-col min-h-screen flex-1">
                 <div className="flex flex-col min-h-screen">
                     <Navbar />
-                    <div className="flex flex-grow">{children}</div>
+                    <div className="flex flex-grow flex-col w-full">{children}</div>
                     <Footer />
                 </div>
             </main>

@@ -1,12 +1,12 @@
 import React from 'react';
-import Home from './views/Home';
-import User from './views/User';
+import Home from './views/HomePage/Home';
 import ErrorPage from './views/ErrorPage/ErrorPage';
 import { RouteObject } from 'react-router';
 import Login from './components/auth/Login';
 import SingUp from './components/auth/SignUp';
 import Dashboard from './components/auth/Dashboard';
 import ProtectedRoute from './views/ProtectedRoute/ProtectedRoute';
+import Products from './views/ProductsPage/Products';
 
 export const routerConfig = {
     future: {
@@ -29,8 +29,8 @@ export const routes: Routes[] = [
         element: <Home />,
     },
     {
-        path: 'user/:id',
-        element: <User />,
+        path: 'products/:category',
+        element: <Products />,
     },
     {
         path: 'login',

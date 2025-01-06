@@ -37,3 +37,17 @@ export const request = (method: methodType, url: string, data: unknown) => {
         data: data,
     });
 };
+
+export const verify = (method: methodType, url: string, data: unknown) => {
+    const headers = {
+        Accept: '*/*',
+        'Content-Type': 'application/json',
+    };
+
+    return axios({
+        method: method,
+        url: url,
+        headers: headers,
+        data: data,
+    });
+};
