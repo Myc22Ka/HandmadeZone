@@ -10,26 +10,25 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductService postService;
+    private final ProductService productService;
 
     @GetMapping("/products")
-    public List<Product> getProducts(@RequestParam(required = false) Integer page) {
-        int pageNumber = page != null && page > 0 ? page : 1;
-        return postService.getProducts(pageNumber - 1);
+    public List<Product> getProducts() {
+        return productService.getProducts();
     }
 
     @GetMapping("/products/{id}")
     public Product getSingleProduct(@PathVariable Long id){
-        return postService.getSingleProduct(id);
+        return productService.getSingleProduct(id);
     }
 
     @PostMapping("/products/{id}")
     public Product addProduct(@RequestBody Product product){
-        return postService.addProduct(product);
+        return productService.addProduct(product);
     }
 
     @DeleteMapping("/products/{id}")
     public void deleteProduct(@PathVariable Long id){
-        postService.deleteProduct(id);
+        productService.deleteProduct(id);
     }
 }

@@ -19,17 +19,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class ProductService {
-    private static final int pageSize = 10;
     private final ProductRepository productRepository;
 
     /**
      * Retrieves a paginated list of products.
      *
-     * @param pageNumber the page number to retrieve (0-based index)
      * @return a list of Product objects representing the products
      */
-    public List<Product> getProducts(int pageNumber) {
-        return productRepository.findAll(PageRequest.of(pageNumber, pageSize)).getContent();
+    public List<Product> getProducts() {
+        return productRepository.findAll();
     }
 
     /**

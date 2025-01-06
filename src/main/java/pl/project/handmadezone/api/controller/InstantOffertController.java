@@ -20,12 +20,15 @@ public class InstantOffertController {
     public InstantOffert addInstantOffert(@RequestBody InstantOffert instantOffert, @RequestParam Long productId) {
         return instantOffertService.addInstantOffert(instantOffert, productId);
     }
-    @GetMapping("/instantOfferts/category/{category}")
-    public List<InstantOffert> getInstantOffertsByCategory(@PathVariable String category) {
-        return instantOffertService.getInstantOffertsByCategory(category);
-    }
-    @GetMapping("/instantOfferts/author/{author}")
-    public List<InstantOffert> getInstantOffertsByAuthor(@PathVariable String author) {
-        return instantOffertService.getInstantOffertsByAuthor(author);
+    @GetMapping("/instantOfferts/{filter}")
+    public List<InstantOffert> getInstantOffertsByFilter(@PathVariable String filter,
+                                                         @RequestParam(required = false) String type) {
+        if ("category".equalsIgnoreCase(filter)) {
+            return instantOffertService.getInstantOffertsByCategory(type);
+        } else if ("author".equalsIgnoreCase(filter)) {
+            return instantOffertService.getInstantOffertsByAuthor(type);
+        } else {
+            throw new IllegalArgumentException("Invalid filter type. Allowed values: 'category' or 'author'.");
+        }
     }
 }

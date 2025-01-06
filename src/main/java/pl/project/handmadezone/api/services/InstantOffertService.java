@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.project.handmadezone.api.model.InstantOffert;
 import pl.project.handmadezone.api.model.Product;
+import pl.project.handmadezone.api.repository.AuctionRepository;
 import pl.project.handmadezone.api.repository.InstantOffertRepository;
 import pl.project.handmadezone.api.repository.ProductRepository;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class InstantOffertService {
     private final InstantOffertRepository instantOffertRepository;
     private final ProductRepository productRepository;
+    private final AuctionRepository auctionRepository;
 
     public List<InstantOffert> getAllInstantOfferts() {
         return instantOffertRepository.findAll();
@@ -24,6 +26,12 @@ public class InstantOffertService {
                 .orElseThrow(() -> new IllegalArgumentException("Product with ID " + productId + " does not exist"));
 
         instantOffert.setProduct(product);
+        if (instantOffertRepository.existsByProduct(product)) {
+            throw new IllegalStateException("Product with ID " + productId + " is already assigned to an instant offer.");
+        }
+        if (auctionRepository.existsByProduct(product)) {
+            throw new IllegalStateException("Product with ID " + productId + " is already assigned to an auction.");
+        }
         return instantOffertRepository.save(instantOffert);
     }
 
