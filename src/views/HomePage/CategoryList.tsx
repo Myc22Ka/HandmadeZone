@@ -1,17 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
-interface Category {
-    name: string;
-    image: string;
-}
-
-const categories: Category[] = [
-    { name: 'Electronics', image: 'https://source.unsplash.com/600x400/?electronics' },
-    { name: 'Fashion', image: 'https://source.unsplash.com/600x400/?fashion' },
-    { name: 'Home', image: 'https://source.unsplash.com/600x400/?home' },
-];
+import useCategories from '@/hooks/useCategories';
 
 // Animacje Framer Motion
 const containerVariants = {
@@ -21,6 +11,14 @@ const containerVariants = {
 };
 
 const CategoryList: React.FC = () => {
+    const { categories, loading, error } = useCategories('GET', '/categories', {});
+
+    if (loading) return <div>Loading categories...</div>;
+
+    if (error) return <div>Error: {error}</div>;
+
+    console.log(categories);
+
     return (
         <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 py-8"
@@ -30,7 +28,7 @@ const CategoryList: React.FC = () => {
         >
             {categories.map(category => (
                 <motion.div
-                    key={category.name}
+                    key={category.id}
                     variants={containerVariants}
                     whileHover="hover"
                     className="relative flex flex-col items-center justify-center h-52 bg-gray-100 shadow-md rounded-lg overflow-hidden dark:bg-gray-800"
@@ -41,7 +39,7 @@ const CategoryList: React.FC = () => {
                         className="relative z-10 flex flex-col items-center justify-center h-full w-full"
                     >
                         <motion.img
-                            src={category.image}
+                            src={category.imageUrl}
                             alt={category.name}
                             className="absolute inset-0 w-full h-full object-cover opacity-60"
                             whileHover={{ opacity: 0.4 }}

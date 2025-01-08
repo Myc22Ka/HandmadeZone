@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS categories;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -16,6 +17,20 @@ VALUES
     ('John', 'Doe', 'john_doe', 'john.doe@example.com', 'password123'),
     ('Jane', 'Smith', 'jane_smith', 'jane.smith@example.com', 'password456'),
     ('Alice', 'Jones', 'alice_jones', 'alice.jones@example.com', 'password789');
+
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    image_url VARCHAR(255)
+);
+
+-- Insert categories with properly escaped URLs
+INSERT INTO categories (name, description, image_url)
+VALUES
+    ('Electronics', 'All electronic products including gadgets, devices, and accessories.', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.researchgate.net%2Fprofile%2FGabriel-Drabik&psig=AOvVaw3GJIMEZGSOY4mZtTJpix0D&ust=1736432276490000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCOjK87io5ooDFQAAAAAdAAAAABAE'),
+    ('Fashion', 'Clothing, footwear, and fashion accessories for men and women.', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.researchgate.net%2Fprofile%2FJerzy-Bodzenta&psig=AOvVaw3xHvHwz1j08ou6zxnjyw0s&ust=1736432317334000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMCzyM-o5ooDFQAAAAAdAAAAABAE'),
+    ('Home', 'Furniture, home decor, and appliances for household use.', 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fpl.linkedin.com%2Fin%2Fjaroslaw-paduch-537a0719&psig=AOvVaw1pu90mw3NZSmayZVArlPcA&ust=1736432357295000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMDg_eKo5ooDFQAAAAAdAAAAABAE');
 
 DROP TABLE IF EXISTS products;
 

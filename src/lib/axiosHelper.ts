@@ -1,8 +1,6 @@
 /* eslint-disable no-magic-numbers */
 import { routes } from '@/routes';
-import axios from 'axios';
-
-type methodType = 'POST' | 'GET' | 'PUT' | 'DELETE';
+import axios, { Method } from 'axios';
 
 export enum ServerResponseCode {
     SUCCESS = 200,
@@ -35,9 +33,9 @@ export const OAuth2 = (service: string) => {
     window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service.toLowerCase()}`;
 };
 
-export const request = (method: methodType, url: string, data: unknown) => {
+export const request = (method: Method, url: string, data: unknown) => {
     let headers = {};
-    if (!getUnauthenticatedRoutes().includes(url) && getAuthToken() !== null && getAuthToken() !== 'null') {
+    if (!getUnauthenticatedRoutes().includes(url) && getAuthToken()) {
         headers = { Authorization: `Bearer ${getAuthToken()}` };
     }
 
@@ -49,7 +47,7 @@ export const request = (method: methodType, url: string, data: unknown) => {
     });
 };
 
-export const verify = (method: methodType, url: string, data: unknown) => {
+export const verify = (method: Method, url: string, data: unknown) => {
     const headers = {
         Accept: '*/*',
         'Content-Type': 'application/json',

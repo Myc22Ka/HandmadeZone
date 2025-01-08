@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
     Sidebar,
     SidebarContent,
@@ -25,7 +25,14 @@ import { MdDashboard } from '@react-icons/all-files/md/MdDashboard';
 import { IoCart } from '@react-icons/all-files/io5/IoCart';
 import { IoIosLogOut } from '@react-icons/all-files/io/IoIosLogOut';
 
-const userItems = [
+type Item = {
+    text: string;
+    path: string;
+    icon: ReactNode;
+    authenticated?: boolean;
+};
+
+const userItems: Item[] = [
     {
         text: 'Dashboard',
         path: '/auth/dashboard',
@@ -38,7 +45,7 @@ const userItems = [
     },
 ];
 
-const mainSideItems = [
+const mainSideItems: Item[] = [
     {
         text: 'Notifications',
         path: '#notifications',
@@ -48,6 +55,7 @@ const mainSideItems = [
         text: 'Messages',
         path: '#messages',
         icon: <TiMessages />,
+        authenticated: true,
     },
 ];
 
@@ -67,18 +75,20 @@ const AppSidebar: React.FC = () => {
                 <div className="flex flex-col h-full p-4">
                     {/* Main Content */}
                     <div className="flex-grow space-y-4">
-                        {mainSideItems.map(({ text, path, icon }) => (
-                            <a
-                                key={text}
-                                href={path}
-                                className="block p-2 rounded-md text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
-                            >
-                                <div className="flex gap-2 items-center">
-                                    {icon}
-                                    <span>{text}</span>
-                                </div>
-                            </a>
-                        ))}
+                        {mainSideItems
+                            .filter(item => !item.authenticated || isAuthenticated)
+                            .map(({ text, path, icon }) => (
+                                <a
+                                    key={text}
+                                    href={path}
+                                    className="block p-2 rounded-md text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                >
+                                    <div className="flex gap-2 items-center">
+                                        {icon}
+                                        <span>{text}</span>
+                                    </div>
+                                </a>
+                            ))}
                         <ModeToggle />
                     </div>
 
