@@ -40,7 +40,7 @@ const Login: React.FC = () => {
     const login = (event: React.FormEvent) => {
         event.preventDefault();
 
-        request('POST', '/sign-in', formData)
+        request({ method: 'POST', url: '/sign-in', data: formData })
             .then(response => {
                 setAuthHeader(response.data.token);
                 setUser(response.data);

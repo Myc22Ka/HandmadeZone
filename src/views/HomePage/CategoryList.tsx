@@ -11,13 +11,11 @@ const containerVariants = {
 };
 
 const CategoryList: React.FC = () => {
-    const { categories, loading, error } = useCategories('GET', '/categories', {});
+    const { categories, loading, error } = useCategories('/api/categories', {});
 
-    if (loading) return <div>Loading categories...</div>;
+    if (loading) return <div>Loading...</div>;
 
     if (error) return <div>Error: {error}</div>;
-
-    console.log(categories);
 
     return (
         <motion.div

@@ -4,9 +4,8 @@ import ErrorPage from './views/ErrorPage/ErrorPage';
 import { RouteObject } from 'react-router';
 import Login from './components/auth/Login';
 import SingUp from './components/auth/SignUp';
-import Dashboard from './components/auth/Dashboard';
 import ProtectedRoute from './views/ProtectedRoute/ProtectedRoute';
-import Products from './views/ProductsPage/Products';
+import Offers from './views/OffersPage/Offers';
 import ProductSection from './views/Dashboard/ProductsSection';
 import UserPanel from './views/Dashboard/ProfileSection';
 import OptionSection from './views/Dashboard/OptionSection';
@@ -33,8 +32,12 @@ export const routes: Routes[] = [
         element: <Home />,
     },
     {
-        path: 'products/:category',
-        element: <Products />,
+        path: 'offers/:category',
+        element: <Offers />,
+    },
+    {
+        path: 'offers',
+        element: <Offers />,
     },
     {
         path: 'login',

@@ -81,11 +81,11 @@ public class ProductService {
         if (product.getCategory() != null) {
             productEdited.setCategory(product.getCategory());
         }
-        if (product.getAuthor() != null) {
-            productEdited.setAuthor(product.getAuthor());
+        if (product.getManufacturer() != null) {
+            productEdited.setManufacturer(product.getManufacturer());
         }
-        if (product.getImage() != null) {
-            productEdited.setImage(product.getImage());
+        if (product.getImageUrl() != null) {
+            productEdited.setImageUrl(product.getImageUrl());
         }
         return productEdited;
     }

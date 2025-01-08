@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.project.handmadezone.api.model.measurements.Dimensions;
+import pl.project.handmadezone.api.model.measurements.Weight;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,20 +25,38 @@ public class Product {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "category", nullable = false)
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
-    @Column(name = "author", nullable = false)
-    private String author;
+    @Column(name = "manufacturer", nullable = false)
+    private String manufacturer;
 
-    @Column(name = "image", nullable = false)
-    private String Image;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "unit", column = @Column(name = "dimensions_unit")),
+            @AttributeOverride(name = "height", column = @Column(name = "dimensions_height")),
+            @AttributeOverride(name = "width", column = @Column(name = "dimensions_width")),
+            @AttributeOverride(name = "depth", column = @Column(name = "dimensions_depth"))
+    })
+    private Dimensions dimensions;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime addedAt;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "unit", column = @Column(name = "weight_unit")),
+            @AttributeOverride(name = "amount", column = @Column(name = "weight_amount"))
+    })
+    private Weight weight;
 
-    @PrePersist
-    public void prePersist() {
-        this.addedAt = LocalDateTime.now();
-    }
+    @Column(name = "material", nullable = false)
+    private String material;
+
+    @Column(name = "rating", nullable = false)
+    private Float rating;
+
+    @Column(name = "reviews", nullable = false)
+    private Integer reviews;
+
+    @Column(name = "image_url", nullable = false)
+    private String imageUrl;
 }

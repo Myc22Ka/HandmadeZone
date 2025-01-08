@@ -1,37 +1,33 @@
 import React, { useState } from 'react';
-import { Product } from '@/interfaces/ProductInterface';
-import data from '@/assets/data.json';
 import { Button } from '@/components/ui/button';
 import DefaultLayout from '@/layouts/DefaultLayout';
+import useOffers from '@/hooks/useOffers';
+import { useAuth } from '@/contexts/AuthProvider';
 
-function ProductSection() {
-    const [products, setProducts] = useState<Product[]>(data);
+const ProductSection: React.FC = () => {
+    const { user } = useAuth();
+    const { offers } = useOffers('/api/offers/search', { userId: user?.id });
     const [showForm, setShowForm] = useState<boolean>(false);
-    const [newProduct, setNewProduct] = useState<Product>({
-        id: 0,
-        name: '',
-        category: '',
-        author: '',
-        image: '',
-    });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setNewProduct(prev => ({ ...prev, [name]: value }));
-    };
-    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const { value } = e.target;
-        setNewProduct(prev => ({
-            ...prev,
-            category: value,
-        }));
-    };
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setProducts([...products, { ...newProduct, id: products.length + 1 }]);
-        setNewProduct({ id: 0, name: '', category: '', author: '', image: '' });
-        setShowForm(false);
-    };
+    console.log(offers);
+
+    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { name, value } = e.target;
+    //     setNewProduct(prev => ({ ...prev, [name]: value }));
+    // };
+    // const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    //     const { value } = e.target;
+    //     setNewProduct(prev => ({
+    //         ...prev,
+    //         category: value,
+    //     }));
+    // };
+    // const handleSubmit = (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     setProducts([...products, { ...newProduct, id: products.length + 1 }]);
+    //     setNewProduct({ id: 0, name: '', category: '', author: '', image: '' });
+    //     setShowForm(false);
+    // };
     return (
         <DefaultLayout>
             <div className="min-h-screen  p-6">
@@ -41,7 +37,7 @@ function ProductSection() {
                 <Button onClick={() => setShowForm(!showForm)} variant="default" className="my-2">
                     {showForm ? 'Cancel' : 'Add New Product'}
                 </Button>
-                {showForm && (
+                {/* {showForm && (
                     <form onSubmit={handleSubmit} className="bg-gray-700 p-6 rounded shadow-md mb-8">
                         <h2 className="text-2xl font-semibold mb-4">Add New Product</h2>
                         <div className="mb-4">
@@ -108,42 +104,42 @@ function ProductSection() {
                             Add Product
                         </button>
                     </form>
-                )}
+                )} */}
 
                 {/*Wyświetlanie produktów*/}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {data.map((item: Product) => (
-                        <div
-                            key={item.id}
-                            className="bg-gray-400 shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group flex flex-col h-80"
-                        >
-                            {' '}
-                            {/*Zdjęcie produktu*/}
-                            <div className="relative flex-shrink-0 overflow-hidden h-48 group-hover:h-64 transition-all duration-300">
-                                <img
-                                    src={item.image}
-                                    alt={item.name}
-                                    className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-110"
-                                />
-                            </div>
-                            {/*Sekcja tekstu*/}
-                            <div className="p-4 flex-grow group-hover:flex-grow-0 group-hover:h-1/4 transition-all duration-300">
-                                <h2 className="text-xl font-semibold text-gray-800 group-hover:text-sm group-hover:text-gray-600 transition-all duration-300">
-                                    {item.name}
-                                </h2>
-                                <p className="text-white group-hover:text-xs group-hover:text-gray-500 transition-all duration-300">
-                                    <strong>Category:</strong> {item.category}
-                                </p>
-                                <p className="text-white group-hover:text-xs group-hover:text-gray-500 transition-all duration-300">
-                                    <strong>Author:</strong> {item.author}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{/* here code */}</div>
             </div>
         </DefaultLayout>
     );
-}
+};
 
 export default ProductSection;
+
+// {data.map((item: Product) => (
+//     <div
+//         key={item.id}
+//         className="bg-gray-400 shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group flex flex-col h-80"
+//     >
+//         {' '}
+//         {/*Zdjęcie produktu*/}
+//         <div className="relative flex-shrink-0 overflow-hidden h-48 group-hover:h-64 transition-all duration-300">
+//             <img
+//                 src={item.image}
+//                 alt={item.name}
+//                 className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-110"
+//             />
+//         </div>
+//         {/*Sekcja tekstu*/}
+//         <div className="p-4 flex-grow group-hover:flex-grow-0 group-hover:h-1/4 transition-all duration-300">
+//             <h2 className="text-xl font-semibold text-gray-800 group-hover:text-sm group-hover:text-gray-600 transition-all duration-300">
+//                 {item.name}
+//             </h2>
+//             <p className="text-white group-hover:text-xs group-hover:text-gray-500 transition-all duration-300">
+//                 <strong>Category:</strong> {item.category}
+//             </p>
+//             <p className="text-white group-hover:text-xs group-hover:text-gray-500 transition-all duration-300">
+//                 <strong>Author:</strong> {item.author}
+//             </p>
+//         </div>
+//     </div>
+// ))}

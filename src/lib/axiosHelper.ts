@@ -33,17 +33,26 @@ export const OAuth2 = (service: string) => {
     window.location.href = `http://${import.meta.env.VITE_PLATFORM_URL}:${import.meta.env.VITE_BACKEND_PORT}/oauth2/authorization/${service.toLowerCase()}`;
 };
 
-export const request = (method: Method, url: string, data: unknown) => {
-    let headers = {};
+export interface RequestConfig {
+    method: Method;
+    url: string;
+    data?: unknown;
+    params?: unknown;
+}
+
+export const request = ({ method, url, data, params }: RequestConfig) => {
+    let headers: Record<string, string> = {};
+
+    // Add authorization headers if required
     if (!getUnauthenticatedRoutes().includes(url) && getAuthToken()) {
         headers = { Authorization: `Bearer ${getAuthToken()}` };
     }
 
     return axios({
-        method: method,
-        url: url,
-        headers: headers,
-        data: data,
+        method,
+        url,
+        headers,
+        ...(method === 'GET' ? { params } : { data }),
     });
 };
 
@@ -61,3 +70,9 @@ export const verify = (method: Method, url: string, data: unknown) => {
         data: data,
     });
 };
+
+// Helper functions for common HTTP methods
+export const get = (url: string, params?: unknown) => request({ method: 'GET', url, params });
+export const post = (url: string, data?: unknown) => request({ method: 'POST', url, data });
+export const put = (url: string, data?: unknown) => request({ method: 'PUT', url, data });
+export const del = (url: string, data?: unknown) => request({ method: 'DELETE', url, data });

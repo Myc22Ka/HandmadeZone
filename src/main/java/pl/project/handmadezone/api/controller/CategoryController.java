@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/categories")  // Base URL for every method in this REST Controller
+@RequestMapping("/api/categories")  // Base URL for every method in this REST Controller
 @RequiredArgsConstructor
 public class CategoryController {
+
     private final CategoryService categoryService;
 
     /**

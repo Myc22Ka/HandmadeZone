@@ -20,10 +20,10 @@ const Navbar: React.FC = () => {
 
                     <VerticalSeparator />
 
-                    {/* Products */}
+                    {/* Offers */}
                     <NavigationMenuItem>
-                        <Link to="/products" className="hover:underline">
-                            Products
+                        <Link to="/offers" className="hover:underline">
+                            Offers
                         </Link>
                     </NavigationMenuItem>
                 </div>

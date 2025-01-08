@@ -42,10 +42,9 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthFilter(userAuthenticationProvider), BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers(HttpMethod.POST, "/sign-in", "/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/sign-in", "/register", "/validate-token").permitAll()
                         .requestMatchers("/oauth2/authorization/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/categories").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage(defaultRoute + "/login")  // Specify frontend login page

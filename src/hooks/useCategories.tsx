@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Category } from '@/interfaces/CategoryInterface';
-import { request } from '@/lib/axiosHelper';
-import { Method } from 'axios';
+import { get } from '@/lib/axiosHelper';
 
-const useCategories = (method: Method, url: string, data: unknown) => {
+const useCategories = (url: string, data: unknown) => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        request(method, url, data)
+        get(url, data)
             .then(response => {
-                setCategories(response.data);
+                setCategories(Array.isArray(response.data) && response.data.length > 0 ? response.data : []);
             })
             .catch(() => setError('Failed to load categories'))
             .finally(() => setLoading(false));

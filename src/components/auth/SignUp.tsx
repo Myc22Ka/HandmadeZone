@@ -56,13 +56,7 @@ const SignUp: React.FC = () => {
 
         // toast.loading('Registering...');
 
-        request('POST', '/register', {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            login: login,
-            password: password,
-        })
+        request({ method: 'POST', url: '/register', data: formData })
             .then(response => {
                 setAuthHeader(response.data.token);
                 toast.success('Successfully registered!');

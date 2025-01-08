@@ -3,7 +3,7 @@ import Section from '@/layouts/Section';
 import { HomeCarousel } from '@/views/HomePage/HomeCarousel';
 import React from 'react';
 import CategoryList from './CategoryList';
-import Loader from '@/components/Loader/Loader';
+// import Loader from '@/components/Loader/Loader';
 const images = ['/src/assets/imgs/texture-1909992_1280.jpg', '/src/assets/imgs/deer-3275594_1280.jpg'];
 
 const Home: React.FC = () => {
@@ -12,7 +12,7 @@ const Home: React.FC = () => {
             <Section>
                 <HomeCarousel images={images} />
             </Section>
-            <Loader></Loader>
+            {/* <Loader></Loader> */}
             <Section heading="Categories">
                 <CategoryList />
             </Section>
