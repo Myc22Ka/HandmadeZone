@@ -16,7 +16,7 @@ import {
 } from '@radix-ui/react-dropdown-menu';
 import UserIcon from '@/components/auth/UserIcon';
 import { HiOutlineDotsVertical } from '@react-icons/all-files/hi/HiOutlineDotsVertical';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthProvider';
 import { ModeToggle } from '@/components/ModeToggle/ModeToggle';
 import { IoIosNotifications } from '@react-icons/all-files/io/IoIosNotifications';
@@ -28,7 +28,7 @@ import { IoIosLogOut } from '@react-icons/all-files/io/IoIosLogOut';
 const userItems = [
     {
         text: 'Dashboard',
-        path: '/auth/dashboard',
+        path: '/auth/dashboard/profile',
         icon: <MdDashboard />,
     },
     {
@@ -51,9 +51,33 @@ const mainSideItems = [
     },
 ];
 
+const dashboardItems = [
+    {
+        text: 'Your Products',
+        path: '/auth/dashboard/yourproducts',
+        icon: <IoCart />,
+    },
+    {
+        text: 'History',
+        path: '/auth/dashboard/history',
+        icon: <IoIosNotifications />,
+    },
+    {
+        text: 'Profile',
+        path: '/auth/dashboard/profile',
+        icon: <TiMessages />,
+    },
+    {
+        text: 'Settings',
+        path: '/auth/dashboard/settings',
+        icon: <IoIosNotifications />,
+    },
+];
 const AppSidebar: React.FC = () => {
     const { logout, isAuthenticated } = useAuth();
+    const location = useLocation();
 
+    const isDashboardPage = location.pathname.startsWith('/auth/dashboard');
     return (
         <Sidebar>
             <SidebarHeader>
@@ -80,6 +104,23 @@ const AppSidebar: React.FC = () => {
                             </a>
                         ))}
                         <ModeToggle />
+
+                        {isDashboardPage && (
+                            <>
+                                {dashboardItems.map(({ text, path, icon }) => (
+                                    <Link
+                                        key={text}
+                                        to={path}
+                                        className="block p-2 rounded-md text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    >
+                                        <div className="flex gap-2 items-center">
+                                            {icon}
+                                            <span>{text}</span>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </>
+                        )}
                     </div>
 
                     {/* Footer Links */}

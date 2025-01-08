@@ -50,7 +50,6 @@ export const routes: Routes[] = [
         path: '/auth',
         element: <ProtectedRoute />,
         children: [
-            { path: 'dashboard', element: <Dashboard /> },
             { path: 'dashboard/yourproducts', element: <ProductSection /> },
             { path: 'dashboard/profile', element: <UserPanel /> },
             { path: 'dashboard/settings', element: <OptionSection /> },
