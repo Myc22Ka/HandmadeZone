@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Product } from '@/interfaces/ProductInterface';
 import data from '@/assets/data.json';
+import { Button } from '@/components/ui/button';
 
 function ProductSection() {
     const [products, setProducts] = useState<Product[]>(data);
@@ -35,9 +36,9 @@ function ProductSection() {
             {/*Nagłówek i przycisk dodania */}
             <h1 className="text-4xl font-bold text-center text-wh mb-8">Your Products</h1>
             {/*Przycisk dodania nowego produktu oraz formularz*/}
-            <button onClick={() => setShowForm(!showForm)} className="bg-blue-500 text-white py-2 px-4 rounded mb-6">
+            <Button onClick={() => setShowForm(!showForm)} variant="default" className="my-2">
                 {showForm ? 'Cancel' : 'Add New Product'}
-            </button>
+            </Button>
             {showForm && (
                 <form onSubmit={handleSubmit} className="bg-gray-700 p-6 rounded shadow-md mb-8">
                     <h2 className="text-2xl font-semibold mb-4">Add New Product</h2>

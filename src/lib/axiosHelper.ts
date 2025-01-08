@@ -1,7 +1,18 @@
+/* eslint-disable no-magic-numbers */
 import { routes } from '@/routes';
 import axios from 'axios';
 
 type methodType = 'POST' | 'GET' | 'PUT' | 'DELETE';
+
+export enum ServerResponseCode {
+    SUCCESS = 200,
+    CREATED = 201,
+    BAD_REQUEST = 400,
+    UNAUTHORIZED = 401,
+    FORBIDDEN = 403,
+    NOT_FOUND = 404,
+    INTERNAL_SERVER_ERROR = 500,
+}
 
 export const getAuthToken = () => {
     return window.localStorage.getItem('auth_token');
@@ -42,6 +53,7 @@ export const verify = (method: methodType, url: string, data: unknown) => {
     const headers = {
         Accept: '*/*',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${getAuthToken()}`,
     };
 
     return axios({

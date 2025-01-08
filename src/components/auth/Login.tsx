@@ -37,7 +37,9 @@ const Login: React.FC = () => {
     const location = useLocation();
     const from = (location.state as { from?: Location })?.from?.pathname || '/';
 
-    const login = () => {
+    const login = (event: React.FormEvent) => {
+        event.preventDefault();
+
         request('POST', '/sign-in', formData)
             .then(response => {
                 setAuthHeader(response.data.token);
@@ -79,20 +81,41 @@ const Login: React.FC = () => {
                             ))}
                         </div>
                         <SeparatorWithText text="or continue with" className="py-2" />
-                        <InputWithLabel name="login" type="text" onChange={handleChange} value={formData.login} />
-                        <InputPassword name="password" onChange={handleChange} value={formData.password} />
+                        <form onSubmit={login} className="flex flex-col gap-2 h-full">
+                            <div className="flex-grow">
+                                <InputWithLabel
+                                    name="login"
+                                    type="text"
+                                    onChange={handleChange}
+                                    value={formData.login}
+                                    required
+                                />
+                                <InputPassword
+                                    name="password"
+                                    onChange={handleChange}
+                                    value={formData.password}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <CardFooter className="py-0 flex flex-col justify-center items-center">
+                                    <Button
+                                        className="flex justify-center items-center w-full"
+                                        type="submit"
+                                        onClick={login}
+                                    >
+                                        Login
+                                    </Button>
+                                    <div className="text-xs w-full text-center">
+                                        <div>Need a HandMadeZone account?</div>
+                                        <Link to="/signup" className="underline text-primary">
+                                            Create an account
+                                        </Link>
+                                    </div>
+                                </CardFooter>
+                            </div>
+                        </form>
                     </CardContent>
-                    <CardFooter className="flex flex-col justify-center items-center gap-2">
-                        <Button className="flex justify-center items-center w-full" onClick={login}>
-                            Login
-                        </Button>
-                        <div className="text-xs py-2 w-full text-center">
-                            <div>Need a HandMadeZone account?</div>
-                            <Link to="/signup" className="underline text-primary">
-                                Create an account
-                            </Link>
-                        </div>
-                    </CardFooter>
                 </div>
             </Card>
         </div>

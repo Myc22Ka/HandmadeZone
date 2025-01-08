@@ -38,7 +38,6 @@ public class UserAuthenticationProvider {
     public String createToken(String login) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3600000); // 1 hour
-       // Date validity = new Date(now.getTime() + 1000); // 1 second
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         return JWT.create()
@@ -49,40 +48,33 @@ public class UserAuthenticationProvider {
     }
 
     public Authentication validateToken(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secretKey);
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .build();
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        DecodedJWT decoded = verifier.verify(token);
 
-            DecodedJWT decoded = verifier.verify(token);
-
-            // Sprawdź, czy token nie wygasł
-            if (decoded.getExpiresAt().before(new Date())) {
-                throw new AppException("Token has expired", HttpStatus.BAD_REQUEST); // Zmieniono komunikat na "Token has expired"
-            }
-
-            // Sprawdzenie, czy użytkownik istnieje
-            User user = userRepository.findByLogin(decoded.getSubject())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-
-            // Generowanie nowego tokenu
-            String newToken = createToken(user.getLogin());
-
-            // Tworzenie obiektu UserDto z nowym tokenem
-            UserDto userDto = UserDto.builder()
-                    .id(user.getId())
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .email(user.getEmail())
-                    .login(user.getLogin())
-                    .token(newToken)
-                    .build();
-
-            // Zwrócenie uwierzytelnionego użytkownika
-            return new UsernamePasswordAuthenticationToken(userDto, null, Collections.emptyList());
-        } catch (Exception e) {
-            // Jeśli wystąpi błąd, zwróć odpowiedni wyjątek
-            throw new AppException("Invalid or expired token", HttpStatus.UNAUTHORIZED);
+        // Sprawdź, czy token nie wygasł
+        if (decoded.getExpiresAt().before(new Date())) {
+            throw new AppException("Token has expired", HttpStatus.UNAUTHORIZED);
         }
+
+        // Sprawdzenie, czy użytkownik istnieje
+        User user = userRepository.findByLogin(decoded.getSubject())
+                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+        // Generowanie nowego tokenu
+        String newToken = createToken(user.getLogin());
+
+        // Tworzenie obiektu UserDto z nowym tokenem
+        UserDto userDto = UserDto.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .login(user.getLogin())
+                .token(newToken)
+                .build();
+
+        // Zwrócenie uwierzytelnionego użytkownika
+        return new UsernamePasswordAuthenticationToken(userDto, null, Collections.emptyList());
     }
 }
