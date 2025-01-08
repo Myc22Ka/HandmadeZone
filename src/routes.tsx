@@ -7,6 +7,10 @@ import SingUp from './components/auth/SignUp';
 import Dashboard from './components/auth/Dashboard';
 import ProtectedRoute from './views/ProtectedRoute/ProtectedRoute';
 import Products from './views/ProductsPage/Products';
+import ProductSection from './views/Dashboard/ProductsSection';
+import UserPanel from './views/Dashboard/ProfileSection';
+import OptionSection from './views/Dashboard/OptionSection';
+import HistorySection from './views/Dashboard/HistorySection';
 
 export const routerConfig = {
     future: {
@@ -46,7 +50,10 @@ export const routes: Routes[] = [
         path: '/auth',
         element: <ProtectedRoute />,
         children: [
-            { path: 'dashboard', element: <Dashboard /> },
+            { path: 'dashboard/yourproducts', element: <ProductSection /> },
+            { path: 'dashboard/profile', element: <UserPanel /> },
+            { path: 'dashboard/settings', element: <OptionSection /> },
+            { path: 'dashboard/history', element: <HistorySection /> },
             // Add more protected routes here
         ],
     },
