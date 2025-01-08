@@ -1,26 +1,31 @@
-import React, { useState } from 'react';
-import SideNav from '@/views/Dashboard/SideNavbar';
-import UserPanel from '@/views/Dashboard/ProfileSection';
-import OptionSection from '@/views/Dashboard/OptionSection';
-import ProductSection from '@/views/Dashboard/ProductsSection';
-import HistorySection from '@/views/Dashboard/HistorySection';
 import DefaultLayout from '@/layouts/DefaultLayout';
+import React from 'react';
+import { Link } from 'react-router-dom';
+
 const Dashboard: React.FC = () => {
-    const [selectedSection, setSelectedSection] = useState<string>('');
-
-    const handleSelectSection = (section: string) => {
-        setSelectedSection(section);
-    };
-
     return (
         <DefaultLayout>
-            <SideNav onSelectSection={handleSelectSection} />
+            <div className="min-h-screen p-6">
+                <h1 className="text-4xl font-bold text-center text-wh mb-8">Dashboard</h1>
 
-            <div className="mt-10 p-4">
-                {selectedSection === 'Products' && <ProductSection />}
-                {selectedSection === 'History' && <HistorySection />}
-                {selectedSection === 'Profile' && <UserPanel />}
-                {selectedSection === 'Settings' && <OptionSection />}
+                {/* Nawigacja w Dashboardzie */}
+                <div className="mb-6 flex gap-4 justify-center">
+                    <Link
+                        to="/auth/dashboard/yourproducts"
+                        className="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-400"
+                    >
+                        Products
+                    </Link>
+                    <Link to="/auth/dashboard/history" className="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-400">
+                        History
+                    </Link>
+                    <Link to="/auth/dashboard/profile" className="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-400">
+                        Profile
+                    </Link>
+                    <Link to="/auth/dashboard/settings" className="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-400">
+                        Settings
+                    </Link>
+                </div>
             </div>
         </DefaultLayout>
     );
