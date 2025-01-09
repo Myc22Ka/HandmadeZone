@@ -21,7 +21,6 @@ export default [
       "no-undef": "warn",
       "prefer-const": "error",
       "semi": ["error", "always"],
-      "indent": ["error", 4],
       "no-trailing-spaces": "error",
       "object-curly-spacing": ["error", "always"],
       "array-bracket-spacing": ["error", "never"],

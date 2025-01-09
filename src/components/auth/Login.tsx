@@ -12,6 +12,7 @@ import InputPassword from '../utilities/Inputs/InputPassword/InputPassword';
 import { OAuth2, request, setAuthHeader } from '@/lib/axiosHelper';
 import { useAuth } from '@/contexts/AuthProvider';
 import loginPicture from '@/assets/imgs/login-illustration.jpg';
+import { User } from '@/interfaces/UserInterface';
 
 export const buttons: IButtonWithIcon[] = [
     {
@@ -42,10 +43,15 @@ const Login: React.FC = () => {
 
         request({ method: 'POST', url: '/sign-in', data: formData })
             .then(response => {
-                setAuthHeader(response.data.token);
-                setUser(response.data);
-                setToken(response.data.token);
-                localStorage.setItem('auth_token', response.data.token);
+                const updatedUser: User = {
+                    ...response.data,
+                    shoppingCart: [],
+                };
+
+                setAuthHeader(updatedUser.token);
+                setUser(updatedUser);
+                setToken(updatedUser.token);
+                localStorage.setItem('auth_token', updatedUser.token);
 
                 navigate(from);
                 setFormData(initFormData);
