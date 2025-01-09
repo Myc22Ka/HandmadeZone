@@ -48,12 +48,4 @@ public class OfferService {
 
         return offers;
     }
-
-    public Optional<Offer> getOfferById(Long id) {
-        return offerRepository.findById(id);
-    }
-
-    public List<Offer> getOffersByIds(List<Long> ids) {
-        return offerRepository.findAllById(ids);
-    }
 }

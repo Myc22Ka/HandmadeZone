@@ -1,10 +1,11 @@
-import { Button } from '@/components/ui/button';
 import Loader from '@/components/utilities/Loader';
 import { useAuth } from '@/contexts/AuthProvider';
 import useOffers from '@/hooks/useOffers';
 import DefaultLayout from '@/layouts/DefaultLayout';
+import { OfferType } from '@/types';
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import AddToCartButton from './AddToCartButton';
 
 const OfferDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -21,21 +22,15 @@ const OfferDetails: React.FC = () => {
 
     const offer = offers[0];
 
+    console.log(offer);
+
     return (
         <DefaultLayout>
             <div>
                 <h1>Offer Details</h1>
-                <p>Offer ID: {offer?.id}</p>
-                <Button className="p-2">Kup teraz</Button>
-                <Button className="p-2" onClick={() => cartActions.add(offer.id)}>
-                    Add to Cart
-                </Button>
-                <Button className="p-2" onClick={() => cartActions.remove(offer.id)}>
-                    Remove Item
-                </Button>
-                <Button className="p-2" onClick={() => cartActions.clear()}>
-                    Clear Cart
-                </Button>
+                <div>Offer ID: {offer?.id}</div>
+
+                {offer.type === OfferType.QUICK_PURCHASE && <AddToCartButton offer={offer} add={cartActions.add} />}
             </div>
         </DefaultLayout>
     );

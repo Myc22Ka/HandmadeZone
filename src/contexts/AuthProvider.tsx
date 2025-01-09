@@ -3,8 +3,8 @@ import { createContext, useContext, useState } from 'react';
 import { User } from '@/interfaces/UserInterface';
 import { toast } from 'sonner';
 import { ServerResponseCode, verify } from '@/lib/axiosHelper';
-import cartReducer, { initialState } from '@/reducers/Cart/cartReducer';
-import { CartItem } from '@/types';
+import cartReducer, { loadInitialState } from '@/reducers/Cart/cartReducer';
+import { CartItem, CartState } from '@/types';
 import { addItemToCart, clearCart, removeItemFromCart, setCart } from '@/reducers/Cart/cartActions';
 
 type AuthProviderProps = {
@@ -13,6 +13,7 @@ type AuthProviderProps = {
 
 type AuthProviderState = {
     user: User | null;
+    cart: CartState;
     token: string | null;
     setToken: (token: string) => void;
     setUser: (user: User) => void;
@@ -34,7 +35,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(localStorage.getItem('auth_token'));
     const [loading, setLoading] = useState<boolean>(true);
-    const [cart, dispatch] = useReducer(cartReducer, initialState);
+    const [cart, dispatch] = useReducer(cartReducer, loadInitialState());
 
     const set = (cart: CartItem[]) => dispatch(setCart(cart));
 
@@ -60,12 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 .then(response => {
                     if (response.status !== ServerResponseCode.SUCCESS) toast.error('Nieprawidłowy token lub wygasł');
 
-                    const updatedUser: User = {
-                        ...response.data,
-                        shoppingCart: cart.cart, // get it from local storage
-                    };
-
-                    setUser(updatedUser);
+                    setUser(response.data);
                 })
                 .catch(() => logout())
                 .finally(() => setLoading(false));
@@ -87,6 +83,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         <AuthProviderContext.Provider
             value={{
                 user,
+                cart,
                 setUser,
                 token,
                 setToken,

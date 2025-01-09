@@ -27,7 +27,7 @@ export default [
       "jsx-quotes": ["error", "prefer-double"],
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
-      "no-magic-numbers": ["warn", { "ignore": [0, 1] }],
+      "no-magic-numbers": ["warn", { "ignore": [0, 1, 2] }],
     },
     ignores: ["*.config*", "src/components/ui/**"],
     languageOptions: {

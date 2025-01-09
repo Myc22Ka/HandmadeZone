@@ -24,5 +24,16 @@ export interface CartItem {
 }
 
 export interface CartState {
-    cart: CartItem[];
+    items: CartItem[];
+}
+
+export enum OfferType {
+    AUCTION = 'AUCTION',
+    QUICK_PURCHASE = 'QUICK_PURCHASE',
+}
+
+export enum OfferStatus {
+    ACTIVE = 'ACTIVE',
+    EXPIRED = 'EXPIRED',
+    PENDING = 'PENDING',
 }

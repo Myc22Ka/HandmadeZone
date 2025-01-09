@@ -1,3 +1,4 @@
+import { OfferStatus, OfferType } from '@/types';
 import { Product } from './ProductInterface';
 
 export interface Offer {
@@ -6,12 +7,12 @@ export interface Offer {
     price: number;
     userFirstName: string;
     userLastName: string;
-    type: string;
+    type: OfferType;
     description: string;
     product: Product;
     createdAt: string;
     startDate: string;
     endDate: string;
-    status: string;
+    status: OfferStatus;
     viewCount: number;
 }

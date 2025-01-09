@@ -52,6 +52,9 @@ export const request = ({ method, url, data, params }: RequestConfig) => {
         method,
         url,
         headers,
+        paramsSerializer: {
+            indexes: null,
+        },
         ...(method === 'GET' ? { params } : { data }),
     });
 };
