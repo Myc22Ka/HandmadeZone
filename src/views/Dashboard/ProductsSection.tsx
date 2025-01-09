@@ -3,31 +3,14 @@ import { Button } from '@/components/ui/button';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import useOffers from '@/hooks/useOffers';
 import { useAuth } from '@/contexts/AuthProvider';
-
+import AddOfferForm from './AddOfferForm';
 const ProductSection: React.FC = () => {
     const { user } = useAuth();
     const { offers } = useOffers('/api/offers/search', { userId: user?.id });
-    const [showForm, setShowForm] = useState<boolean>(false);
+    const [showForm, setShowForm] = useState(false);
 
     console.log(offers);
 
-    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { name, value } = e.target;
-    //     setNewProduct(prev => ({ ...prev, [name]: value }));
-    // };
-    // const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    //     const { value } = e.target;
-    //     setNewProduct(prev => ({
-    //         ...prev,
-    //         category: value,
-    //     }));
-    // };
-    // const handleSubmit = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     setProducts([...products, { ...newProduct, id: products.length + 1 }]);
-    //     setNewProduct({ id: 0, name: '', category: '', author: '', image: '' });
-    //     setShowForm(false);
-    // };
     return (
         <DefaultLayout>
             <div className="min-h-screen  p-6">
@@ -37,109 +20,45 @@ const ProductSection: React.FC = () => {
                 <Button onClick={() => setShowForm(!showForm)} variant="default" className="my-2">
                     {showForm ? 'Cancel' : 'Add New Product'}
                 </Button>
-                {/* {showForm && (
-                    <form onSubmit={handleSubmit} className="bg-gray-700 p-6 rounded shadow-md mb-8">
-                        <h2 className="text-2xl font-semibold mb-4">Add New Product</h2>
-                        <div className="mb-4">
-                            <label htmlFor="name" className="block text-sm font-semibold mb-2">
-                                Product Name
-                            </label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={newProduct.name}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border border-gray-300 rounded text-black"
-                                required
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="category" className="block text-sm font-semibold mb-2">
-                                Category
-                            </label>
-                            <select
-                                id="category"
-                                name="category"
-                                value={newProduct.category}
-                                onChange={handleCategoryChange}
-                                className="w-full p-2 border border-gray-300 rounded text-black"
-                                required
-                            >
-                                <option value="">Select Category</option>
-                                <option value="Pottery">Pottery</option>
-                                <option value="Textile">Textile</option>
-                                <option value="Woodworking">Woodworking</option>
-                            </select>
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="author" className="block text-sm font-semibold mb-2">
-                                Author
-                            </label>
-                            <input
-                                type="text"
-                                id="author"
-                                name="author"
-                                value={newProduct.author}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border border-gray-300 rounded text-black"
-                                required
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="image" className="block text-sm font-semibold mb-2">
-                                Image URL
-                            </label>
-                            <input
-                                type="text"
-                                id="image"
-                                name="image"
-                                value={newProduct.image}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border border-gray-300 rounded text-black"
-                                required
-                            />
-                        </div>
-                        <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded">
-                            Add Product
-                        </button>
-                    </form>
-                )} */}
+                {showForm && <AddOfferForm />}
 
                 {/*Wyświetlanie produktów*/}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{/* here code */}</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {offers.map(offer => (
+                        <div
+                            key={offer.id}
+                            className="bg-[#3F4F6E] shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group flex flex-col h-80"
+                        >
+                            {/* Zdjęcie produktu */}
+                            <div className="relative flex-shrink-0 overflow-hidden h-48 group-hover:h-48 transition-all duration-300">
+                                <img
+                                    src={offer.product.imageUrl}
+                                    alt={offer.product.name}
+                                    className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-110"
+                                />
+                            </div>
+
+                            {/* Szczegóły produktu */}
+                            <div className="p-2 flex-grow group-hover:flex-grow-0 group-hover:h-1/4 transition-all duration-300 group-hover:mt-2">
+                                <h2 className="text-mg font-semibold text-black group-hover:text-sm group-hover:text-gray-600 transition-all duration-300">
+                                    {offer.title}
+                                </h2>
+                                <p className="text-white group-hover:text-xs group-hover:text-gray-300 transition-all duration-300">
+                                    <strong>Price:</strong> ${offer.price.toFixed(2)}
+                                </p>
+                                <p className="text-white group-hover:text-xs group-hover:text-gray-300 transition-all duration-300">
+                                    <strong>Category:</strong> {offer.product.category.name}
+                                </p>
+                                <p className="text-white group-hover:text-xs group-hover:text-gray-300 transition-all duration-300">
+                                    <strong>Type:</strong> {offer.type === 'AUCTION' ? 'Auction' : 'Quick purchase'}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </DefaultLayout>
     );
 };
 
 export default ProductSection;
-
-// {data.map((item: Product) => (
-//     <div
-//         key={item.id}
-//         className="bg-gray-400 shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group flex flex-col h-80"
-//     >
-//         {' '}
-//         {/*Zdjęcie produktu*/}
-//         <div className="relative flex-shrink-0 overflow-hidden h-48 group-hover:h-64 transition-all duration-300">
-//             <img
-//                 src={item.image}
-//                 alt={item.name}
-//                 className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-110"
-//             />
-//         </div>
-//         {/*Sekcja tekstu*/}
-//         <div className="p-4 flex-grow group-hover:flex-grow-0 group-hover:h-1/4 transition-all duration-300">
-//             <h2 className="text-xl font-semibold text-gray-800 group-hover:text-sm group-hover:text-gray-600 transition-all duration-300">
-//                 {item.name}
-//             </h2>
-//             <p className="text-white group-hover:text-xs group-hover:text-gray-500 transition-all duration-300">
-//                 <strong>Category:</strong> {item.category}
-//             </p>
-//             <p className="text-white group-hover:text-xs group-hover:text-gray-500 transition-all duration-300">
-//                 <strong>Author:</strong> {item.author}
-//             </p>
-//         </div>
-//     </div>
-// ))}
