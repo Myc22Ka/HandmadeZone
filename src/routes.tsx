@@ -10,6 +10,8 @@ import ProductSection from './views/Dashboard/ProductsSection';
 import UserPanel from './views/Dashboard/ProfileSection';
 import OptionSection from './views/Dashboard/OptionSection';
 import HistorySection from './views/Dashboard/HistorySection';
+import OfferDetails from './views/OffersPage/OfferDetails';
+import ShoppingCart from './views/ShoppingCart/ShoppingCart';
 
 export const routerConfig = {
     future: {
@@ -32,7 +34,11 @@ export const routes: Routes[] = [
         element: <Home />,
     },
     {
-        path: 'offers/:category',
+        path: 'offers/details/:id',
+        element: <OfferDetails />,
+    },
+    {
+        path: 'offers/category/:category',
         element: <Offers />,
     },
     {
@@ -57,6 +63,7 @@ export const routes: Routes[] = [
             { path: 'dashboard/profile', element: <UserPanel /> },
             { path: 'dashboard/settings', element: <OptionSection /> },
             { path: 'dashboard/history', element: <HistorySection /> },
+            { path: 'cart', element: <ShoppingCart /> },
             // Add more protected routes here
         ],
     },

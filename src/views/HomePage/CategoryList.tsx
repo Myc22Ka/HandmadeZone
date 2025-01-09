@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import useCategories from '@/hooks/useCategories';
+import Loader from '@/components/utilities/Loader';
 
 // Animacje Framer Motion
 const containerVariants = {
@@ -13,7 +14,7 @@ const containerVariants = {
 const CategoryList: React.FC = () => {
     const { categories, loading, error } = useCategories('/api/categories', {});
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Loader />;
 
     if (error) return <div>Error: {error}</div>;
 
@@ -33,7 +34,7 @@ const CategoryList: React.FC = () => {
                 >
                     {/* Obraz kategorii */}
                     <Link
-                        to={`/products/${category.name.toLowerCase()}`}
+                        to={`/offers/category/${category.name.toLowerCase()}`}
                         className="relative z-10 flex flex-col items-center justify-center h-full w-full"
                     >
                         <motion.img
@@ -42,8 +43,6 @@ const CategoryList: React.FC = () => {
                             className="absolute inset-0 w-full h-full object-cover opacity-60"
                             whileHover={{ opacity: 0.4 }}
                         />
-
-                        {/* Treść kategorii */}
                         <span className="relative z-20 text-xl font-semibold text-gray-900 dark:text-white">
                             {category.name}
                         </span>

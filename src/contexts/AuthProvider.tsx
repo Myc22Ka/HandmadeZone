@@ -61,11 +61,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     return (
         <AuthProviderContext.Provider value={{ user, setUser, token, setToken, logout, isAuthenticated, loading }}>
-            {loading ? (
-                <div>Loading...</div> // Show a loading spinner or message while checking authentication
-            ) : (
-                children
-            )}
+            {!loading && children}
         </AuthProviderContext.Provider>
     );
 }

@@ -2,23 +2,21 @@ package pl.project.handmadezone.api.services;
 
 import org.springframework.stereotype.Service;
 import pl.project.handmadezone.api.model.Offer;
-import pl.project.handmadezone.api.model.User;
 import pl.project.handmadezone.api.repository.OfferRepository;
 import pl.project.handmadezone.api.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class OfferService {
 
     private final OfferRepository offerRepository;
-    private final UserRepository userRepository; // Add this to fetch the user by name
 
     public OfferService(OfferRepository offerRepository, UserRepository userRepository) {
         this.offerRepository = offerRepository;
-        this.userRepository = userRepository;
+        // Add this to fetch the user by name
     }
 
     public List<Offer> findOffers(Long userId, Double minPrice, Double maxPrice, String description) {
@@ -49,5 +47,13 @@ public class OfferService {
         }
 
         return offers;
+    }
+
+    public Optional<Offer> getOfferById(Long id) {
+        return offerRepository.findById(id);
+    }
+
+    public List<Offer> getOffersByIds(List<Long> ids) {
+        return offerRepository.findAllById(ids);
     }
 }

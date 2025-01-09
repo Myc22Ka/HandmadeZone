@@ -40,7 +40,7 @@ const userItems: Item[] = [
     },
     {
         text: 'Shopping Cart',
-        path: 'cart',
+        path: '/auth/cart',
         icon: <IoCart />,
     },
 ];

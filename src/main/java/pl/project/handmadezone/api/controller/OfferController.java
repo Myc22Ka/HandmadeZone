@@ -23,6 +23,7 @@ public class OfferController {
      * @param minPrice The minimum price filter for the offers (optional).
      * @param maxPrice The maximum price filter for the offers (optional).
      * @param description The description filter for the offers (optional).
+     * @param ids A comma-separated list of offer IDs to retrieve (optional).
      * @return A list of OfferDto objects that match the filter criteria.
      */
     @GetMapping("/search")
@@ -30,9 +31,17 @@ public class OfferController {
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
-            @RequestParam(required = false) String description) {
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) List<Integer> ids) {
 
         List<Offer> offers = offerService.findOffers(userId, minPrice, maxPrice, description);
+
+        if (ids != null && !ids.isEmpty()) {
+            offers = offers.stream()
+                    .filter(offer -> ids.contains(offer.getId()))
+                    .toList();
+        }
+
         return offers.stream()
                 .map(OfferDto::fromOffer)
                 .collect(Collectors.toList());
