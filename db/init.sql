@@ -10,15 +10,16 @@ CREATE TABLE users (
     login VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
+    cash DOUBLE PRECISION,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Insert some sample data
-INSERT INTO users (first_name, last_name, login, email, password)
+INSERT INTO users (first_name, last_name, login, email, password,cash)
 VALUES
-    ('John', 'Doe', 'john_doe', 'john.doe@example.com', 'password123'),
-    ('Jane', 'Smith', 'jane_smith', 'jane.smith@example.com', 'password456'),
-    ('Alice', 'Jones', 'alice_jones', 'alice.jones@example.com', 'password789');
+    ('John', 'Doe', 'john_doe', 'john.doe@example.com', 'password123', '1000.00'),
+    ('Jane', 'Smith', 'jane_smith', 'jane.smith@example.com', 'password456', '10000.00'),
+    ('Alice', 'Jones', 'alice_jones', 'alice.jones@example.com', 'password789', '20000.00');
 
 CREATE TABLE categories (
     id SERIAL PRIMARY KEY,

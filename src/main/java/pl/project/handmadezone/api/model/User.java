@@ -43,7 +43,6 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    @Size(max = 100)
     private Double cash;
 
     @Column(name = "created_at", updatable = false)

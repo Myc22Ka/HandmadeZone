@@ -46,4 +46,11 @@ public class OfferController {
                 .map(OfferDto::fromOffer)
                 .collect(Collectors.toList());
     }
+    @PutMapping("/buy")
+    public void buy(
+            @RequestParam Long buyerId,
+            @RequestParam Long  offerId){
+
+        offerService.buy(buyerId, offerId);
+    }
 }

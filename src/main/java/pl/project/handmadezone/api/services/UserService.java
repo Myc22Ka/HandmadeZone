@@ -1,5 +1,6 @@
 package pl.project.handmadezone.api.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,7 @@ import pl.project.handmadezone.api.dtos.SignUpDto;
 import pl.project.handmadezone.api.dtos.UserDto;
 import pl.project.handmadezone.api.exceptions.AppException;
 import pl.project.handmadezone.api.mappers.UserMapper;
+import pl.project.handmadezone.api.model.Product;
 import pl.project.handmadezone.api.model.User;
 import pl.project.handmadezone.api.repository.UserRepository;
 import pl.project.handmadezone.config.UserAuthenticationProvider;
@@ -66,5 +68,10 @@ public class UserService {
         } catch (Exception e) {
             throw new AppException("Token validation failed", HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    public User getSingleUser(Long id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
     }
 }
