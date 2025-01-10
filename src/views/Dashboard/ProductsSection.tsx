@@ -9,8 +9,6 @@ const ProductSection: React.FC = () => {
     const { offers } = useOffers('/api/offers/search', { userId: user?.id });
     const [showForm, setShowForm] = useState(false);
 
-    console.log(offers);
-
     return (
         <DefaultLayout>
             <div className="min-h-screen  p-6">
