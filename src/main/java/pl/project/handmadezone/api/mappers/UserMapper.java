@@ -15,5 +15,6 @@ public interface UserMapper {
     @Mapping(target = "email", source = "email" )
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "cash", ignore = true)
     User signUpToUser(SignUpDto signUpDto);
 }
