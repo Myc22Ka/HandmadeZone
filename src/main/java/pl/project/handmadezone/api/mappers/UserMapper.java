@@ -12,9 +12,9 @@ public interface UserMapper {
     @Mapping(target = "token", ignore = true)
     UserDto toUserDto(User user);
 
-    //@Mapping(target = "email", source = "email" )
-   // @Mapping(target = "id", ignore = true)
-    //@Mapping(target = "createdAt", ignore = true)
-    //@Mapping(target = "cash", ignore = true)
+    @Mapping(target = "email", source = "email" )
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "cash", ignore = true)
     User signUpToUser(SignUpDto signUpDto);
 }
