@@ -73,7 +73,7 @@ CREATE TYPE offer_status AS ENUM ('ACTIVE', 'EXPIRED', 'SOLD');
 CREATE TABLE offers (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    price INTEGER NOT NULL,
+    price DOUBLE PRECISION NOT NULL,
     user_id INTEGER NOT NULL,
     description TEXT NOT NULL,
     type offer_type NOT NULL,

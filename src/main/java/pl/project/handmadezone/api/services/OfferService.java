@@ -7,13 +7,9 @@ import org.springframework.stereotype.Service;
 import pl.project.handmadezone.api.model.Offer;
 import pl.project.handmadezone.api.model.OfferStatus;
 import pl.project.handmadezone.api.repository.OfferRepository;
-import pl.project.handmadezone.api.repository.UserRepository;
-import pl.project.handmadezone.api.services.UserService;
 import pl.project.handmadezone.api.model.User;
-import pl.project.handmadezone.api.model.Offer;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor

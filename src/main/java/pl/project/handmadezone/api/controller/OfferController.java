@@ -1,11 +1,16 @@
 package pl.project.handmadezone.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import pl.project.handmadezone.api.dtos.OfferDto;
+import pl.project.handmadezone.api.exceptions.GlobalException;
 import pl.project.handmadezone.api.model.Offer;
 import pl.project.handmadezone.api.services.OfferService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,10 +52,21 @@ public class OfferController {
                 .collect(Collectors.toList());
     }
     @PutMapping("/buy")
-    public void buy(
+    public ResponseEntity<GlobalException.ErrorResponse> buy(
             @RequestParam Long buyerId,
-            @RequestParam Long  offerId){
+            @RequestParam Long offerId,
+            WebRequest request) {
 
         offerService.buy(buyerId, offerId);
+
+        GlobalException.ErrorResponse successResponse = new GlobalException.ErrorResponse(
+                LocalDateTime.now().toString(),
+                HttpStatus.OK.getReasonPhrase(),
+                request.getDescription(false).replace("uri=", ""),
+                "Offer successfully purchased.",
+                HttpStatus.OK.value()
+        );
+
+        return ResponseEntity.ok(successResponse);
     }
 }
