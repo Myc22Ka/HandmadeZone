@@ -24,6 +24,10 @@ import { TiMessages } from '@react-icons/all-files/ti/TiMessages';
 import { MdDashboard } from '@react-icons/all-files/md/MdDashboard';
 import { IoCart } from '@react-icons/all-files/io5/IoCart';
 import { IoIosLogOut } from '@react-icons/all-files/io/IoIosLogOut';
+import { FaRegUserCircle } from '@react-icons/all-files/fa/FaRegUserCircle';
+import { IoSettingsOutline } from '@react-icons/all-files/io5/IoSettingsOutline';
+import { BiPurchaseTagAlt } from '@react-icons/all-files/bi/BiPurchaseTagAlt';
+import { FaListUl } from '@react-icons/all-files/fa/FaListUl';
 
 type Item = {
     text: string;
@@ -61,24 +65,24 @@ const mainSideItems: Item[] = [
 
 const dashboardItems = [
     {
-        text: 'Your Products',
+        text: 'Your Offerts',
         path: '/auth/dashboard/yourproducts',
-        icon: <IoCart />,
+        icon: <FaListUl />,
     },
     {
         text: 'History',
         path: '/auth/dashboard/history',
-        icon: <IoIosNotifications />,
+        icon: <BiPurchaseTagAlt />,
     },
     {
         text: 'Profile',
         path: '/auth/dashboard/profile',
-        icon: <TiMessages />,
+        icon: <FaRegUserCircle />,
     },
     {
         text: 'Settings',
         path: '/auth/dashboard/settings',
-        icon: <IoIosNotifications />,
+        icon: <IoSettingsOutline />,
     },
 ];
 const AppSidebar: React.FC = () => {

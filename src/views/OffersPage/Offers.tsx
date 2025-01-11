@@ -1,10 +1,12 @@
-import Loader from '@/components/utilities/Loader';
-import useOffers from '@/hooks/useOffers';
-import { Offer } from '@/interfaces/OfferInterface';
-import useCategories from '@/hooks/useCategories';
-import DefaultLayout from '@/layouts/DefaultLayout';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
+import { Card, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import useOffers from '@/hooks/useOffers';
+import useCategories from '@/hooks/useCategories';
+import DefaultLayout from '@/layouts/DefaultLayout';
 
 const Offers: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
@@ -15,77 +17,81 @@ const Offers: React.FC = () => {
         selectedCategory ? { category: selectedCategory } : {}
     );
 
-    const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedCategory(event.target.value);
+    const handleCategoryChange = (value: string) => {
+        setSelectedCategory(value);
     };
 
     if (loading)
         return (
             <DefaultLayout>
-                <Loader />
+                <div className="flex justify-center items-center h-full">
+                    <Skeleton className="w-16 h-16 rounded-full" />
+                </div>
             </DefaultLayout>
         );
 
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <div className="text-red-500">Error: {error}</div>;
 
     return (
         <DefaultLayout>
-            <div>
-                <h1>{selectedCategory ? `Offers in ${selectedCategory}` : 'All Offers'}</h1>
-
-                {/* Dropdown do zmiany kategorii */}
+            <div className="p-4">
+                {/* Dropdown for category selection */}
                 <div className="mb-4">
-                    <label htmlFor="category" className="text-white">
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
                         Select Category:
                     </label>
-                    <select
-                        id="category"
-                        value={selectedCategory || ''}
-                        onChange={handleCategoryChange}
-                        className="ml-2 p-2 rounded-md bg-gray-800 text-white"
-                    >
-                        <option value="">All Categories</option>
-                        {categories.map(category => (
-                            <option key={category.id} value={category.name}>
-                                {category.name}
-                            </option>
-                        ))}
-                    </select>
+                    <Select onValueChange={handleCategoryChange} defaultValue={undefined}>
+                        <SelectTrigger>
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value={undefined}>All Categories</SelectItem>
+                            {categories.map(category => (
+                                <SelectItem key={category.id} value={category.name}>
+                                    {category.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
 
-                <ul>
+                <ul className="space-y-2">
                     {offers
                         .filter(
-                            (offer: Offer) =>
+                            offer =>
                                 !selectedCategory ||
                                 offer.product.category.name.toLowerCase() === selectedCategory.toLowerCase()
                         )
-                        .map((offer: Offer) => (
-                            <Link key={offer.id} to={`/offers/details/${offer.id}`}>
-                                <a className="flex w-full bg-[#3F4F6E] border-2 border-white shadow-lg mt-2 mb-2 rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group h-40">
-                                    <div className="w-1/4 flex-shrink-0 overflow-hidden h-48 group-hover:h-48 transition-all duration-300">
+                        .map(offer => (
+                            <Link key={offer.id} to={`/offers/details/${offer.id}`} className="block">
+                                <Card className="hover:shadow-lg transition-shadow w-full flex">
+                                    <div className="w-1/4 h-full relative">
                                         <img
                                             src={offer.product.imageUrl}
                                             alt={offer.product.name}
-                                            className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-110"
+                                            className="w-full h-full object-cover"
                                         />
                                     </div>
-
-                                    <div className="w-3/4 p-4 flex flex-col justify-center items-center">
-                                        <h2 className="text-xl font-semibold text-gray-800 group-hover:text-sm group-hover:text-gray-600 transition-all duration-300">
-                                            {offer.title}
-                                        </h2>
-                                        <p className="text-white group-hover:text-xs group-hover:text-gray-500 transition-all duration-300">
-                                            <strong>Price:</strong> ${offer.price.toFixed(2)}
-                                        </p>
-                                        <p className="text-white group-hover:text-xs group-hover:text-gray-500 transition-all duration-300">
-                                            <strong>Category:</strong> {offer.product.category.name}
-                                        </p>
-                                        <p className="text-white group-hover:text-xs group-hover:text-gray-500 transition-all duration-300">
-                                            <strong>Seller:</strong> {offer.userFirstName} {offer.userLastName}
-                                        </p>
+                                    <div className="w-3/4 flex  justify-between p-4 space-bee">
+                                        <CardContent>
+                                            <CardTitle className="text-lg font-bold truncate">{offer.title}</CardTitle>
+                                            <CardDescription>
+                                                <p>
+                                                    <strong>Price:</strong> ${offer.price.toFixed(2)}
+                                                </p>
+                                                <p>
+                                                    <strong>Category:</strong> {offer.product.category.name}
+                                                </p>
+                                                <p>
+                                                    <strong>Seller:</strong> {offer.userFirstName} {offer.userLastName}
+                                                </p>
+                                            </CardDescription>
+                                        </CardContent>
+                                        <CardFooter>
+                                            <Button variant="link">View Details</Button>
+                                        </CardFooter>
                                     </div>
-                                </a>
+                                </Card>
                             </Link>
                         ))}
                 </ul>

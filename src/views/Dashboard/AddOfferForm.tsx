@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import useCategories from '@/hooks/useCategories';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+
+const WEEK_DURATION = 7;
 
 const AddOfferForm = () => {
     const { categories, loading: loadingCategories } = useCategories('/api/categories', {});
@@ -8,14 +14,14 @@ const AddOfferForm = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        price: 0,
+        price: '',
         type: '',
         categoryId: '',
         product: {
             name: '',
             manufacturer: '',
             material: '',
-            rating: 0,
+            rating: '',
         },
         startDate: '',
         endDate: '',
@@ -25,7 +31,7 @@ const AddOfferForm = () => {
         if (formData.startDate) {
             const start = new Date(formData.startDate);
             const end = new Date(start);
-            end.setDate(start.getDate() + 7);
+            end.setDate(start.getDate() + WEEK_DURATION);
             setFormData(prev => ({ ...prev, endDate: end.toISOString().split('T')[0] }));
         }
     }, [formData.startDate]);
@@ -49,7 +55,15 @@ const AddOfferForm = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('Offer Data:', formData);
+        const parsedData = {
+            ...formData,
+            price: parseFloat(formData.price),
+            product: {
+                ...formData.product,
+                rating: parseFloat(formData.product.rating),
+            },
+        };
+        console.log('Offer Data:', parsedData);
         // Add logic to submit the form data
     };
 
@@ -58,163 +72,109 @@ const AddOfferForm = () => {
     return (
         <form
             onSubmit={handleSubmit}
-            className="max-w-3xl mx-auto mb-2 bg-[#3F4F6E] p-6 rounded shadow-md space-y-4 text-black"
+            className="max-w-3xl mx-auto mb-2 space-y-2 border border-gray-300 p-4 rounded-md"
         >
-            <div className="flex flex-col">
-                <label htmlFor="title" className="font-medium mb-1">
-                    Title
-                </label>
-                <input
-                    id="title"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    required
-                    className="border rounded px-3 py-2"
-                />
+            <div>
+                <Label htmlFor="title">Title</Label>
+                <Input id="title" name="title" value={formData.title} onChange={handleChange} required />
             </div>
 
-            <div className="flex flex-col">
-                <label htmlFor="description" className="font-medium mb-1">
-                    Description
-                </label>
-                <textarea
+            <div>
+                <Label htmlFor="description">Description</Label>
+                <Textarea
                     id="description"
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
                     required
-                    className="border rounded px-3 py-2"
-                ></textarea>
-            </div>
-
-            <div className="flex flex-col">
-                <label htmlFor="price" className="font-medium mb-1">
-                    Price
-                </label>
-                <input
-                    id="price"
-                    name="price"
-                    type="number"
-                    step="0.01"
-                    value={formData.price}
-                    onChange={handleChange}
-                    required
-                    className="border rounded px-3 py-2"
                 />
             </div>
 
-            <div className="flex flex-col">
-                <label htmlFor="type" className="font-medium mb-1">
-                    Type
-                </label>
-                <select
-                    id="type"
-                    name="type"
-                    value={formData.type}
-                    onChange={handleChange}
-                    required
-                    className="border rounded px-3 py-2"
-                >
-                    <option value="">Select Type</option>
-                    <option value="AUCTION">Auction</option>
-                    <option value="QUICK_PURCHASE">Quick purchase</option>
-                </select>
+            <div>
+                <Label htmlFor="price">Price</Label>
+                <Input id="price" name="price" type="text" value={formData.price} onChange={handleChange} required />
             </div>
 
-            <div className="flex flex-col">
-                <label htmlFor="categoryId" className="font-medium mb-1">
-                    Category
-                </label>
-                <select
-                    id="categoryId"
-                    name="categoryId"
-                    value={formData.categoryId}
-                    onChange={handleChange}
-                    required
-                    className="border rounded px-3 py-2"
-                >
-                    <option value="">Select Category</option>
-                    {categories.map(category => (
-                        <option key={category.id} value={category.id}>
-                            {category.name}
-                        </option>
-                    ))}
-                </select>
+            <div>
+                <Label htmlFor="type">Type</Label>
+                <Select onValueChange={value => setFormData({ ...formData, type: value })}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="AUCTION">Auction</SelectItem>
+                        <SelectItem value="QUICK_PURCHASE">Quick purchase</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
 
-            <div className="flex flex-col">
-                <label htmlFor="productName" className="font-medium mb-1">
-                    Product Name
-                </label>
-                <input
+            <div>
+                <Label htmlFor="categoryId">Category</Label>
+                <Select onValueChange={value => setFormData({ ...formData, categoryId: value })}>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {categories.map(category => (
+                            <SelectItem key={category.id} value={String(category.id)}>
+                                {category.name}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
+
+            <div>
+                <Label htmlFor="productName">Product Name</Label>
+                <Input
                     id="productName"
                     name="product.name"
                     value={formData.product.name}
                     onChange={handleChange}
                     required
-                    className="border rounded px-3 py-2"
                 />
             </div>
 
-            <div className="flex flex-col">
-                <label htmlFor="productManufacturer" className="font-medium mb-1">
-                    Manufacturer
-                </label>
-                <input
+            <div>
+                <Label htmlFor="productManufacturer">Manufacturer</Label>
+                <Input
                     id="productManufacturer"
                     name="product.manufacturer"
                     value={formData.product.manufacturer}
                     onChange={handleChange}
                     required
-                    className="border rounded px-3 py-2"
                 />
             </div>
 
-            <div className="flex flex-col">
-                <label htmlFor="productMaterial" className="font-medium mb-1">
-                    Material
-                </label>
-                <input
+            <div>
+                <Label htmlFor="productMaterial">Material</Label>
+                <Input
                     id="productMaterial"
                     name="product.material"
                     value={formData.product.material}
                     onChange={handleChange}
                     required
-                    className="border rounded px-3 py-2"
                 />
             </div>
 
-            <div className="flex flex-col">
-                <label htmlFor="startDate" className="font-medium mb-1">
-                    Start Date
-                </label>
-                <input
+            <div>
+                <Label htmlFor="startDate">Start Date</Label>
+                <Input
                     id="startDate"
                     name="startDate"
                     type="date"
                     value={formData.startDate}
                     onChange={handleChange}
                     required
-                    className="border rounded px-3 py-2"
                 />
             </div>
 
-            <div className="flex flex-col">
-                <label htmlFor="endDate" className="font-medium mb-1">
-                    End Date
-                </label>
-                <input
-                    id="endDate"
-                    name="endDate"
-                    type="date"
-                    value={formData.endDate}
-                    readOnly
-                    className="border rounded px-3 py-2 bg-gray-100"
-                />
+            <div>
+                <Label htmlFor="endDate">End Date</Label>
+                <Input id="endDate" name="endDate" type="date" value={formData.endDate} readOnly />
             </div>
 
-            <Button variant="default" className="w-full py-2 px-4 rounded text-black">
+            <Button variant="default" className="w-full">
                 Add Offer
             </Button>
         </form>
