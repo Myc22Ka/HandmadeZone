@@ -8,6 +8,8 @@ import pl.project.handmadezone.api.model.Offer;
 import pl.project.handmadezone.api.model.OfferStatus;
 import pl.project.handmadezone.api.repository.OfferRepository;
 import pl.project.handmadezone.api.model.User;
+import pl.project.handmadezone.api.model.OfferStatus;
+import pl.project.handmadezone.api.model.OfferType;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,23 +55,33 @@ public class OfferService {
 
 
     @Transactional
-    public void buy(Long buyerId, Long offerId){
+    public void buy(Long buyerId, Long offerId) {
+
         User buyer = userService.getSingleUser(buyerId);
+
         Offer offer = offerRepository.findById(offerId)
                 .orElseThrow(() -> new EntityNotFoundException("Offer not found with ID: " + offerId));
+
+        if (!offer.getStatus().equals(OfferStatus.ACTIVE)) {
+            throw new IllegalStateException("You can't buy a sold product.");
+        }
 
         if (buyer.getCash() < offer.getPrice()) {
             throw new IllegalStateException("Insufficient funds to purchase the offer.");
         }
 
-        buyer.setCash(buyer.getCash() - offer.getPrice());
-        User seller = userService.getSingleUser(offer.getUser().getId());
+        if (offer.getType().equals(OfferType.QUICK_PURCHASE)) {
+            User seller = userService.getSingleUser(offer.getUser().getId());
 
-        if (buyer.getId().equals(seller.getId()) ) {
-            throw new IllegalStateException("You can't buy yours product.");
+            if (buyer.getId().equals(seller.getId())) {
+                throw new IllegalStateException("You can't buy your own product.");
+            }
+
+            buyer.setCash(buyer.getCash() - offer.getPrice());
+            seller.setCash(seller.getCash() + offer.getPrice());
+
+            offer.setStatus(OfferStatus.SOLD);
         }
-        seller.setCash(seller.getCash() + offer.getPrice());
-
-        offer.setStatus(OfferStatus.SOLD);
     }
+
 }

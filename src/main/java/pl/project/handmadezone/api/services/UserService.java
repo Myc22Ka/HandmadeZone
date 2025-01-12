@@ -1,6 +1,7 @@
 package pl.project.handmadezone.api.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -73,5 +74,11 @@ public class UserService {
     public User getSingleUser(Long id){
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
+    }
+
+    @Transactional
+    public void addCash(Long id, Double cash){
+        User user = getSingleUser(id);
+        user.setCash(user.getCash() + cash);
     }
 }
