@@ -77,5 +77,5 @@ export const verify = (method: Method, url: string, data: unknown) => {
 // Helper functions for common HTTP methods
 export const get = (url: string, params?: unknown) => request({ method: 'GET', url, params });
 export const post = (url: string, data?: unknown) => request({ method: 'POST', url, data });
-export const put = (url: string, data?: unknown) => request({ method: 'PUT', url, data });
+export const put = (url: string, params?: unknown) => request({ method: 'PUT', url, params });
 export const del = (url: string, data?: unknown) => request({ method: 'DELETE', url, data });

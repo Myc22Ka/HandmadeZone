@@ -43,7 +43,7 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private Double cash;
+    private Double cash = 0.0;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

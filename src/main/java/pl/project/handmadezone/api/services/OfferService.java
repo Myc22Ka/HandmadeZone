@@ -3,7 +3,9 @@ package pl.project.handmadezone.api.services;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import pl.project.handmadezone.api.exceptions.AppException;
 import pl.project.handmadezone.api.model.Offer;
 import pl.project.handmadezone.api.model.OfferStatus;
 import pl.project.handmadezone.api.repository.OfferRepository;
@@ -63,18 +65,18 @@ public class OfferService {
                 .orElseThrow(() -> new EntityNotFoundException("Offer not found with ID: " + offerId));
 
         if (!offer.getStatus().equals(OfferStatus.ACTIVE)) {
-            throw new IllegalStateException("You can't buy a sold product.");
+            throw new AppException("You can't buy a sold product.", HttpStatus.BAD_REQUEST);
         }
 
         if (buyer.getCash() < offer.getPrice()) {
-            throw new IllegalStateException("Insufficient funds to purchase the offer.");
+            throw new AppException("Insufficient funds to purchase the offer.", HttpStatus.BAD_REQUEST);
         }
 
         if (offer.getType().equals(OfferType.QUICK_PURCHASE)) {
             User seller = userService.getSingleUser(offer.getUser().getId());
 
             if (buyer.getId().equals(seller.getId())) {
-                throw new IllegalStateException("You can't buy your own product.");
+                throw new AppException("You can't buy your own product.", HttpStatus.BAD_REQUEST);
             }
 
             buyer.setCash(buyer.getCash() - offer.getPrice());

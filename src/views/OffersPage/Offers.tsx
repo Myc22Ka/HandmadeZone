@@ -45,7 +45,7 @@ const Offers: React.FC = () => {
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value={undefined}>All Categories</SelectItem>
+                            <SelectItem value="all">All Categories</SelectItem>
                             {categories.map(category => (
                                 <SelectItem key={category.id} value={category.name}>
                                     {category.name}

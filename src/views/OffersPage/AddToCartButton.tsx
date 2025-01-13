@@ -10,18 +10,32 @@ import {
 } from '@/components/ui/dialog';
 import { Offer } from '@/interfaces/OfferInterface';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthProvider';
+import { toast } from 'sonner';
 
 interface AddToCartButtonProps {
     offer: Offer;
-    add: (id: number) => void;
 }
 
-const AddToCartButton: React.FC<AddToCartButtonProps> = ({ offer, add }) => {
+const AddToCartButton: React.FC<AddToCartButtonProps> = ({ offer }) => {
     const [open, setOpen] = useState(false);
+    const { cart, cartActions, isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     const handleAddToCart = () => {
-        add(offer.id);
+        if (!isAuthenticated) {
+            navigate('/login');
+            return;
+        }
+
+        const isInCart = cart.items.some(item => item.id === offer.id);
+
+        if (isInCart) {
+            toast.error('Item is already in the cart');
+            return;
+        }
+
+        cartActions.add(offer.id);
         setOpen(true);
     };
 
@@ -50,7 +64,7 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ offer, add }) => {
                     <hr />
                     <div className="flex justify-between">
                         <DialogClose asChild>
-                            <Button type="button" variant="secondary">
+                            <Button type="button" variant="secondary" onClick={() => navigate('/offers')}>
                                 Continue shopping
                             </Button>
                         </DialogClose>

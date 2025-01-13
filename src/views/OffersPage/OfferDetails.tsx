@@ -1,5 +1,4 @@
 import Loader from '@/components/utilities/Loader';
-import { useAuth } from '@/contexts/AuthProvider';
 import useOffers from '@/hooks/useOffers';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import { OfferType } from '@/types';
@@ -8,10 +7,10 @@ import { useParams } from 'react-router-dom';
 import AddToCartButton from './AddToCartButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import QuickPurchaseButton from './QuickPurchaseButton';
 
 const OfferDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const { cartActions } = useAuth();
 
     const { offers, loading } = useOffers('/api/offers/search', { ids: id });
 
@@ -64,18 +63,12 @@ const OfferDetails: React.FC = () => {
                         {/* Sekcja przycisków */}
                         <div className="flex flex-wrap gap-4">
                             {offer.type === OfferType.QUICK_PURCHASE ? (
-                                <Button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                                    Quick Purchase
-                                </Button>
+                                <QuickPurchaseButton offer={offer} />
                             ) : (
-                                <Button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                                    Bid
-                                </Button>
+                                <Button variant="default">Bid</Button>
                             )}
 
-                            {offer.type === OfferType.QUICK_PURCHASE && (
-                                <AddToCartButton offer={offer} add={cartActions.add} />
-                            )}
+                            {offer.type === OfferType.QUICK_PURCHASE && <AddToCartButton offer={offer} />}
                         </div>
                     </CardContent>
                 </Card>
