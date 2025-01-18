@@ -12,6 +12,7 @@ import pl.project.handmadezone.api.repository.OfferRepository;
 import pl.project.handmadezone.api.model.User;
 import pl.project.handmadezone.api.model.OfferStatus;
 import pl.project.handmadezone.api.model.OfferType;
+import pl.project.handmadezone.api.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +24,8 @@ public class OfferService {
     private final OfferRepository offerRepository;
 
     private final UserService userService;
+
+    private final UserRepository userRepository;
 
 
     public List<Offer> findOffers(Long userId, Double minPrice, Double maxPrice, String description) {
@@ -86,6 +89,33 @@ public class OfferService {
         }
     }
     public Offer addOffer(Offer offer){
+        return offerRepository.save(offer);
+    }
+
+    @Transactional
+    public Offer placeBid(Long offerId, Long userId, Integer bidAmount) {
+
+        Offer offer = offerRepository.findById(offerId)
+                .orElseThrow(() -> new AppException("Offer not found with ID: " + offerId, HttpStatus.BAD_REQUEST));
+
+        User bidder = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException("User not found with ID: " + userId, HttpStatus.BAD_REQUEST));
+        if (offer.getType() != OfferType.AUCTION) {
+            throw new AppException("This is not auction.", HttpStatus.BAD_REQUEST);
+        }
+        if (bidAmount <= offer.getPrice()) {
+            throw new AppException("Bid amount must be higher than the current price.", HttpStatus.BAD_REQUEST);
+        }
+        if (bidAmount > bidder.getCash()) {
+            throw new AppException("You don't have enough cash.", HttpStatus.BAD_REQUEST);
+        }
+        if (bidder.getId().equals(offer.getUser().getId())) {
+            throw new AppException("You can't bid your offer", HttpStatus.BAD_REQUEST);
+        }
+        offer.setPrice(bidAmount);
+
+        offer.getBidders().add(bidder);
+
         return offerRepository.save(offer);
     }
 

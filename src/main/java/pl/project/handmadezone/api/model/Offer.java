@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.accessibility.AccessibleState;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -56,6 +58,14 @@ public class Offer {
 
     @Column(name = "view_count", nullable = false)
     private Integer viewCount;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "offer_bids",
+            joinColumns = @JoinColumn(name = "offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> bidders = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
