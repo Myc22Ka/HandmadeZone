@@ -51,6 +51,10 @@ public class OfferController {
                 .map(OfferDto::fromOffer)
                 .collect(Collectors.toList());
     }
+    @PostMapping("/{id}")
+    public Offer addOffer(@RequestBody Offer offer){
+        return offerService.addOffer(offer);
+    }
     @PutMapping("/buy")
     public ResponseEntity<GlobalException.ErrorResponse> buy(
             @RequestParam Long buyerId,

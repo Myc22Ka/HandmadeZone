@@ -85,5 +85,8 @@ public class OfferService {
             offer.setStatus(OfferStatus.SOLD);
         }
     }
+    public Offer addOffer(Offer offer){
+        return offerRepository.save(offer);
+    }
 
 }
