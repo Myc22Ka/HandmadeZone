@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS offers CASCADE;
+DROP TABLE IF EXISTS offer_bids CASCADE;
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -93,3 +94,13 @@ INSERT INTO offers
 VALUES
     ('Self Driving Pen Writing Tool - Auction', 500, 1, 'Bid on this amazing self-driving pen.', 'AUCTION', 1, NOW(), NOW() + INTERVAL '7 days', 'ACTIVE', 0),
     ('Handcrafted Wooden Table - Quick Purchase', 1500, 2, 'Beautiful handcrafted wooden table.', 'QUICK_PURCHASE', 2, NOW(), NOW() + INTERVAL '30 days', 'ACTIVE', 5);
+
+CREATE TABLE offer_bids (
+    id SERIAL PRIMARY KEY,
+    offer_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    bid_amount DOUBLE PRECISION NOT NULL,
+    bid_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (offer_id) REFERENCES offers(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
