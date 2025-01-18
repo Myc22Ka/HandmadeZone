@@ -16,3 +16,27 @@ export interface Offer {
     status: OfferStatus;
     viewCount: number;
 }
+
+export type OfferSearchRequest = {
+    offerIds?: number[];
+    userId?: number;
+    minPrice?: number;
+    maxPrice?: number;
+    description?: string;
+    title?: string;
+    type?: OfferType;
+    userFirstName?: string;
+    userLastName?: string;
+    categoryName?: string;
+    productName?: string;
+    manufacturer?: string;
+    minRating?: number;
+    minReviews?: number;
+    material?: string;
+    minWeight?: number;
+    maxWeight?: number;
+    startDate?: Date;
+    endDate?: Date;
+    status?: OfferStatus;
+    minViewCount?: number;
+};

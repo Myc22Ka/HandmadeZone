@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Offer } from '@/interfaces/OfferInterface';
-import { get } from '@/lib/axiosHelper';
+import { post } from '@/lib/axiosHelper';
 
-const useOffers = (url: string, data: unknown) => {
+const useOffers = <T,>(url: string, data: T) => {
     const [offers, setOffers] = useState<Offer[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        get(url, data)
+        if (!url || !data) return;
+
+        setLoading(true);
+        post(url, data)
             .then(response => {
                 setOffers(response.data);
             })
             .catch(() => setError('Failed to load offers'))
             .finally(() => setLoading(false));
-        return;
-    }, []);
+    }, [url, data]);
 
     return { offers, loading, error };
 };

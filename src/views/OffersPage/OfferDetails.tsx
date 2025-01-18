@@ -2,19 +2,22 @@ import Loader from '@/components/utilities/Loader';
 import useOffers from '@/hooks/useOffers';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import { OfferType } from '@/types';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import AddToCartButton from './AddToCartButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import QuickPurchaseButton from './QuickPurchaseButton';
+import { OfferSearchRequest } from '@/interfaces/OfferInterface';
 
 const OfferDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
 
-    const { offers, loading } = useOffers('/api/offers/search', { ids: id });
+    const offerIds = useMemo(() => ({ offerIds: [Number(id)] }), [id]);
 
-    if (loading)
+    const { offers, loading } = useOffers<OfferSearchRequest>(`/api/offers/search`, offerIds);
+
+    if (loading || offers.length === 0)
         return (
             <DefaultLayout>
                 <Loader />

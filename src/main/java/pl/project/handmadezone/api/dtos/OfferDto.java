@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 public class OfferDto {
 
-    private Integer id;
+    private Long id;
     private String title;
     private Integer price;
     private String userFirstName;
