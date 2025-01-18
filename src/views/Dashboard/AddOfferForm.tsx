@@ -23,7 +23,7 @@ const AddOfferForm = () => {
             material: '',
             rating: '',
         },
-        startDate: '',
+        startDate: new Date().toISOString().split('T')[0],
         endDate: '',
     });
 
@@ -145,35 +145,37 @@ const AddOfferForm = () => {
                     required
                 />
             </div>
+            {formData.type === 'AUCTION' && (
+                <>
+                    <div>
+                        <Label htmlFor="productMaterial">Material</Label>
+                        <Input
+                            id="productMaterial"
+                            name="product.material"
+                            value={formData.product.material}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
 
-            <div>
-                <Label htmlFor="productMaterial">Material</Label>
-                <Input
-                    id="productMaterial"
-                    name="product.material"
-                    value={formData.product.material}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
+                    <div>
+                        <Label htmlFor="startDate">Start Date</Label>
+                        <Input
+                            id="startDate"
+                            name="startDate"
+                            type="date"
+                            value={formData.startDate}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
 
-            <div>
-                <Label htmlFor="startDate">Start Date</Label>
-                <Input
-                    id="startDate"
-                    name="startDate"
-                    type="date"
-                    value={formData.startDate}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-
-            <div>
-                <Label htmlFor="endDate">End Date</Label>
-                <Input id="endDate" name="endDate" type="date" value={formData.endDate} readOnly />
-            </div>
-
+                    <div>
+                        <Label htmlFor="endDate">End Date</Label>
+                        <Input id="endDate" name="endDate" type="date" value={formData.endDate} readOnly />
+                    </div>
+                </>
+            )}
             <Button variant="default" className="w-full">
                 Add Offer
             </Button>
