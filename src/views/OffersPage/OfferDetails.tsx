@@ -67,7 +67,7 @@ const OfferDetails: React.FC = () => {
                                 <strong>Rating:</strong> {offer?.product.rating}/5
                             </CardDescription>
                             <CardDescription className="text-3xl font-extrabold ">
-                                <strong>Price:</strong> ${offer?.price.toFixed(2)}
+                                <strong>Price:</strong> {offer?.price} zł
                             </CardDescription>
                         </CardHeader>
 

@@ -4,27 +4,22 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import OfferCard from './OfferCard';
 import Loader from '@/components/utilities/Loader';
 import { OfferSearchRequest } from '@/interfaces/OfferInterface';
-import OfferCategoryFilter from './OfferCategoryFilter';
 import { useParams } from 'react-router';
+import OfferHeader from './OfferHeader';
 
 const Offers: React.FC = () => {
     const categoryName = useParams<{ category: string }>();
 
-    const [selectedCategory, setSelectedCategory] = useState<OfferSearchRequest>({
+    const [filter, setFilter] = useState<OfferSearchRequest>({
         categoryName: categoryName.category ?? 'all',
     });
 
-    const { offers, error, loading } = useOffers('/api/offers/search', selectedCategory);
-
-    if (error) return <div className="text-red-500">Error: {error}</div>;
+    const { offers, loading } = useOffers('/api/offers/search', filter);
 
     return (
         <DefaultLayout>
             <div className="p-4">
-                <OfferCategoryFilter
-                    setSelectedCategory={setSelectedCategory}
-                    defaultValue={categoryName.category ?? 'all'}
-                />
+                <OfferHeader defaultFilter={filter} setFilter={setFilter} />
 
                 {loading ? (
                     <Loader />

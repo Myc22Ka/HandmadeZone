@@ -17,6 +17,8 @@ import pl.project.handmadezone.api.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -28,6 +30,24 @@ public class OfferService {
     private final UserService userService;
 
     private final UserRepository userRepository;
+
+    private List<Offer> applyRegexFilter(List<Offer> offers, String criteria, Function<Offer, String> valueExtractor) {
+        if (criteria != null && !criteria.isEmpty()) {
+            String[] phrases = criteria.split(",");
+            return offers.stream()
+                    .filter(offer -> {
+                        for (String phrase : phrases) {
+                            String regex = "(?i).*" + Pattern.quote(phrase.trim()) + ".*";
+                            if (Pattern.compile(regex).matcher(valueExtractor.apply(offer)).matches()) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    })
+                    .collect(Collectors.toList());
+        }
+        return offers;
+    }
 
     public List<Offer> findOffers(OfferSearchCriteria criteria) {
         List<Offer> offers = offerRepository.findAll();
@@ -56,35 +76,13 @@ public class OfferService {
                     .collect(Collectors.toList());
         }
 
-        if (criteria.getDescription() != null && !criteria.getDescription().isEmpty()) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getDescription().toLowerCase().contains(criteria.getDescription().toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getTitle() != null && !criteria.getTitle().isEmpty()) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getTitle().toLowerCase().contains(criteria.getTitle().toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getType() != null) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getType() == OfferType.valueOf(criteria.getType().toUpperCase()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getUserFirstName() != null && !criteria.getUserFirstName().isEmpty()) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getUser().getFirstName().equalsIgnoreCase(criteria.getUserFirstName()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getUserLastName() != null && !criteria.getUserLastName().isEmpty()) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getUser().getLastName().equalsIgnoreCase(criteria.getUserLastName()))
-                    .collect(Collectors.toList());
-        }
+        // Apply regex-based filtering for text fields
+        offers = applyRegexFilter(offers, criteria.getDescription(), Offer::getDescription);
+        offers = applyRegexFilter(offers, criteria.getTitle(), Offer::getTitle);
+        offers = applyRegexFilter(offers, criteria.getUserFirstName(), offer -> offer.getUser().getFirstName());
+        offers = applyRegexFilter(offers, criteria.getUserLastName(), offer -> offer.getUser().getLastName());
+        offers = applyRegexFilter(offers, criteria.getProductName(), offer -> offer.getProduct().getName());
+        offers = applyRegexFilter(offers, criteria.getManufacturer(), offer -> offer.getProduct().getManufacturer());
 
         if (criteria.getCategoryName() != null && !criteria.getCategoryName().isEmpty() && !"all".equalsIgnoreCase(criteria.getCategoryName())) {
             offers = offers.stream()
@@ -92,15 +90,9 @@ public class OfferService {
                     .collect(Collectors.toList());
         }
 
-        if (criteria.getProductName() != null && !criteria.getProductName().isEmpty()) {
+        if (criteria.getType() != null) {
             offers = offers.stream()
-                    .filter(offer -> offer.getProduct().getName().equalsIgnoreCase(criteria.getProductName()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getManufacturer() != null && !criteria.getManufacturer().isEmpty()) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getProduct().getManufacturer().equalsIgnoreCase(criteria.getManufacturer()))
+                    .filter(offer -> offer.getType() == OfferType.valueOf(criteria.getType().toUpperCase()))
                     .collect(Collectors.toList());
         }
 
@@ -160,7 +152,6 @@ public class OfferService {
 
         return offers;
     }
-
 
     @Transactional
     public void buy(Long buyerId, Long offerId) {
