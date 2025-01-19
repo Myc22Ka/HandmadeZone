@@ -61,7 +61,7 @@ public class OfferController {
         return ResponseEntity.ok(successResponse);
     }
 
-    @PostMapping("/{offerId}/bid")
+    @PutMapping("/{offerId}/bid")
     public ResponseEntity<Offer> placeBid(
             @PathVariable Long offerId,
             @RequestParam Long userId,

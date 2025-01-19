@@ -10,9 +10,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import QuickPurchaseButton from './QuickPurchaseButton';
 import { OfferSearchRequest } from '@/interfaces/OfferInterface';
 import { Input } from '@/components/ui/input';
+import { put } from '@/lib/axiosHelper';
+import { useAuth } from '@/contexts/AuthProvider';
 
 const OfferDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
+    const { user } = useAuth();
 
     const [bidPrice, setBidPrice] = useState<string>('');
     const offerIds = useMemo(() => ({ offerIds: [Number(id)] }), [id]);
@@ -30,7 +33,13 @@ const OfferDetails: React.FC = () => {
 
     const handleBid = () => {
         console.log('Proposed bid:', bidPrice);
-        // Logika składania oferty (np. wysyłanie danych na serwer)
+
+        put(`/api/offers/${offer.id}/bid`, {
+            userId: user?.id,
+            bidAmount: bidPrice,
+        }).then(response => {
+            console.log(response);
+        });
     };
 
     return (
@@ -72,28 +81,25 @@ const OfferDetails: React.FC = () => {
                         </CardHeader>
 
                         {/* Sekcja przycisków */}
-                        <div className="flex flex-wrap gap-4">
+                        <div className="flex justify-end">
                             {offer.type === OfferType.AUCTION ? (
-                                <>
-                                    {/* Pole na wpisanie ceny */}
-                                    <div className="flex flex-col gap-2">
-                                        <Input
-                                            type="number"
-                                            step="0.01"
-                                            placeholder="Enter your bid"
-                                            value={bidPrice}
-                                            onChange={e => setBidPrice(e.target.value)}
-                                            className="w-full"
-                                        />
-                                        <Button
-                                            variant="default"
-                                            onClick={handleBid}
-                                            disabled={!bidPrice || parseFloat(bidPrice) <= 0}
-                                        >
-                                            Bid
-                                        </Button>
-                                    </div>
-                                </>
+                                <div className="flex flex-col gap-2">
+                                    <Input
+                                        type="number"
+                                        step="0.01"
+                                        placeholder="Enter your bid"
+                                        value={bidPrice}
+                                        onChange={e => setBidPrice(e.target.value)}
+                                        className="w-full"
+                                    />
+                                    <Button
+                                        variant="default"
+                                        onClick={handleBid}
+                                        disabled={!bidPrice || parseFloat(bidPrice) <= 0}
+                                    >
+                                        Bid
+                                    </Button>
+                                </div>
                             ) : (
                                 <>
                                     <QuickPurchaseButton offer={offer} />

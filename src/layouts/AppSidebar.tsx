@@ -29,11 +29,31 @@ import { IoSettingsOutline } from '@react-icons/all-files/io5/IoSettingsOutline'
 import { BiPurchaseTagAlt } from '@react-icons/all-files/bi/BiPurchaseTagAlt';
 import { FaListUl } from '@react-icons/all-files/fa/FaListUl';
 
+const CART_LIMIT = 100;
+
 type Item = {
     text: string;
     path: string;
     icon: ReactNode;
     authenticated?: boolean;
+};
+
+const ShoppingCartBadge = () => {
+    const { cart } = useAuth();
+
+    return (
+        <div className="relative">
+            <IoCart className="text-2xl" />
+            {cart.items.length > 0 && (
+                <span
+                    className="absolute -bottom-1.5 -right-1.5 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full"
+                    style={{ fontSize: '0.6rem' }}
+                >
+                    {cart.items.length > CART_LIMIT ? '99+' : cart.items.length}
+                </span>
+            )}
+        </div>
+    );
 };
 
 const userItems: Item[] = [
@@ -45,7 +65,7 @@ const userItems: Item[] = [
     {
         text: 'Shopping Cart',
         path: '/auth/cart',
-        icon: <IoCart />,
+        icon: <ShoppingCartBadge />,
     },
 ];
 
@@ -85,6 +105,7 @@ const dashboardItems = [
         icon: <IoSettingsOutline />,
     },
 ];
+
 const AppSidebar: React.FC = () => {
     const { logout, isAuthenticated } = useAuth();
     const location = useLocation();
