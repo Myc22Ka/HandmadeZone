@@ -3,13 +3,21 @@ import Section from '@/layouts/Section';
 import { HomeCarousel } from '@/views/HomePage/HomeCarousel';
 import React from 'react';
 import CategoryList from './CategoryList';
-const images = ['/src/assets/imgs/texture-1909992_1280.jpg', '/src/assets/imgs/deer-3275594_1280.jpg'];
+import useOffers from '@/hooks/useOffers';
 
 const Home: React.FC = () => {
+    const { offers } = useOffers('/api/offers/search', { status: 'ACTIVE' });
+
+    // Wyodrębnij dane potrzebne do karuzeli (tytuł i obraz)
+    const carouselData = offers.map(offer => ({
+        image: offer.product.imageUrl, // Adres URL zdjęcia
+        title: offer.title, // Tytuł oferty
+    }));
+
     return (
         <DefaultLayout>
             <Section>
-                <HomeCarousel images={images} />
+                <HomeCarousel offers={carouselData} /> {/* Przekazanie danych do karuzeli */}
             </Section>
             <Section heading="Categories">
                 <CategoryList />

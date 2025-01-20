@@ -12,6 +12,7 @@ import OptionSection from './views/Dashboard/OptionSection';
 import HistorySection from './views/Dashboard/HistorySection';
 import OfferDetails from './views/OffersPage/OfferDetails';
 import ShoppingCart from './views/ShoppingCart/ShoppingCart';
+import AuctionSection from './views/Dashboard/AuctionSection';
 
 export const routerConfig = {
     future: {
@@ -59,7 +60,8 @@ export const routes: Routes[] = [
         path: '/auth',
         element: <ProtectedRoute />,
         children: [
-            { path: 'dashboard/yourproducts', element: <ProductSection /> },
+            { path: 'dashboard/youroffers', element: <ProductSection /> },
+            { path: 'dashboard/auction', element: <AuctionSection /> },
             { path: 'dashboard/profile', element: <UserPanel /> },
             { path: 'dashboard/settings', element: <OptionSection /> },
             { path: 'dashboard/history', element: <HistorySection /> },

@@ -86,7 +86,12 @@ const mainSideItems: Item[] = [
 const dashboardItems = [
     {
         text: 'Your Offerts',
-        path: '/auth/dashboard/yourproducts',
+        path: '/auth/dashboard/youroffers',
+        icon: <FaListUl />,
+    },
+    {
+        text: 'Auction',
+        path: '/auth/dashboard/auction',
         icon: <FaListUl />,
     },
     {
@@ -109,7 +114,6 @@ const dashboardItems = [
 const AppSidebar: React.FC = () => {
     const { logout, isAuthenticated } = useAuth();
     const location = useLocation();
-
     const isDashboardPage = location.pathname.startsWith('/auth/dashboard');
     return (
         <Sidebar>
