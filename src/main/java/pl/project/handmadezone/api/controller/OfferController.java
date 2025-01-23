@@ -62,12 +62,31 @@ public class OfferController {
     }
 
     @PutMapping("/{offerId}/bid")
-    public ResponseEntity<Offer> placeBid(
+    public ResponseEntity<String> placeBid(
             @PathVariable Long offerId,
             @RequestParam Long userId,
             @RequestParam Integer bidAmount
     ) {
-        Offer updatedOffer = offerService.placeBid(offerId, userId, bidAmount);
-        return ResponseEntity.ok(updatedOffer);
+        offerService.placeBid(offerId, userId, bidAmount);
+        String successMessage = "Bid placed successfully. New price: " + bidAmount;
+        return ResponseEntity.ok(successMessage);
+    }
+
+    @PutMapping("/win-auction")
+    public ResponseEntity<GlobalException.ErrorResponse> winAuction(
+            @RequestParam Long offerId,
+            WebRequest request) {
+
+        offerService.winAuction(offerId);
+
+        GlobalException.ErrorResponse successResponse = new GlobalException.ErrorResponse(
+                LocalDateTime.now().toString(),
+                HttpStatus.OK.getReasonPhrase(),
+                request.getDescription(false).replace("uri=", ""),
+                "Offer successfully purchased.",
+                HttpStatus.OK.value()
+        );
+
+        return ResponseEntity.ok(successResponse);
     }
 }

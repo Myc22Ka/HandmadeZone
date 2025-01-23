@@ -150,6 +150,7 @@ public class OfferService {
                     .collect(Collectors.toList());
         }
 
+
         return offers;
     }
 
@@ -179,9 +180,9 @@ public class OfferService {
             buyer.setCash(buyer.getCash() - offer.getPrice());
             seller.setCash(seller.getCash() + offer.getPrice());
 
-            offer.setStatus(OfferStatus.SOLD);
         }
     }
+
     public Offer addOffer(Offer offer){
         return offerRepository.save(offer);
     }
@@ -211,6 +212,37 @@ public class OfferService {
         offer.getBidders().add(bidder);
 
         return offerRepository.save(offer);
+    }
+
+    @Transactional
+    public void winAuction(Long offerId) {
+
+        Offer offer = offerRepository.findById(offerId)
+                .orElseThrow(() -> new EntityNotFoundException("Offer not found with ID: " + offerId));
+
+        if (offer.getType().equals(OfferType.AUCTION)) {
+            User seller = userService.getSingleUser(offer.getUser().getId());
+            List<User> bidders = offer.getBidders();
+            if (bidders.isEmpty()) {
+                offer.setStatus(OfferStatus.EXPIRED);
+            } else{
+                User buyer = bidders.getLast();
+                if (buyer.getCash() < offer.getPrice()) {
+                    throw new AppException("Insufficient funds to purchase the offer.", HttpStatus.BAD_REQUEST);
+                }
+                if (!offer.getStatus().equals(OfferStatus.ACTIVE)) {
+                    throw new AppException("You can't buy a sold product.", HttpStatus.BAD_REQUEST);
+                }
+                buyer.setCash(buyer.getCash() - offer.getPrice());
+                seller.setCash(seller.getCash() + offer.getPrice());
+
+                offer.setStatus(OfferStatus.SOLD);
+            }
+
+        }
+        else{
+            throw new AppException("It's not an auction.", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
