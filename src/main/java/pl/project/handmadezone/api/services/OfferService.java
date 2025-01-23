@@ -49,6 +49,7 @@ public class OfferService {
         return offers;
     }
 
+    @Transactional
     public List<Offer> findOffers(OfferSearchCriteria criteria) {
         List<Offer> offers = offerRepository.findAll();
 
@@ -149,7 +150,16 @@ public class OfferService {
                     .filter(offer -> offer.getViewCount() >= criteria.getMinViewCount())
                     .collect(Collectors.toList());
         }
-
+        LocalDateTime currentTime = LocalDateTime.now();
+        for(Offer offer : offers){
+            if(offer.getType() == OfferType.AUCTION){
+                if(offer.getStatus() == OfferStatus.ACTIVE) {
+                    if (currentTime.isAfter(offer.getEndDate())) {
+                        winAuction(offer.getId());
+                    }
+                }
+            }
+        }
 
         return offers;
     }
