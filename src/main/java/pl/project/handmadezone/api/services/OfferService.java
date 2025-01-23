@@ -16,6 +16,7 @@ import pl.project.handmadezone.api.model.OfferType;
 import pl.project.handmadezone.api.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -222,6 +223,19 @@ public class OfferService {
         offer.getBidders().add(bidder);
 
         return offerRepository.save(offer);
+    }
+
+    public List<Offer> findOffersByIds(List<Long> offerIds) {
+        return offerRepository.findAllById(offerIds);
+    }
+
+    @Transactional
+    public void buyCart(ArrayList<Long> offersIDs, Long buyerID){
+        User user = userService.getSingleUser(buyerID);
+        List<Offer> offers = findOffersByIds(offersIDs);
+        for(Offer offer : offers){
+            buy(offer.getId(), user.getId());
+        }
     }
 
     @Transactional

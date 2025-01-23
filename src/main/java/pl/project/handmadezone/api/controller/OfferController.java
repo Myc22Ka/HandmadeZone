@@ -12,6 +12,7 @@ import pl.project.handmadezone.api.model.Offer;
 import pl.project.handmadezone.api.services.OfferService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +50,25 @@ public class OfferController {
             WebRequest request) {
 
         offerService.buy(buyerId, offerId);
+
+        GlobalException.ErrorResponse successResponse = new GlobalException.ErrorResponse(
+                LocalDateTime.now().toString(),
+                HttpStatus.OK.getReasonPhrase(),
+                request.getDescription(false).replace("uri=", ""),
+                "Offer successfully purchased.",
+                HttpStatus.OK.value()
+        );
+
+        return ResponseEntity.ok(successResponse);
+    }
+
+    @PutMapping("/cart-buy")
+    public ResponseEntity<GlobalException.ErrorResponse> buyCart(
+            @RequestParam Long buyerId,
+            @RequestParam ArrayList<Long> offersIds,
+            WebRequest request) {
+
+        offerService.buyCart(offersIds,buyerId);
 
         GlobalException.ErrorResponse successResponse = new GlobalException.ErrorResponse(
                 LocalDateTime.now().toString(),
