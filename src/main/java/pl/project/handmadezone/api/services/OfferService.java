@@ -190,6 +190,7 @@ public class OfferService {
 
             buyer.setCash(buyer.getCash() - offer.getPrice());
             seller.setCash(seller.getCash() + offer.getPrice());
+            offer.setStatus(OfferStatus.SOLD);
 
         }
     }
@@ -230,11 +231,12 @@ public class OfferService {
     }
 
     @Transactional
-    public void buyCart(ArrayList<Long> offersIDs, Long buyerID){
-        User user = userService.getSingleUser(buyerID);
+    public void buyCart(Long buyerID, ArrayList<Long> offersIDs){
         List<Offer> offers = findOffersByIds(offersIDs);
         for(Offer offer : offers){
-            buy(offer.getId(), user.getId());
+            buy(buyerID, offer.getId());
+            System.out.println(buyerID);
+            System.out.println(offer.getId());
         }
     }
 
@@ -261,6 +263,7 @@ public class OfferService {
                 seller.setCash(seller.getCash() + offer.getPrice());
 
                 offer.setStatus(OfferStatus.SOLD);
+
             }
 
         }

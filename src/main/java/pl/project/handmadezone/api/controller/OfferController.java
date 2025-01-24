@@ -68,13 +68,13 @@ public class OfferController {
             @RequestParam ArrayList<Long> offersIds,
             WebRequest request) {
 
-        offerService.buyCart(offersIds,buyerId);
+        offerService.buyCart(buyerId, offersIds);
 
         GlobalException.ErrorResponse successResponse = new GlobalException.ErrorResponse(
                 LocalDateTime.now().toString(),
                 HttpStatus.OK.getReasonPhrase(),
                 request.getDescription(false).replace("uri=", ""),
-                "Offer successfully purchased.",
+                "Offers successfully purchased.",
                 HttpStatus.OK.value()
         );
 
