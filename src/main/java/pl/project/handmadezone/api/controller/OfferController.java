@@ -62,7 +62,7 @@ public class OfferController {
         return ResponseEntity.ok(successResponse);
     }
 
-    @PutMapping("/cart-buy")
+    @PutMapping("/buy-cart")
     public ResponseEntity<GlobalException.ErrorResponse> buyCart(
             @RequestParam Long buyerId,
             @RequestParam ArrayList<Long> offersIds,
