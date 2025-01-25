@@ -42,7 +42,7 @@ public class User {
     @Size(max = 100)
     private String password;
 
-    @Column(nullable = false)
+    @Column(name="cash", nullable = false)
     private Double cash = 0.0;
 
     @Column(name = "created_at", updatable = false)

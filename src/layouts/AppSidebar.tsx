@@ -28,6 +28,7 @@ import { FaRegUserCircle } from '@react-icons/all-files/fa/FaRegUserCircle';
 import { IoSettingsOutline } from '@react-icons/all-files/io5/IoSettingsOutline';
 import { BiPurchaseTagAlt } from '@react-icons/all-files/bi/BiPurchaseTagAlt';
 import { FaListUl } from '@react-icons/all-files/fa/FaListUl';
+import AddCash from './AddCash';
 
 const CART_LIMIT = 100;
 
@@ -115,6 +116,7 @@ const AppSidebar: React.FC = () => {
     const { logout, isAuthenticated } = useAuth();
     const location = useLocation();
     const isDashboardPage = location.pathname.startsWith('/auth/dashboard');
+
     return (
         <Sidebar>
             <SidebarHeader>
@@ -143,6 +145,9 @@ const AppSidebar: React.FC = () => {
                                 </a>
                             ))}
                         <ModeToggle />
+                        <div className="block p-2 rounded-md text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                            <AddCash />
+                        </div>
 
                         {isDashboardPage && (
                             <>

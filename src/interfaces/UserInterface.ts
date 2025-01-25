@@ -7,4 +7,5 @@ export interface User {
     email: string;
     token: string;
     shoppingCart: CartItem[];
+    cash: number;
 }

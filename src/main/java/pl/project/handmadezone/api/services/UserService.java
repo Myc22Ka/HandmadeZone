@@ -79,6 +79,9 @@ public class UserService {
     @Transactional
     public void addCash(Long id, Double cash){
         User user = getSingleUser(id);
+
+        if(cash <= 0) throw new AppException("Cannot add negative amount of cash", HttpStatus.BAD_REQUEST);
+
         user.setCash(user.getCash() + cash);
     }
 }
