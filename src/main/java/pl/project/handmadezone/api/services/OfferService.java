@@ -272,4 +272,15 @@ public class OfferService {
         }
     }
 
+    public List<Offer> getLastBidsForUser(Long userId) {
+        List<Offer> offers = offerRepository.findByBiddersId(userId);
+
+        return offers.stream()
+                .filter(offer -> {
+                    List<User> bidders = offer.getBidders();
+                    return !bidders.isEmpty() && offer.getStatus() == OfferStatus.ACTIVE && bidders.get(bidders.size() - 1).getId().equals(userId);
+                })
+                .collect(Collectors.toList());
+    }
+
 }
