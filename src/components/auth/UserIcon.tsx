@@ -14,6 +14,7 @@ const UserIcon: React.FC = () => {
             <div className="flex flex-col">
                 <div className="font-bold">{user?.firstName}</div>
                 <div>{user?.email}</div>
+                <div>{user?.cash?.toFixed(2)} zł</div>
             </div>
         </div>
     );
