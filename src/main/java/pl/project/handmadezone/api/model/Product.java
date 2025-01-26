@@ -29,8 +29,8 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Column(name = "manufacturer", nullable = false)
-    private String manufacturer;
+    @Column(name = "manufacturer")
+    private String manufacturer = null;
 
     @Embedded
     @AttributeOverrides({
@@ -39,23 +39,23 @@ public class Product {
             @AttributeOverride(name = "width", column = @Column(name = "dimensions_width")),
             @AttributeOverride(name = "depth", column = @Column(name = "dimensions_depth"))
     })
-    private Dimensions dimensions;
+    private Dimensions dimensions = null;
 
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "unit", column = @Column(name = "weight_unit")),
             @AttributeOverride(name = "amount", column = @Column(name = "weight_amount"))
     })
-    private Weight weight;
+    private Weight weight = null;
 
-    @Column(name = "material", nullable = false)
-    private String material;
+    @Column(name = "material")
+    private String material = null;
 
-    @Column(name = "rating", nullable = false)
-    private Float rating;
+    @Column(name = "rating")
+    private Float rating = null;
 
-    @Column(name = "reviews", nullable = false)
-    private Integer reviews;
+    @Column(name = "reviews")
+    private Integer reviews = null;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;

@@ -56,8 +56,8 @@ public class Offer {
     @Column(name = "status", nullable = false)
     private OfferStatus status;
 
-    @Column(name = "view_count", nullable = false)
-    private Integer viewCount;
+    @Column(name = "view_count")
+    private Integer viewCount = null;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
