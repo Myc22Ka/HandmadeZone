@@ -72,6 +72,7 @@ public class UserAuthenticationProvider {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .login(user.getLogin())
+                .cash(user.getCash())
                 .token(newToken)
                 .build();
 

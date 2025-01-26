@@ -4,6 +4,8 @@ import { Offer } from '@/interfaces/OfferInterface';
 import { Badge } from '@/components/ui/badge';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { encodeId } from '@/lib/utils';
+import { OfferType } from '@/types';
 
 interface OfferCardProps {
     offer: Offer;
@@ -11,7 +13,7 @@ interface OfferCardProps {
 
 const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
     return (
-        <Link to={`/offers/details/${offer.id}`} className="flex h-44">
+        <Link to={`/offers/details/${encodeId(offer.id.toString())}`} className="flex h-44">
             <Card className="hover:shadow-lg transition-shadow w-full flex h-max-44 max-h-screen">
                 <div className="w-1/4 h-full relative">
                     <img src={offer.product.imageUrl} alt={offer.product.name} className="w-full h-full object-cover" />
@@ -30,8 +32,11 @@ const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
                                 <strong>Seller:</strong> {offer.userFirstName} {offer.userLastName}
                             </p>
                         </CardDescription>
-                        <Badge className="mt-5 ml-2 ">
-                            {offer.type === 'QUICK_PURCHASE' ? 'QUICK PURCHASE' : offer.type}
+                        <Badge
+                            className="mt-5 ml-2"
+                            variant={offer.type === 'QUICK_PURCHASE' ? 'default' : 'secondary'}
+                        >
+                            {offer.type === OfferType.QUICK_PURCHASE ? 'QUICK PURCHASE' : offer.type}
                         </Badge>
                     </CardContent>
                     <CardFooter>

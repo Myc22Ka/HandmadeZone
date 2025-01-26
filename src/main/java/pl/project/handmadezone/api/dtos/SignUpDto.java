@@ -27,4 +27,7 @@ public class SignUpDto {
     @NotEmpty
     private String password;
 
+    @NotEmpty
+    private Long cash;
+
 }

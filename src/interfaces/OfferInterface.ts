@@ -7,6 +7,7 @@ export interface Offer {
     price: number;
     userFirstName: string;
     userLastName: string;
+    userId: number;
     type: OfferType;
     description: string;
     product: Product;

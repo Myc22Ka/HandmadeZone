@@ -17,6 +17,6 @@ public class UserDto {
     private String email;
     private String login;
     private String token;
-    private Long cash;
+    private Double cash;
 
 }

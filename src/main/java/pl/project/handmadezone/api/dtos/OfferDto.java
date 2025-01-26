@@ -16,6 +16,7 @@ public class OfferDto {
     private Integer price;
     private String userFirstName;
     private String userLastName;
+    private Long userId;
     private String type;
     private String description;
     private Product product;
@@ -32,6 +33,7 @@ public class OfferDto {
         dto.setPrice(offer.getPrice());
         dto.setUserFirstName(offer.getUser().getFirstName());
         dto.setUserLastName(offer.getUser().getLastName());
+        dto.setUserId(offer.getUser().getId());
         dto.setType(offer.getType().name());
         dto.setDescription(offer.getDescription());
         dto.setProduct(offer.getProduct());

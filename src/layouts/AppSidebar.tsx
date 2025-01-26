@@ -145,9 +145,11 @@ const AppSidebar: React.FC = () => {
                                 </a>
                             ))}
                         <ModeToggle />
-                        <div className="block p-2 rounded-md text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                            <AddCash />
-                        </div>
+                        {isAuthenticated && (
+                            <div className="block p-2 rounded-md text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                                <AddCash />
+                            </div>
+                        )}
 
                         {isDashboardPage && (
                             <>

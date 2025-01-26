@@ -9,12 +9,12 @@ const UserIcon: React.FC = () => {
         <div className="flex justify-center align-middle gap-2">
             <Avatar className="flex items-center justify-center">
                 <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" className="h-8 w-auto rounded-lg" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>{`${user?.firstName.charAt(0).toUpperCase()}${user?.lastName.charAt(0).toUpperCase()}`}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
                 <div className="font-bold">{user?.firstName}</div>
                 <div>{user?.email}</div>
-                <div>{user?.cash?.toFixed(2)} zł</div>
+                <div>{user?.cash} zł</div>
             </div>
         </div>
     );

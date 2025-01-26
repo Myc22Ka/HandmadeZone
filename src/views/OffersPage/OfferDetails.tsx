@@ -3,7 +3,7 @@ import useOffers from '@/hooks/useOffers';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import { OfferType } from '@/types';
 import React, { useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AddToCartButton from './AddToCartButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -12,76 +12,92 @@ import { OfferSearchRequest } from '@/interfaces/OfferInterface';
 import { Input } from '@/components/ui/input';
 import { put } from '@/lib/axiosHelper';
 import { useAuth } from '@/contexts/AuthProvider';
+import { toast } from 'sonner';
+import Timer from './Timer';
+import { decodeId } from '@/lib/utils';
 
 const OfferDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const { user } = useAuth();
-
+    const decodedId = decodeId(id || '');
+    const { user, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
     const [bidPrice, setBidPrice] = useState<string>('');
-    const offerIds = useMemo(() => ({ offerIds: [Number(id)] }), [id]);
+    const offerIds = useMemo(() => ({ offerIds: [Number(decodedId)] }), [decodedId]);
 
     const { offers, loading } = useOffers<OfferSearchRequest>(`/api/offers/search`, offerIds);
 
-    if (loading || offers.length === 0)
+    if (loading || offers.length === 0) {
         return (
             <DefaultLayout>
                 <Loader />
             </DefaultLayout>
         );
+    }
 
     const offer = offers[0];
 
     const handleBid = () => {
-        console.log('Proposed bid:', bidPrice);
+        if (!isAuthenticated) {
+            navigate('/login');
+            return;
+        }
 
         put(`/api/offers/${offer.id}/bid`, {
             userId: user?.id,
             bidAmount: bidPrice,
-        }).then(response => {
-            console.log(response);
-        });
+        })
+            .then(response => {
+                toast.info(response.data.message);
+                setBidPrice('');
+            })
+            .catch(e => {
+                toast.error(e.response.data.message);
+            });
     };
 
     return (
         <DefaultLayout>
-            <div className="w-full h-screen flex items-center justify-center text-white">
-                {/* Karta szczegółów */}
-                <Card className="w-full max-w-5xl h-4/5 shadow-lg rounded-md p-8 flex flex-col md:grid md:grid-cols-2 gap-6">
-                    {/* Obrazek produktu */}
-                    <div className="overflow-hidden rounded-md flex-shrink-0">
+            <div className="w-full min-h-screen flex items-center justify-center py-8 px-4 md:px-16">
+                <Card className="w-full max-w-6xl shadow-xl rounded-lg overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Product Image */}
+                    <div className="relative overflow-hidden rounded-lg">
                         <img
                             src={offer?.product.imageUrl || '/placeholder.png'}
                             alt={offer?.product.name || 'Product Image'}
-                            className="w-full h-full scale-90 object-cover transform transition-transform duration-300 hover:scale-105"
+                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                         />
                     </div>
 
-                    {/* Szczegóły i przyciski */}
-                    <CardContent className="flex flex-col justify-between space-y-3">
+                    {/* Offer Details */}
+                    <CardContent className="flex flex-col justify-between space-y-6 p-6">
                         <CardHeader>
-                            <CardTitle className="text-4xl font-bold  mb-4">
+                            <CardTitle className="text-3xl font-extrabold text-gray-800">
                                 {offer?.title || 'Offer Details'}
                             </CardTitle>
-
-                            <CardDescription className="text-lg ">
-                                <strong>Category:</strong> {offer?.product.category.name}
-                            </CardDescription>
-                            <CardDescription className="text-lg ">
-                                <strong>Manufacturer:</strong> {offer?.product.manufacturer}
-                            </CardDescription>
-                            <CardDescription className="text-lg ">
-                                <strong>Material:</strong> {offer?.product.material}
-                            </CardDescription>
-                            <CardDescription className="text-lg ">
-                                <strong>Rating:</strong> {offer?.product.rating}/5
-                            </CardDescription>
-                            <CardDescription className="text-3xl font-extrabold ">
+                            <div className="text-sm text-gray-500 mt-2">
+                                <p>
+                                    <strong>Category:</strong> {offer?.product.category.name}
+                                </p>
+                                <p>
+                                    <strong>Manufacturer:</strong> {offer?.product.manufacturer}
+                                </p>
+                                <p>
+                                    <strong>Material:</strong> {offer?.product.material}
+                                </p>
+                                <p>
+                                    <strong>Rating:</strong> {offer?.product.rating}/5
+                                </p>
+                            </div>
+                            <CardDescription className="text-2xl font-semibold mt-4">
                                 <strong>Price:</strong> {offer?.price} zł
+                            </CardDescription>
+                            <CardDescription className="text-lg font-bold">
+                                <Timer offer={offer} />
                             </CardDescription>
                         </CardHeader>
 
-                        {/* Sekcja przycisków */}
-                        <div className="flex justify-end">
+                        {/* Action Buttons */}
+                        <div className="flex flex-col space-y-4">
                             {offer.type === OfferType.AUCTION ? (
                                 <div className="flex flex-col gap-2">
                                     <Input
@@ -97,14 +113,14 @@ const OfferDetails: React.FC = () => {
                                         onClick={handleBid}
                                         disabled={!bidPrice || parseFloat(bidPrice) <= 0}
                                     >
-                                        Bid
+                                        Place Bid
                                     </Button>
                                 </div>
                             ) : (
-                                <>
+                                <div className="flex gap-4">
                                     <QuickPurchaseButton offer={offer} />
                                     <AddToCartButton offer={offer} />
-                                </>
+                                </div>
                             )}
                         </div>
                     </CardContent>

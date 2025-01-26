@@ -6,9 +6,12 @@ import Loader from '@/components/utilities/Loader';
 import { OfferSearchRequest } from '@/interfaces/OfferInterface';
 import { useParams } from 'react-router';
 import OfferHeader from './OfferHeader';
+import { useAuth } from '@/contexts/AuthProvider';
+import { OfferStatus } from '@/types';
 
 const Offers: React.FC = () => {
     const categoryName = useParams<{ category: string }>();
+    const { user } = useAuth();
 
     const [filter, setFilter] = useState<OfferSearchRequest>({
         categoryName: categoryName.category ?? 'all',
@@ -25,9 +28,11 @@ const Offers: React.FC = () => {
                     <Loader />
                 ) : (
                     <ul className="space-y-2">
-                        {offers.map(offer => (
-                            <OfferCard offer={offer} key={offer.id} />
-                        ))}
+                        {offers
+                            .filter(offer => offer.userId !== user?.id && offer.status === OfferStatus.ACTIVE)
+                            .map(offer => (
+                                <OfferCard offer={offer} key={offer.id} />
+                            ))}
                     </ul>
                 )}
             </div>
