@@ -210,6 +210,9 @@ public class OfferService {
         if (offer.getType() != OfferType.AUCTION) {
             throw new AppException("This is not auction.", HttpStatus.BAD_REQUEST);
         }
+        if (offer.getStatus() != OfferStatus.ACTIVE) {
+            throw new AppException("This is not auction.", HttpStatus.BAD_REQUEST);
+        }
         if (bidAmount <= offer.getPrice()) {
             throw new AppException("Bid amount must be higher than the current price.", HttpStatus.BAD_REQUEST);
         }
@@ -272,13 +275,13 @@ public class OfferService {
         }
     }
 
-    public List<Offer> getLastBidsForUser(Long userId) {
+    public List<Offer> getWinningAuctions(Long userId) {
         List<Offer> offers = offerRepository.findByBiddersId(userId);
 
         return offers.stream()
                 .filter(offer -> {
                     List<User> bidders = offer.getBidders();
-                    return !bidders.isEmpty() && offer.getStatus() == OfferStatus.ACTIVE && bidders.get(bidders.size() - 1).getId().equals(userId);
+                    return !bidders.isEmpty() && offer.getStatus() == OfferStatus.ACTIVE && bidders.getLast().getId().equals(userId);
                 })
                 .collect(Collectors.toList());
     }

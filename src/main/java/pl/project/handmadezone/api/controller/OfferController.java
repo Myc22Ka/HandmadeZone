@@ -118,9 +118,9 @@ public class OfferController {
         return ResponseEntity.ok(successResponse);
     }
 
-    @GetMapping("/{userId}/last-bids")
-    public ResponseEntity<List<Offer>> getLastBidsForUser(@PathVariable Long userId) {
-        List<Offer> offers = offerService.getLastBidsForUser(userId);
+    @GetMapping("/{userId}/wining-auctions")
+    public ResponseEntity<List<Offer>> getWinningAuctions(@PathVariable Long userId) {
+        List<Offer> offers = offerService.getWinningAuctions(userId);
         return ResponseEntity.ok(offers);
     }
 }
