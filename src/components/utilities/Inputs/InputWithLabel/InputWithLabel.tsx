@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export const LabelTypes = ['text', 'password', 'email'] as const;
+export const LabelTypes = ['text', 'password', 'email', 'number', 'date'] as const;
 
 interface ILabel extends React.InputHTMLAttributes<HTMLInputElement> {
     name: string;
