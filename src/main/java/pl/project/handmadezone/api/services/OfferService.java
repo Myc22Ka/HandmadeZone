@@ -15,6 +15,7 @@ import pl.project.handmadezone.api.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -287,6 +288,10 @@ public class OfferService {
 
     public List<Offer> getWinningAuctions(Long userId) {
         List<Offer> offers = offerRepository.findByBiddersId(userId);
+
+        if (offers == null) {
+            return Collections.emptyList();
+        }
 
         return offers.stream()
                 .filter(offer -> {
