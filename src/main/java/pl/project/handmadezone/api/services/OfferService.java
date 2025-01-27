@@ -7,12 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import pl.project.handmadezone.api.dtos.OfferSearchCriteria;
 import pl.project.handmadezone.api.exceptions.AppException;
-import pl.project.handmadezone.api.model.Offer;
-import pl.project.handmadezone.api.model.OfferStatus;
+import pl.project.handmadezone.api.model.*;
 import pl.project.handmadezone.api.repository.OfferRepository;
-import pl.project.handmadezone.api.model.User;
 import pl.project.handmadezone.api.model.OfferStatus;
-import pl.project.handmadezone.api.model.OfferType;
+import pl.project.handmadezone.api.repository.ProductRepository;
 import pl.project.handmadezone.api.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -31,6 +29,8 @@ public class OfferService {
     private final UserService userService;
 
     private final UserRepository userRepository;
+
+    private final ProductRepository productRepository;
 
     private List<Offer> applyRegexFilter(List<Offer> offers, String criteria, Function<Offer, String> valueExtractor) {
         if (criteria != null && !criteria.isEmpty()) {
@@ -196,6 +196,16 @@ public class OfferService {
     }
 
     public Offer addOffer(Offer offer){
+        Product newProduct = offer.getProduct();
+
+        if (newProduct == null) {
+            throw new IllegalArgumentException("Product data is required to create an offer.");
+        }
+
+        Product savedProduct = productRepository.save(newProduct);
+
+        offer.setProduct(savedProduct);
+
         return offerRepository.save(offer);
     }
 
@@ -211,7 +221,7 @@ public class OfferService {
             throw new AppException("This is not auction.", HttpStatus.BAD_REQUEST);
         }
         if (offer.getStatus() != OfferStatus.ACTIVE) {
-            throw new AppException("This is not auction.", HttpStatus.BAD_REQUEST);
+            throw new AppException("This offer isn't avtive.", HttpStatus.BAD_REQUEST);
         }
         if (bidAmount <= offer.getPrice()) {
             throw new AppException("Bid amount must be higher than the current price.", HttpStatus.BAD_REQUEST);

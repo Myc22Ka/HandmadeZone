@@ -30,7 +30,7 @@ public class Product {
     private Category category;
 
     @Column(name = "manufacturer")
-    private String manufacturer = null;
+    private String manufacturer = "Unknown";
 
     @Embedded
     @AttributeOverrides({
@@ -49,13 +49,13 @@ public class Product {
     private Weight weight = null;
 
     @Column(name = "material")
-    private String material = null;
+    private String material = "Unknown";
 
     @Column(name = "rating")
-    private Float rating = null;
+    private Float rating = 0.0F;
 
     @Column(name = "reviews")
-    private Integer reviews = null;
+    private Integer reviews = 0;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;

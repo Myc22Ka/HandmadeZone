@@ -38,7 +38,7 @@ public class OfferController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/add/{id}")
+    @PostMapping("/add")
     public Offer addOffer(@RequestBody Offer offer){
         return offerService.addOffer(offer);
     }
