@@ -194,6 +194,7 @@ public class OfferService {
             offer.setStatus(OfferStatus.SOLD);
 
         }
+        throw new AppException("It is not an instant offer.", HttpStatus.BAD_REQUEST);
     }
 
     public Offer addOffer(Offer offer){
