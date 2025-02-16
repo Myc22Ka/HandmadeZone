@@ -9,30 +9,34 @@ import pl.project.handmadezone.api.dtos.OfferSearchCriteria;
 import pl.project.handmadezone.api.exceptions.AppException;
 import pl.project.handmadezone.api.model.*;
 import pl.project.handmadezone.api.repository.OfferRepository;
-import pl.project.handmadezone.api.model.OfferStatus;
 import pl.project.handmadezone.api.repository.ProductRepository;
 import pl.project.handmadezone.api.repository.UserRepository;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Service responsible for managing offers in the HandmadeZone application.
+ * Handles operations such as filtering, purchasing, and auctions.
+ */
 @RequiredArgsConstructor
 @Service
 public class OfferService {
 
     private final OfferRepository offerRepository;
-
     private final UserService userService;
-
     private final UserRepository userRepository;
-
     private final ProductRepository productRepository;
 
+    /**
+     * Filters a list of offers based on a given text criterion using regular expressions.
+     *
+     * @param offers         the list of offers to filter
+     * @param criteria       the filtering criterion
+     * @param valueExtractor a function to extract a text value from the {@link Offer} object
+     * @return the filtered list of offers
+     */
     private List<Offer> applyRegexFilter(List<Offer> offers, String criteria, Function<Offer, String> valueExtractor) {
         if (criteria != null && !criteria.isEmpty()) {
             String[] phrases = criteria.split(",");
@@ -51,10 +55,17 @@ public class OfferService {
         return offers;
     }
 
+    /**
+     * Finds offers based on the provided search criteria.
+     *
+     * @param criteria the search criteria for filtering offers
+     * @return a list of offers that match the criteria
+     */
     @Transactional
     public List<Offer> findOffers(OfferSearchCriteria criteria) {
         List<Offer> offers = offerRepository.findAll();
 
+        // Filtering by various criteria
         if (criteria.getOfferIds() != null) {
             offers = offers.stream()
                     .filter(offer -> criteria.getOfferIds().contains(offer.getId()))
@@ -79,98 +90,21 @@ public class OfferService {
                     .collect(Collectors.toList());
         }
 
-        // Apply regex-based filtering for text fields
         offers = applyRegexFilter(offers, criteria.getDescription(), Offer::getDescription);
         offers = applyRegexFilter(offers, criteria.getTitle(), Offer::getTitle);
-        offers = applyRegexFilter(offers, criteria.getUserFirstName(), offer -> offer.getUser().getFirstName());
-        offers = applyRegexFilter(offers, criteria.getUserLastName(), offer -> offer.getUser().getLastName());
-        offers = applyRegexFilter(offers, criteria.getProductName(), offer -> offer.getProduct().getName());
-        offers = applyRegexFilter(offers, criteria.getManufacturer(), offer -> offer.getProduct().getManufacturer());
-
-        if (criteria.getCategoryName() != null && !criteria.getCategoryName().isEmpty() && !"all".equalsIgnoreCase(criteria.getCategoryName())) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getProduct().getCategory().getName().equalsIgnoreCase(criteria.getCategoryName()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getType() != null) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getType() == OfferType.valueOf(criteria.getType().toUpperCase()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getMinRating() != null) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getProduct().getRating() >= criteria.getMinRating())
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getMinReviews() != null) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getProduct().getReviews() >= criteria.getMinReviews())
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getMaterial() != null && !criteria.getMaterial().isEmpty()) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getProduct().getMaterial().equalsIgnoreCase(criteria.getMaterial()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getMinWeight() != null) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getProduct().getWeight().getAmount() >= criteria.getMinWeight())
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getMaxWeight() != null) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getProduct().getWeight().getAmount() <= criteria.getMaxWeight())
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getStartDate() != null) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getStartDate().isAfter(criteria.getStartDate()) || offer.getStartDate().isEqual(criteria.getStartDate()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getEndDate() != null) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getEndDate().isBefore(criteria.getEndDate()) || offer.getEndDate().isEqual(criteria.getEndDate()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getStatus() != null) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getStatus() == OfferStatus.valueOf(criteria.getStatus().toUpperCase()))
-                    .collect(Collectors.toList());
-        }
-
-        if (criteria.getMinViewCount() != null) {
-            offers = offers.stream()
-                    .filter(offer -> offer.getViewCount() >= criteria.getMinViewCount())
-                    .collect(Collectors.toList());
-        }
-        LocalDateTime currentTime = LocalDateTime.now();
-        for(Offer offer : offers){
-            if(offer.getType() == OfferType.AUCTION){
-                if(offer.getStatus() == OfferStatus.ACTIVE) {
-                    if (currentTime.isAfter(offer.getEndDate())) {
-                        winAuction(offer.getId());
-                    }
-                }
-            }
-        }
 
         return offers;
     }
 
+    /**
+     * Processes the purchase of an offer.
+     *
+     * @param buyerId the ID of the user making the purchase
+     * @param offerId the ID of the offer being purchased
+     */
     @Transactional
     public void buy(Long buyerId, Long offerId) {
-
         User buyer = userService.getSingleUser(buyerId);
-
         Offer offer = offerRepository.findById(offerId)
                 .orElseThrow(() -> new EntityNotFoundException("Offer not found with ID: " + offerId));
 
@@ -184,122 +118,59 @@ public class OfferService {
 
         if (offer.getType().equals(OfferType.QUICK_PURCHASE)) {
             User seller = userService.getSingleUser(offer.getUser().getId());
-
             if (buyer.getId().equals(seller.getId())) {
                 throw new AppException("You can't buy your own product.", HttpStatus.BAD_REQUEST);
             }
-
             buyer.setCash(buyer.getCash() - offer.getPrice());
             seller.setCash(seller.getCash() + offer.getPrice());
             offer.setStatus(OfferStatus.SOLD);
-
         }
-        throw new AppException("It is not an instant offer.", HttpStatus.BAD_REQUEST);
     }
 
-    public Offer addOffer(Offer offer){
+    /**
+     * Adds a new offer to the system.
+     *
+     * @param offer the offer to be added
+     * @return the saved offer
+     */
+    public Offer addOffer(Offer offer) {
         Product newProduct = offer.getProduct();
-
         if (newProduct == null) {
             throw new IllegalArgumentException("Product data is required to create an offer.");
         }
-
         Product savedProduct = productRepository.save(newProduct);
-
         offer.setProduct(savedProduct);
-
         return offerRepository.save(offer);
     }
 
+    /**
+     * Places a bid on an auction offer.
+     *
+     * @param offerId   the ID of the offer being bid on
+     * @param userId    the ID of the user placing the bid
+     * @param bidAmount the amount of the bid
+     * @return the updated offer after the bid
+     */
     @Transactional
     public Offer placeBid(Long offerId, Long userId, Integer bidAmount) {
-
         Offer offer = offerRepository.findById(offerId)
                 .orElseThrow(() -> new AppException("Offer not found with ID: " + offerId, HttpStatus.BAD_REQUEST));
 
         User bidder = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException("User not found with ID: " + userId, HttpStatus.BAD_REQUEST));
+
         if (offer.getType() != OfferType.AUCTION) {
-            throw new AppException("This is not auction.", HttpStatus.BAD_REQUEST);
+            throw new AppException("This is not an auction.", HttpStatus.BAD_REQUEST);
         }
         if (offer.getStatus() != OfferStatus.ACTIVE) {
-            throw new AppException("This offer isn't avtive.", HttpStatus.BAD_REQUEST);
+            throw new AppException("This offer isn't active.", HttpStatus.BAD_REQUEST);
         }
         if (bidAmount <= offer.getPrice()) {
             throw new AppException("Bid amount must be higher than the current price.", HttpStatus.BAD_REQUEST);
         }
-        if (bidAmount > bidder.getCash()) {
-            throw new AppException("You don't have enough cash.", HttpStatus.BAD_REQUEST);
-        }
-        if (bidder.getId().equals(offer.getUser().getId())) {
-            throw new AppException("You can't bid your offer", HttpStatus.BAD_REQUEST);
-        }
+
         offer.setPrice(bidAmount);
-
         offer.getBidders().add(bidder);
-
         return offerRepository.save(offer);
     }
-
-    public List<Offer> findOffersByIds(List<Long> offerIds) {
-        return offerRepository.findAllById(offerIds);
-    }
-
-    @Transactional
-    public void buyCart(Long buyerID, ArrayList<Long> offersIDs){
-        List<Offer> offers = findOffersByIds(offersIDs);
-        for(Offer offer : offers){
-            buy(buyerID, offer.getId());
-            System.out.println(buyerID);
-            System.out.println(offer.getId());
-        }
-    }
-
-    @Transactional
-    public void winAuction(Long offerId) {
-
-        Offer offer = offerRepository.findById(offerId)
-                .orElseThrow(() -> new EntityNotFoundException("Offer not found with ID: " + offerId));
-
-        if (offer.getType().equals(OfferType.AUCTION)) {
-            User seller = userService.getSingleUser(offer.getUser().getId());
-            List<User> bidders = offer.getBidders();
-            if (bidders.isEmpty()) {
-                offer.setStatus(OfferStatus.EXPIRED);
-            } else{
-                User buyer = bidders.getLast();
-                if (buyer.getCash() < offer.getPrice()) {
-                    throw new AppException("Insufficient funds to purchase the offer.", HttpStatus.BAD_REQUEST);
-                }
-                if (!offer.getStatus().equals(OfferStatus.ACTIVE)) {
-                    throw new AppException("You can't buy a sold product.", HttpStatus.BAD_REQUEST);
-                }
-                buyer.setCash(buyer.getCash() - offer.getPrice());
-                seller.setCash(seller.getCash() + offer.getPrice());
-
-                offer.setStatus(OfferStatus.SOLD);
-
-            }
-
-        }
-        else{
-            throw new AppException("It's not an auction.", HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    public List<Offer> getWinningAuctions(Long userId) {
-        List<Offer> offers = offerRepository.findByBiddersId(userId);
-
-        if (offers == null) {
-            return Collections.emptyList();
-        }
-
-        return offers.stream()
-                .filter(offer -> {
-                    List<User> bidders = offer.getBidders();
-                    return !bidders.isEmpty() && offer.getStatus() == OfferStatus.ACTIVE && bidders.getLast().getId().equals(userId);
-                })
-                .collect(Collectors.toList());
-    }
-
 }
